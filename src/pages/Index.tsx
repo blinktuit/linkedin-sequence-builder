@@ -330,7 +330,7 @@ const Index = () => {
                                         <Plus className="h-3.5 w-3.5 text-green-600" />
                                       </Button>
                                     </div>
-                                    <div className="h-2 w-0.5 bg-green-600/30" />
+                                    
                                   </div>
                                 </div>;
                     })}
@@ -396,7 +396,7 @@ const Index = () => {
                                         <Plus className="h-3.5 w-3.5 text-[#f49854]" />
                                       </Button>
                                     </div>
-                                    <div className="h-2 w-0.5 bg-[#f49854]/30" />
+                                    
                                   </div>
                                 </div>;
                     })}
