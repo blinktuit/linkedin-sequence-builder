@@ -33,6 +33,13 @@ export interface CampaignStep {
     config?: any;
     error?: string;
   };
+  branches?: {
+    yes: string[];
+    no: string[];
+  };
+  parentBranch?: 'yes' | 'no';
+  parentStepId?: string;
+  isConditional?: boolean;
 }
 
 export interface Campaign {
