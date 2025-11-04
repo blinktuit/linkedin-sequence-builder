@@ -155,6 +155,22 @@ export const StepCard = ({
               </div>
               <div className="flex-1 min-w-0">
                 <div className="font-semibold text-sm leading-tight">{step.title}</div>
+                {(step.subtitle || (step.type === 'send-to-campaign' && step.config?.targetCampaign)) && (
+                  <div className="text-[11px] text-muted-foreground flex items-center gap-1 mt-0.5">
+                    {step.type === 'send-to-campaign' && step.config?.targetCampaign ? (
+                      <>
+                        <span>👤</span>
+                        <span className="truncate">
+                          {step.config.targetCampaign === 'ai-lookalike' && 'AI - Lookalike - Saleshacking...'}
+                          {step.config.targetCampaign === 'outbound-campaign' && 'Outbound Campaign'}
+                          {step.config.targetCampaign === 'follow-up' && 'Follow-up Campaign'}
+                        </span>
+                      </>
+                    ) : (
+                      <span className="truncate">{step.subtitle}</span>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
