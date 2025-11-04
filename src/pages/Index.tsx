@@ -163,7 +163,6 @@ const Index = () => {
                         },
                         versionB: {
                           config: {},
-                          error: 'Information is required',
                         },
                       };
                       
