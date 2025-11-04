@@ -28,7 +28,7 @@ export const ConfigPanel = ({ step, onConfigChange, activeVersion = 'A' }: Confi
 
   if (!step || step.type === 'start') {
     return (
-      <div className="w-96 border-l border-border bg-card p-6 flex items-center justify-center text-muted-foreground text-sm">
+      <div className="w-[480px] border-l border-border bg-card p-6 flex items-center justify-center text-muted-foreground text-sm">
         Select a step to configure
       </div>
     );
@@ -52,7 +52,7 @@ export const ConfigPanel = ({ step, onConfigChange, activeVersion = 'A' }: Confi
   ];
 
   return (
-    <div className="w-96 border-l border-border bg-card overflow-y-auto">
+    <div className="w-[480px] border-l border-border bg-card overflow-y-auto">
       <div className="p-6 space-y-6">
         <div>
           <div className="flex items-center gap-2 mb-4">
@@ -257,7 +257,7 @@ export const ConfigPanel = ({ step, onConfigChange, activeVersion = 'A' }: Confi
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="lemlist">lemlist credits</SelectItem>
+                          <SelectItem value="lemlist">linqed credits</SelectItem>
                           <SelectItem value="own">Own API key</SelectItem>
                         </SelectContent>
                       </Select>
