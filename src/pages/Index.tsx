@@ -31,27 +31,49 @@ const Index = () => {
       subtitle: getStepSubtitle(type),
       isConditional: type === 'condition' || type === 'linkedin-invitation'
     };
-    if (insertBranch && insertAfterStepId) {
+    
+    // Check if insertAfterStepId is in a branch
+    const afterStep = insertAfterStepId ? campaign.steps.find(s => s.id === insertAfterStepId) : null;
+    const effectiveBranch = insertBranch || afterStep?.parentBranch;
+    const effectiveParentStepId = afterStep?.parentStepId || (effectiveBranch ? insertAfterStepId : null);
+    
+    if (effectiveBranch && (effectiveParentStepId || insertAfterStepId)) {
       // Adding to a branch
-      newStep.parentBranch = insertBranch;
-      newStep.parentStepId = insertAfterStepId;
-      const parentStep = campaign.steps.find(s => s.id === insertAfterStepId);
-      if (parentStep) {
+      newStep.parentBranch = effectiveBranch;
+      
+      // Find the root parent of the branch
+      const rootParentId = effectiveParentStepId || insertAfterStepId;
+      let rootParent = campaign.steps.find(s => s.id === rootParentId);
+      
+      // If the step we're inserting after is in a branch, find its root parent
+      if (rootParent?.parentStepId) {
+        rootParent = campaign.steps.find(s => s.id === rootParent!.parentStepId);
+      }
+      
+      newStep.parentStepId = rootParent?.id;
+      
+      if (rootParent) {
         const updatedParentStep = {
-          ...parentStep,
-          branches: parentStep.branches || {
+          ...rootParent,
+          branches: rootParent.branches || {
             yes: [],
             no: []
           }
         };
-        if (insertBranch === 'yes') {
-          updatedParentStep.branches.yes.push(newStep.id);
+        
+        // Insert after the specified step in the branch
+        const branchArray = effectiveBranch === 'yes' ? updatedParentStep.branches.yes : updatedParentStep.branches.no;
+        const insertIndex = insertAfterStepId ? branchArray.indexOf(insertAfterStepId) : -1;
+        
+        if (insertIndex >= 0) {
+          branchArray.splice(insertIndex + 1, 0, newStep.id);
         } else {
-          updatedParentStep.branches.no.push(newStep.id);
+          branchArray.push(newStep.id);
         }
+        
         setCampaign({
           ...campaign,
-          steps: [...campaign.steps.map(s => s.id === insertAfterStepId ? updatedParentStep : s), newStep],
+          steps: [...campaign.steps.map(s => s.id === rootParent!.id ? updatedParentStep : s), newStep],
           activeStepId: newStep.id
         });
       }
@@ -247,14 +269,14 @@ const Index = () => {
                         }} />
                                   
                                   {/* Connector after branch step */}
-                                  <div className="flex flex-col items-center py-1">
-                                    <div className="h-4 w-0.5 bg-green-600/30" />
+                                  <div className="flex flex-col items-center py-0.5">
+                                    <div className="h-2 w-0.5 bg-green-600/30" />
                                     <div className="my-0.5">
-                                      <Button onClick={() => handleOpenStepLibrary(yesStep.id)} variant="ghost" size="icon" className="h-7 w-7 rounded-full border-2 border-dashed border-green-600/50 hover:border-green-600 hover:bg-green-600/5 transition-colors">
+                                      <Button onClick={() => handleOpenStepLibrary(yesStep.id, 'yes')} variant="ghost" size="icon" className="h-7 w-7 rounded-full border-2 border-dashed border-green-600/50 hover:border-green-600 hover:bg-green-600/5 transition-colors">
                                         <Plus className="h-3.5 w-3.5 text-green-600" />
                                       </Button>
                                     </div>
-                                    <div className="h-4 w-0.5 bg-green-600/30" />
+                                    <div className="h-2 w-0.5 bg-green-600/30" />
                                   </div>
                                 </div>;
                     })}
@@ -313,14 +335,14 @@ const Index = () => {
                         }} />
                                   
                                   {/* Connector after branch step */}
-                                  <div className="flex flex-col items-center py-1">
-                                    <div className="h-4 w-0.5 bg-[#f49854]/30" />
+                                  <div className="flex flex-col items-center py-0.5">
+                                    <div className="h-2 w-0.5 bg-[#f49854]/30" />
                                     <div className="my-0.5">
-                                      <Button onClick={() => handleOpenStepLibrary(noStep.id)} variant="ghost" size="icon" className="h-7 w-7 rounded-full border-2 border-dashed border-[#f49854]/50 hover:border-[#f49854] hover:bg-[#f49854]/5 transition-colors">
+                                      <Button onClick={() => handleOpenStepLibrary(noStep.id, 'no')} variant="ghost" size="icon" className="h-7 w-7 rounded-full border-2 border-dashed border-[#f49854]/50 hover:border-[#f49854] hover:bg-[#f49854]/5 transition-colors">
                                         <Plus className="h-3.5 w-3.5 text-[#f49854]" />
                                       </Button>
                                     </div>
-                                    <div className="h-4 w-0.5 bg-[#f49854]/30" />
+                                    <div className="h-2 w-0.5 bg-[#f49854]/30" />
                                   </div>
                                 </div>;
                     })}
@@ -329,18 +351,18 @@ const Index = () => {
                       
                       {/* Merge point */}
                       {step.branches?.yes.length || step.branches?.no.length ? <div className="flex justify-center">
-                          <div className="h-8 w-0.5 bg-border" />
+                          <div className="h-4 w-0.5 bg-border" />
                         </div> : null}
-                    </> : <div className="relative flex flex-col items-center py-1">
+                    </> : <div className="relative flex flex-col items-center py-0.5">
                       {/* Straight connector line with circle */}
                       <div className="flex flex-col items-center">
-                        <div className="h-4 w-0.5 bg-border" />
+                        <div className="h-2 w-0.5 bg-border" />
                         <div className="my-0.5">
                           <Button onClick={() => handleOpenStepLibrary(step.id)} variant="ghost" size="icon" className="h-7 w-7 rounded-full border-2 border-dashed border-primary/50 hover:border-primary hover:bg-primary/5 transition-colors">
                             <Plus className="h-3.5 w-3.5 text-primary" />
                           </Button>
                         </div>
-                        <div className="h-4 w-0.5 bg-border" />
+                        <div className="h-2 w-0.5 bg-border" />
                       </div>
                     </div>}
                 </div>)}
