@@ -135,17 +135,6 @@ export const StepCard = ({ step, isActive, onClick }: StepCardProps) => {
         </>
       )}
 
-      {/* Connection line below */}
-      <div className="absolute left-1/2 -translate-x-1/2 top-full h-6 w-px bg-border" />
-      <div className="absolute left-1/2 -translate-x-1/2 top-full translate-y-6 text-muted-foreground">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <circle cx="6" cy="6" r="4" stroke="currentColor" strokeWidth="1.5"/>
-          <line x1="6" y1="0" x2="6" y2="4" stroke="currentColor" strokeWidth="1.5"/>
-          <line x1="6" y1="8" x2="6" y2="12" stroke="currentColor" strokeWidth="1.5"/>
-          <line x1="0" y1="6" x2="4" y2="6" stroke="currentColor" strokeWidth="1.5"/>
-          <line x1="8" y1="6" x2="12" y2="6" stroke="currentColor" strokeWidth="1.5"/>
-        </svg>
-      </div>
     </div>
   );
 };

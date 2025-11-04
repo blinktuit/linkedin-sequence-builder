@@ -20,38 +20,11 @@ const Index = () => {
         type: 'start',
         title: 'Sequence start',
       },
-      {
-        id: '1',
-        type: 'linkedin-invitation',
-        title: 'Invitation',
-        subtitle: 'Send on LinkedIn',
-        error: 'Error on sender(s)',
-      },
-      {
-        id: '2',
-        type: 'condition',
-        title: 'Accepted invite within 1 day',
-        subtitle: 'LinkedIn',
-      },
-      {
-        id: '3',
-        type: 'wait',
-        title: 'Wait for 1 day',
-      },
-      {
-        id: '4',
-        type: 'linkedin-chat',
-        title: 'Chat message',
-        subtitle: 'Send on LinkedIn',
-      },
-      {
-        id: '5',
-        type: 'ab-test',
-        title: 'Wait for 1 day',
-      },
     ],
-    activeStepId: '1',
+    activeStepId: undefined,
   });
+
+  const [insertAfterStepId, setInsertAfterStepId] = useState<string | null>(null);
 
   const handleAddStep = (type: string) => {
     const newStep: CampaignStep = {
@@ -61,10 +34,31 @@ const Index = () => {
       subtitle: getStepSubtitle(type),
     };
     
-    setCampaign({
-      ...campaign,
-      steps: [...campaign.steps, newStep],
-    });
+    if (insertAfterStepId) {
+      // Insert after specific step
+      const stepIndex = campaign.steps.findIndex(s => s.id === insertAfterStepId);
+      const newSteps = [...campaign.steps];
+      newSteps.splice(stepIndex + 1, 0, newStep);
+      setCampaign({
+        ...campaign,
+        steps: newSteps,
+        activeStepId: newStep.id,
+      });
+    } else {
+      // Add to end
+      setCampaign({
+        ...campaign,
+        steps: [...campaign.steps, newStep],
+        activeStepId: newStep.id,
+      });
+    }
+    
+    setInsertAfterStepId(null);
+  };
+
+  const handleOpenStepLibrary = (afterStepId?: string) => {
+    setInsertAfterStepId(afterStepId || null);
+    setIsStepLibraryOpen(true);
   };
 
   const getStepTitle = (type: string): string => {
@@ -125,32 +119,30 @@ const Index = () => {
 
           {/* Steps container */}
           <div className="flex items-start justify-center min-h-full p-20">
-            <div className="w-full max-w-md space-y-8">
+            <div className="w-full max-w-md">
               {campaign.steps.map((step, index) => (
-                <div key={step.id} className="relative">
+                <div key={step.id}>
                   <StepCard
                     step={step}
                     isActive={step.id === campaign.activeStepId}
                     onClick={() => setCampaign({ ...campaign, activeStepId: step.id })}
                   />
                   
-                  {index < campaign.steps.length - 1 && (
-                    <div className="h-16" />
-                  )}
+                  {/* Connection and add button after each step */}
+                  <div className="flex flex-col items-center py-4">
+                    <div className="h-6 w-px bg-border" />
+                    <Button
+                      onClick={() => handleOpenStepLibrary(step.id)}
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 rounded-full border-2 border-dashed border-border hover:border-primary hover:bg-primary/5 transition-colors"
+                    >
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                    <div className="h-6 w-px bg-border" />
+                  </div>
                 </div>
               ))}
-
-              {/* Add step button */}
-              <div className="flex justify-center pt-6">
-                <Button
-                  onClick={() => setIsStepLibraryOpen(true)}
-                  variant="ghost"
-                  size="icon"
-                  className="h-10 w-10 rounded-full border-2 border-dashed border-border hover:border-primary hover:bg-primary/5"
-                >
-                  <Plus className="h-5 w-5" />
-                </Button>
-              </div>
             </div>
           </div>
         </div>
