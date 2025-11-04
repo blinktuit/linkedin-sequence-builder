@@ -13,6 +13,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { AlertCircle, ChevronDown, Eye, Image, MoreVertical, Plus, Search, Sparkles, Info } from "lucide-react";
+import { cn } from "@/lib/utils";
 import type { CampaignStep } from "@/types/campaign";
 
 interface ConfigPanelProps {
@@ -75,7 +76,13 @@ export const ConfigPanel = ({ step, onConfigChange, activeVersion = 'A' }: Confi
               <div className="flex items-center gap-2">
                 <div className="font-medium">{step.title}</div>
                 {step.type === 'ab-test' && (
-                  <Badge variant="outline" className="text-[10px] px-1.5 py-0">
+                  <Badge 
+                    variant={activeVersion === 'B' ? 'default' : 'outline'} 
+                    className={cn(
+                      "text-[11px] px-2 py-0.5 font-semibold",
+                      activeVersion === 'B' && "bg-primary text-primary-foreground"
+                    )}
+                  >
                     Version {activeVersion}
                   </Badge>
                 )}
