@@ -29,7 +29,7 @@ const Index = () => {
       type: type as any,
       title: getStepTitle(type),
       subtitle: getStepSubtitle(type),
-      isConditional: type === 'condition' || type === 'linkedin-invitation'
+      isConditional: type === 'condition'
     };
     
     // Check if insertAfterStepId is in a branch
