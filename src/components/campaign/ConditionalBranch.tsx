@@ -46,7 +46,7 @@ export const ConditionalBranch = ({
         
         {/* Extension line if has steps */}
         {hasYesSteps && (
-          <div className="h-4 w-0.5 bg-green-600/30 mt-1" />
+          <div className="h-4 w-0.5 bg-[#36b39a] mt-1" />
         )}
       </div>
 
