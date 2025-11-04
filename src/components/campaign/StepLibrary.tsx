@@ -15,13 +15,12 @@ interface StepLibraryProps {
 
 const stepCategories = {
   automatic: [
-    { icon: "📧", label: "Email", subtitle: "Send automatic email", locked: false },
-    { icon: "💬", label: "WhatsApp", subtitle: "Send WhatsApp message", locked: true },
-    { icon: <MessageSquare className="h-4 w-4" />, label: "Chat message", subtitle: "Send on LinkedIn", locked: false, type: 'linkedin-chat' },
-    { icon: <Phone className="h-4 w-4" />, label: "Voice message", subtitle: "Send on LinkedIn", locked: false, type: 'linkedin-voice', warning: true },
-    { icon: <Phone className="h-4 w-4 text-purple-500" />, label: "AI Voice message", subtitle: "Send on LinkedIn", locked: false, warning: true },
     { icon: <UserPlus className="h-4 w-4" />, label: "Invitation", subtitle: "Send on LinkedIn", locked: false, type: 'linkedin-invitation' },
     { icon: <Eye className="h-4 w-4" />, label: "Visit profile", subtitle: "Visit profile", locked: false, type: 'linkedin-profile-visit' },
+    { icon: <MessageSquare className="h-4 w-4" />, label: "Chat message", subtitle: "Send on LinkedIn", locked: false, type: 'linkedin-chat' },
+    { icon: <ThumbsUp className="h-4 w-4" />, label: "Like a post", subtitle: "Like on LinkedIn", locked: false, type: 'linkedin-like-post' },
+    { icon: <Phone className="h-4 w-4" />, label: "Voice message", subtitle: "Send on LinkedIn", locked: false, type: 'linkedin-voice', warning: true },
+    { icon: "📧", label: "Email", subtitle: "Send automatic email", locked: false },
   ],
   manual: [
     { icon: "📞", label: "Call", subtitle: "Create a task", locked: false },

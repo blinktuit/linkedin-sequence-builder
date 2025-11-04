@@ -67,6 +67,7 @@ const Index = () => {
       'linkedin-voice': 'Voice message',
       'linkedin-invitation': 'Invitation',
       'linkedin-profile-visit': 'Visit profile',
+      'linkedin-like-post': 'Like a post',
       'api-call': 'API Call',
       'send-to-campaign': 'Send to campaign',
       'ai-generate': 'AI variable',
@@ -80,6 +81,7 @@ const Index = () => {
       'linkedin-voice': 'Send on LinkedIn',
       'linkedin-invitation': 'Send on LinkedIn',
       'linkedin-profile-visit': 'Visit profile',
+      'linkedin-like-post': 'Like on LinkedIn',
       'api-call': 'Call an API',
     };
     return subtitles[type] || '';
