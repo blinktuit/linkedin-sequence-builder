@@ -226,7 +226,7 @@ const Index = () => {
                     </div>
                   ) : (
                     <div className="flex justify-center">
-                      <div className="w-full max-w-sm">
+                      <div className="w-full max-w-[460px]">
                         <StepCard step={step} isActive={step.id === campaign.activeStepId} onClick={() => setCampaign({
                       ...campaign,
                       activeStepId: step.id
@@ -285,7 +285,7 @@ const Index = () => {
                       {/* Render branched steps side by side */}
                       {step.branches?.yes.length || step.branches?.no.length ? <div className="flex gap-8 justify-center items-start">
                           {/* Yes branch */}
-                          <div className="w-full max-w-sm flex flex-col items-center">
+                          <div className="w-full max-w-[460px] flex flex-col items-center">
                             {step.branches?.yes.map(yesStepId => {
                       const yesStep = campaign.steps.find(s => s.id === yesStepId);
                       if (!yesStep) return null;
@@ -351,7 +351,7 @@ const Index = () => {
                           </div>
                           
                           {/* No branch */}
-                          <div className="w-full max-w-sm flex flex-col items-center">
+                          <div className="w-full max-w-[460px] flex flex-col items-center">
                             {step.branches?.no.map(noStepId => {
                       const noStep = campaign.steps.find(s => s.id === noStepId);
                       if (!noStep) return null;
