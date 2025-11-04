@@ -116,55 +116,54 @@ export const StepCard = ({ step, isActive, onClick, onDuplicate, onABTest, onDel
                   </span>
                 </button>
               </PopoverTrigger>
-              <PopoverContent className="w-80 p-4" align="start" onClick={(e) => e.stopPropagation()}>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Wait</span>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-destructive hover:text-destructive"
-                      onClick={() => setDelayOpen(false)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+              <PopoverContent className="w-72 p-3" align="start" onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium text-muted-foreground">Wait</span>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-7 w-7 flex-shrink-0"
+                    onClick={() => setWaitAmount(Math.max(1, waitAmount - 1))}
+                  >
+                    <Minus className="h-3 w-3" />
+                  </Button>
+                  
+                  <div className="flex items-center justify-center border rounded-md h-7 w-12 flex-shrink-0">
+                    <span className="text-sm font-medium">{waitAmount}</span>
                   </div>
                   
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="h-10 w-10"
-                      onClick={() => setWaitAmount(Math.max(1, waitAmount - 1))}
-                    >
-                      <Minus className="h-4 w-4" />
-                    </Button>
-                    
-                    <div className="flex-1 flex items-center justify-center border rounded-md h-10">
-                      <span className="text-lg font-medium">{waitAmount}</span>
-                    </div>
-                    
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="h-10 w-10"
-                      onClick={() => setWaitAmount(waitAmount + 1)}
-                    >
-                      <Plus className="h-4 w-4" />
-                    </Button>
-                    
-                    <Select value={waitUnit} onValueChange={setWaitUnit}>
-                      <SelectTrigger className="w-[100px] h-10">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="minute">minute</SelectItem>
-                        <SelectItem value="hour">hour</SelectItem>
-                        <SelectItem value="day">day</SelectItem>
-                        <SelectItem value="week">week</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-7 w-7 flex-shrink-0"
+                    onClick={() => setWaitAmount(waitAmount + 1)}
+                  >
+                    <Plus className="h-3 w-3" />
+                  </Button>
+                  
+                  <Select value={waitUnit} onValueChange={setWaitUnit}>
+                    <SelectTrigger className="w-20 h-7 text-xs flex-shrink-0">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="minute">min</SelectItem>
+                      <SelectItem value="hour">hour</SelectItem>
+                      <SelectItem value="day">day</SelectItem>
+                      <SelectItem value="week">week</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7 text-destructive hover:text-destructive flex-shrink-0 ml-auto"
+                    onClick={() => {
+                      setDelayOpen(false);
+                      setWaitAmount(0);
+                    }}
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </Button>
                 </div>
               </PopoverContent>
             </Popover>
