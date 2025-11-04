@@ -33,13 +33,6 @@ export interface CampaignStep {
     config?: any;
     error?: string;
   };
-  branches?: {
-    yes?: string[]; // IDs of steps in the Yes branch
-    no?: string[]; // IDs of steps in the No branch
-  };
-  parentBranch?: 'yes' | 'no'; // Which branch this step belongs to
-  parentStepId?: string; // ID of the parent conditional step
-  isConditional?: boolean; // Whether this step has conditional branches
 }
 
 export interface Campaign {

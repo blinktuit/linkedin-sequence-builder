@@ -3,7 +3,6 @@ import { CampaignHeader } from "@/components/campaign/CampaignHeader";
 import { StepCard } from "@/components/campaign/StepCard";
 import { ConfigPanel } from "@/components/campaign/ConfigPanel";
 import { StepLibrary } from "@/components/campaign/StepLibrary";
-import { ConditionalBranch } from "@/components/campaign/ConditionalBranch";
 import { Button } from "@/components/ui/button";
 import { Plus, Search, ZoomIn, ZoomOut } from "lucide-react";
 import type { Campaign, CampaignStep } from "@/types/campaign";
@@ -27,48 +26,17 @@ const Index = () => {
   });
 
   const [insertAfterStepId, setInsertAfterStepId] = useState<string | null>(null);
-  const [insertBranch, setInsertBranch] = useState<'yes' | 'no' | null>(null);
 
   const handleAddStep = (type: string) => {
-    const isConditional = type.includes('condition') || type === 'linkedin-invitation';
-    
     const newStep: CampaignStep = {
       id: Date.now().toString(),
       type: type as any,
       title: getStepTitle(type),
       subtitle: getStepSubtitle(type),
-      isConditional,
-      branches: isConditional ? { yes: [], no: [] } : undefined,
     };
     
-    if (insertAfterStepId && insertBranch) {
-      // Insert into a specific branch
-      const parentStep = campaign.steps.find(s => s.id === insertAfterStepId);
-      if (parentStep?.branches) {
-        newStep.parentBranch = insertBranch;
-        newStep.parentStepId = insertAfterStepId;
-        
-        const branchSteps = insertBranch === 'yes' ? parentStep.branches.yes : parentStep.branches.no;
-        const newSteps = [...campaign.steps];
-        const parentIndex = newSteps.findIndex(s => s.id === insertAfterStepId);
-        
-        // Add to branch array
-        if (insertBranch === 'yes') {
-          parentStep.branches.yes = [...(parentStep.branches.yes || []), newStep.id];
-        } else {
-          parentStep.branches.no = [...(parentStep.branches.no || []), newStep.id];
-        }
-        
-        newSteps.splice(parentIndex + 1, 0, newStep);
-        
-        setCampaign({
-          ...campaign,
-          steps: newSteps,
-          activeStepId: newStep.id,
-        });
-      }
-    } else if (insertAfterStepId) {
-      // Insert after specific step (non-branch)
+    if (insertAfterStepId) {
+      // Insert after specific step
       const stepIndex = campaign.steps.findIndex(s => s.id === insertAfterStepId);
       const newSteps = [...campaign.steps];
       newSteps.splice(stepIndex + 1, 0, newStep);
@@ -87,12 +55,10 @@ const Index = () => {
     }
     
     setInsertAfterStepId(null);
-    setInsertBranch(null);
   };
 
-  const handleOpenStepLibrary = (afterStepId?: string, branch?: 'yes' | 'no') => {
+  const handleOpenStepLibrary = (afterStepId?: string) => {
     setInsertAfterStepId(afterStepId || null);
-    setInsertBranch(branch || null);
     setIsStepLibraryOpen(true);
   };
 
@@ -159,10 +125,8 @@ const Index = () => {
 
           {/* Steps container */}
           <div className="flex items-start justify-center min-h-full p-12">
-            <div className="w-full max-w-2xl">
-              {campaign.steps
-                .filter(step => !step.parentBranch) // Only show top-level steps
-                .map((step, index) => (
+            <div className="w-full max-w-sm">
+              {campaign.steps.map((step, index) => (
                 <div key={step.id}>
                   <StepCard
                     step={step}
@@ -220,33 +184,24 @@ const Index = () => {
                     }}
                   />
                   
-                  {/* Conditional branching for invitation/condition steps */}
-                  {step.isConditional && step.branches ? (
-                    <ConditionalBranch
-                      onAddToYes={() => handleOpenStepLibrary(step.id, 'yes')}
-                      onAddToNo={() => handleOpenStepLibrary(step.id, 'no')}
-                      yesStepsCount={step.branches.yes?.length || 0}
-                      noStepsCount={step.branches.no?.length || 0}
-                    />
-                  ) : (
-                    /* Regular connection and add button */
-                    <div className="relative flex flex-col items-center py-1">
-                      <div className="flex flex-col items-center">
-                        <div className="h-4 w-0.5 bg-border" />
-                        <div className="my-0.5">
-                          <Button
-                            onClick={() => handleOpenStepLibrary(step.id)}
-                            variant="ghost"
-                            size="icon"
-                            className="h-7 w-7 rounded-full border-2 border-dashed border-primary/50 hover:border-primary hover:bg-primary/5 transition-colors"
-                          >
-                            <Plus className="h-3.5 w-3.5 text-primary" />
-                          </Button>
-                        </div>
-                        <div className="h-4 w-0.5 bg-border" />
+                  {/* Connection and add button after each step */}
+                  <div className="relative flex flex-col items-center py-1">
+                    {/* Straight connector line with circle */}
+                    <div className="flex flex-col items-center">
+                      <div className="h-4 w-0.5 bg-border" />
+                      <div className="my-0.5">
+                        <Button
+                          onClick={() => handleOpenStepLibrary(step.id)}
+                          variant="ghost"
+                          size="icon"
+                          className="h-7 w-7 rounded-full border-2 border-dashed border-primary/50 hover:border-primary hover:bg-primary/5 transition-colors"
+                        >
+                          <Plus className="h-3.5 w-3.5 text-primary" />
+                        </Button>
                       </div>
+                      <div className="h-4 w-0.5 bg-border" />
                     </div>
-                  )}
+                  </div>
                 </div>
               ))}
             </div>
