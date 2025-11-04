@@ -160,46 +160,22 @@ const Index = () => {
                   />
                   
                   {/* Connection and add button after each step */}
-                  <div className="relative flex flex-col items-center py-4">
-                    {/* Curved connector line with arrow */}
-                    <svg 
-                      className="absolute top-0 left-1/2 -translate-x-1/2" 
-                      width="100" 
-                      height="80" 
-                      viewBox="0 0 100 80"
-                      style={{ overflow: 'visible' }}
-                    >
-                      <defs>
-                        <marker
-                          id="arrowhead"
-                          markerWidth="10"
-                          markerHeight="10"
-                          refX="9"
-                          refY="3"
-                          orient="auto"
+                  <div className="relative flex flex-col items-center py-2">
+                    {/* Straight connector line with circle */}
+                    <div className="flex flex-col items-center">
+                      <div className="h-8 w-0.5 bg-border" />
+                      <div className="my-1">
+                        <Button
+                          onClick={() => handleOpenStepLibrary(step.id)}
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 rounded-full border-2 border-dashed border-primary/50 hover:border-primary hover:bg-primary/5 transition-colors"
                         >
-                          <polygon points="0 0, 10 3, 0 6" fill="#3b82f6" />
-                        </marker>
-                      </defs>
-                      <path
-                        d="M 50 0 Q 70 20, 50 40 T 50 70"
-                        stroke="#3b82f6"
-                        strokeWidth="2.5"
-                        fill="none"
-                        markerEnd="url(#arrowhead)"
-                      />
-                    </svg>
-                    
-                    <div className="h-6 w-px opacity-0" />
-                    <Button
-                      onClick={() => handleOpenStepLibrary(step.id)}
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 rounded-full border-2 border-dashed border-border hover:border-primary hover:bg-primary/5 transition-colors relative z-10"
-                    >
-                      <Plus className="h-4 w-4" />
-                    </Button>
-                    <div className="h-6 w-px opacity-0" />
+                          <Plus className="h-4 w-4 text-primary" />
+                        </Button>
+                      </div>
+                      <div className="h-8 w-0.5 bg-border" />
+                    </div>
                   </div>
                 </div>
               ))}
