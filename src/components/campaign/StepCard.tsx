@@ -51,63 +51,55 @@ export const StepCard = ({ step, isActive, onClick }: StepCardProps) => {
     <div
       onClick={onClick}
       className={cn(
-        "relative bg-step-card border-2 rounded-lg p-3 cursor-pointer transition-all hover:shadow-md",
-        isActive ? "border-primary" : "border-step-border",
-        hasError && "border-destructive"
+        "relative bg-card border rounded-xl p-4 cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02]",
+        isActive ? "border-primary shadow-md ring-2 ring-primary/20" : "border-border",
+        hasError && "border-destructive ring-2 ring-destructive/20"
       )}
     >
       {step.type === 'start' ? (
-        <div className="text-center text-sm text-muted-foreground py-2">
+        <div className="text-center text-sm text-muted-foreground py-3">
           Sequence start
         </div>
       ) : (
         <>
-          <div className="flex items-start justify-between gap-2 mb-2">
-            <div className="flex items-center gap-2 flex-1">
-              {(step.type === 'wait' || step.type === 'condition') && (
-                <Clock className="h-3 w-3 text-muted-foreground" />
-              )}
-              <span className="text-xs text-muted-foreground">
-                {step.type === 'wait' ? 'Wait for' : 'Send immediately'}
-              </span>
-              {step.type === 'wait' && (
-                <span className="text-xs text-primary font-medium">1 day</span>
-              )}
-            </div>
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-medium text-muted-foreground">
+              {step.type === 'wait' ? 'Wait for' : 'Send immediately'}
+            </span>
             
             <div className="flex items-center gap-1">
-              <Button variant="ghost" size="icon" className="h-6 w-6">
-                <Edit2 className="h-3 w-3" />
+              <Button variant="ghost" size="icon" className="h-7 w-7 hover:bg-muted/50">
+                <Edit2 className="h-3.5 w-3.5" />
               </Button>
             </div>
           </div>
 
-          <div className="flex items-start gap-2">
-            <div className="flex items-center gap-2 flex-1">
-              <div className="text-primary">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <div className="text-primary flex-shrink-0">
                 <StepIcon type={step.type} />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-medium text-sm">{step.title}</div>
+                <div className="font-semibold text-sm mb-0.5">{step.title}</div>
                 {step.subtitle && (
-                  <div className="text-xs text-muted-foreground flex items-center gap-1">
-                    <svg className="h-3 w-3" viewBox="0 0 24 24" fill="#0077B5">
+                  <div className="text-xs text-muted-foreground flex items-center gap-1.5">
+                    <svg className="h-3 w-3 flex-shrink-0" viewBox="0 0 24 24" fill="#0077B5">
                       <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                     </svg>
-                    {step.subtitle}
+                    <span className="truncate">{step.subtitle}</span>
                   </div>
                 )}
               </div>
             </div>
 
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-2 flex-shrink-0">
               {hasError && <AlertCircle className="h-4 w-4 text-destructive" />}
               {hasWarning && <AlertTriangle className="h-4 w-4 text-warning" />}
-              <div className="h-8 w-8 rounded-full bg-emerald-500 flex items-center justify-center">
-                <span className="text-white text-xs font-medium">SI</span>
+              <div className="h-9 w-9 rounded-full bg-emerald-500 flex items-center justify-center shadow-sm">
+                <span className="text-white text-xs font-semibold">SI</span>
               </div>
-              <Button variant="ghost" size="icon" className="h-6 w-6">
-                <MoreVertical className="h-3 w-3" />
+              <Button variant="ghost" size="icon" className="h-7 w-7 hover:bg-muted/50">
+                <MoreVertical className="h-4 w-4" />
               </Button>
             </div>
           </div>
