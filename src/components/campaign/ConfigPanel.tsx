@@ -1,18 +1,14 @@
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { AlertCircle, ChevronDown, Eye, Image, MoreVertical, Plus, Search, Sparkles, Info } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ChevronDown, Plus, Search, Info, Sparkles, Eye, Image, MoreVertical, User, Building2, GraduationCap, Flame, MessageCircle, Calendar, Globe, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { CampaignStep } from "@/types/campaign";
 
@@ -35,28 +31,20 @@ export const ConfigPanel = ({ step, onConfigChange, activeVersion = 'A' }: Confi
   }
 
   const liquidSyntaxOptions = [
-    { label: "Hello | Hi | Hey", icon: "👋" },
-    { label: "Mister / Miss", icon: "👤" },
-    { label: "If text contains...", icon: "🔍" },
-    { label: "Format the date to month/day/year", icon: "📅" },
-    { label: "Format the date to day/month/year", icon: "📅" },
-    { label: "Translate the day", icon: "🌍" },
-  ];
-
-  const customVariablesSimple = [
-    { label: "First Lastname", icon: "👤" },
-    { label: "Default value", icon: "💡" },
-    { label: "Today", icon: "📅" },
-    { label: "Good morning/afternoon", icon: "👋" },
-    { label: "In ... days", icon: "⏰" },
+    { label: "Hello | Hi | Hey", syntax: "{{ 'Hello' | 'Hi' | 'Hey' }}", icon: <MessageCircle className="h-4 w-4" /> },
+    { label: "Mister / Miss", syntax: "{{ contact.title }}", icon: <User className="h-4 w-4" /> },
+    { label: "If text contains...", syntax: "{% if text contains 'keyword' %}...{% endif %}", icon: <Search className="h-4 w-4" /> },
+    { label: "Format the date to month/day/year", syntax: "{{ date | date: '%m/%d/%Y' }}", icon: <Calendar className="h-4 w-4" /> },
+    { label: "Format the date to day/month/year", syntax: "{{ date | date: '%d/%m/%Y' }}", icon: <Calendar className="h-4 w-4" /> },
+    { label: "Translate the day", syntax: "{{ date | date: '%A' }}", icon: <Globe className="h-4 w-4" /> },
   ];
 
   const customVariablesFull = [
-    { label: "First name", value: "{{firstName}}", icon: "👤" },
-    { label: "Last name", value: "{{lastName}}", icon: "👤" },
-    { label: "Company name", value: "{{companyName}}", icon: "🏢" },
-    { label: "Icebreaker", value: "{{icebreaker}}", icon: "🎯" },
-    { label: "School", value: "{{school}}", icon: "🎓" },
+    { icon: <User className="h-4 w-4" />, label: 'First name', value: '{{firstName}}' },
+    { icon: <User className="h-4 w-4" />, label: 'Last name', value: '{{lastName}}' },
+    { icon: <Building2 className="h-4 w-4" />, label: 'Company name', value: '{{companyName}}' },
+    { icon: <Flame className="h-4 w-4" />, label: 'Icebreaker', value: '{{icebreaker}}' },
+    { icon: <GraduationCap className="h-4 w-4" />, label: 'School', value: '{{school}}' }
   ];
 
   return (
@@ -184,17 +172,18 @@ export const ConfigPanel = ({ step, onConfigChange, activeVersion = 'A' }: Confi
             <>
               <div>
                 <Label className="text-sm mb-2 block">Message</Label>
-                <div className="relative">
-                  <Textarea
-                    placeholder="What message do you want to send?"
-                    className="min-h-[200px] resize-none"
-                    value={step.config?.message || ""}
-                    onChange={(e) => onConfigChange({ ...step.config, message: e.target.value })}
-                  />
-                  <div className="text-right text-xs text-muted-foreground mt-1">
-                    {step.config?.message?.length || 0}/8000
-                  </div>
+              <div className="relative">
+                <Textarea
+                  id="message-textarea"
+                  placeholder="What message do you want to send?"
+                  className="min-h-[200px] resize-none"
+                  value={step.config?.message || ""}
+                  onChange={(e) => onConfigChange({ ...step.config, message: e.target.value })}
+                />
+                <div className="text-right text-xs text-muted-foreground mt-1">
+                  {step.config?.message?.length || 0}/8000
                 </div>
+              </div>
               </div>
 
               <div className="flex gap-2 items-center">
@@ -225,11 +214,25 @@ export const ConfigPanel = ({ step, onConfigChange, activeVersion = 'A' }: Confi
                                 key={idx}
                                 className="w-full flex items-center justify-between px-3 py-2 text-sm hover:bg-muted/50 rounded-md transition-colors"
                                 onClick={() => {
-                                  // TODO: Insert personalization
-                                  console.log('Insert:', option.label);
+                                  const textarea = document.getElementById('message-textarea') as HTMLTextAreaElement;
+                                  if (textarea) {
+                                    const start = textarea.selectionStart;
+                                    const end = textarea.selectionEnd;
+                                    const currentMessage = step.config?.message || "";
+                                    const newMessage = currentMessage.substring(0, start) + option.syntax + currentMessage.substring(end);
+                                    onConfigChange({ ...step.config, message: newMessage });
+                                    setTimeout(() => {
+                                      textarea.focus();
+                                      textarea.setSelectionRange(start + option.syntax.length, start + option.syntax.length);
+                                    }, 0);
+                                  }
+                                  setPersonalizationOpen(false);
                                 }}
                               >
-                                <span>{option.label}</span>
+                                <div className="flex items-center gap-2">
+                                  {option.icon}
+                                  <span>{option.label}</span>
+                                </div>
                                 <Info className="h-4 w-4 text-muted-foreground" />
                               </button>
                             ))}
@@ -251,12 +254,23 @@ export const ConfigPanel = ({ step, onConfigChange, activeVersion = 'A' }: Confi
                                 key={idx}
                                 className="w-full flex items-center justify-between px-3 py-2 text-sm hover:bg-muted/50 rounded-md transition-colors group"
                                 onClick={() => {
-                                  // TODO: Insert variable
-                                  console.log('Insert:', option.value);
+                                  const textarea = document.getElementById('message-textarea') as HTMLTextAreaElement;
+                                  if (textarea) {
+                                    const start = textarea.selectionStart;
+                                    const end = textarea.selectionEnd;
+                                    const currentMessage = step.config?.message || "";
+                                    const newMessage = currentMessage.substring(0, start) + option.value + currentMessage.substring(end);
+                                    onConfigChange({ ...step.config, message: newMessage });
+                                    setTimeout(() => {
+                                      textarea.focus();
+                                      textarea.setSelectionRange(start + option.value.length, start + option.value.length);
+                                    }, 0);
+                                  }
+                                  setPersonalizationOpen(false);
                                 }}
                               >
                                 <div className="flex items-center gap-2">
-                                  <span>{option.icon}</span>
+                                  {option.icon}
                                   <span>{option.label}</span>
                                 </div>
                                 <span className="text-xs text-primary opacity-0 group-hover:opacity-100 transition-opacity">
