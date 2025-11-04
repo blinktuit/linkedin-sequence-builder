@@ -121,7 +121,7 @@ export const ConfigPanel = ({ step, onConfigChange }: ConfigPanelProps) => {
                         {liquidSyntaxOptions.map((option, idx) => (
                           <button
                             key={idx}
-                            className="w-full flex items-center justify-between px-3 py-2 text-sm hover:bg-accent rounded-md transition-colors"
+                            className="w-full flex items-center justify-between px-3 py-2 text-sm hover:bg-muted/50 rounded-md transition-colors"
                             onClick={() => {
                               // TODO: Insert personalization
                               console.log('Insert:', option.label);
@@ -139,7 +139,7 @@ export const ConfigPanel = ({ step, onConfigChange }: ConfigPanelProps) => {
                         <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                         <Input placeholder="Search" className="pl-8 h-9" />
                       </div>
-                      <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-primary hover:bg-accent rounded-md transition-colors">
+                      <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-primary hover:bg-muted/50 rounded-md transition-colors">
                         <Plus className="h-4 w-4" />
                         Create a new one
                       </button>
@@ -147,7 +147,7 @@ export const ConfigPanel = ({ step, onConfigChange }: ConfigPanelProps) => {
                         {customVariablesFull.map((option, idx) => (
                           <button
                             key={idx}
-                            className="w-full flex items-center justify-between px-3 py-2 text-sm hover:bg-accent rounded-md transition-colors group"
+                            className="w-full flex items-center justify-between px-3 py-2 text-sm hover:bg-muted/50 rounded-md transition-colors group"
                             onClick={() => {
                               // TODO: Insert variable
                               console.log('Insert:', option.value);
