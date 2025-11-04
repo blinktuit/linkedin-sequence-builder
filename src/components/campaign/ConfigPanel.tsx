@@ -1,10 +1,17 @@
+import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { AlertCircle } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { 
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { AlertCircle, ChevronDown, Eye, Image, MoreVertical, Plus, Search, Sparkles, Info } from "lucide-react";
 import type { CampaignStep } from "@/types/campaign";
 
 interface ConfigPanelProps {
@@ -13,6 +20,9 @@ interface ConfigPanelProps {
 }
 
 export const ConfigPanel = ({ step, onConfigChange }: ConfigPanelProps) => {
+  const [personalizationOpen, setPersonalizationOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("liquid");
+
   if (!step || step.type === 'start') {
     return (
       <div className="w-96 border-l border-border bg-card p-6 flex items-center justify-center text-muted-foreground text-sm">
@@ -20,6 +30,31 @@ export const ConfigPanel = ({ step, onConfigChange }: ConfigPanelProps) => {
       </div>
     );
   }
+
+  const liquidSyntaxOptions = [
+    { label: "Hello | Hi | Hey", icon: "👋" },
+    { label: "Mister / Miss", icon: "👤" },
+    { label: "If text contains...", icon: "🔍" },
+    { label: "Format the date to month/day/year", icon: "📅" },
+    { label: "Format the date to day/month/year", icon: "📅" },
+    { label: "Translate the day", icon: "🌍" },
+  ];
+
+  const customVariablesSimple = [
+    { label: "First Lastname", icon: "👤" },
+    { label: "Default value", icon: "💡" },
+    { label: "Today", icon: "📅" },
+    { label: "Good morning/afternoon", icon: "👋" },
+    { label: "In ... days", icon: "⏰" },
+  ];
+
+  const customVariablesFull = [
+    { label: "First name", value: "{{firstName}}", icon: "👤" },
+    { label: "Last name", value: "{{lastName}}", icon: "👤" },
+    { label: "Company name", value: "{{companyName}}", icon: "🏢" },
+    { label: "Icebreaker", value: "{{icebreaker}}", icon: "🎯" },
+    { label: "School", value: "{{school}}", icon: "🎓" },
+  ];
 
   return (
     <div className="w-96 border-l border-border bg-card overflow-y-auto">
@@ -50,30 +85,123 @@ export const ConfigPanel = ({ step, onConfigChange }: ConfigPanelProps) => {
 
         <div className="space-y-4">
           <div>
-            <Label className="text-sm mb-2 block">
-              Message attached to the invitation
-            </Label>
-            <Textarea
-              placeholder="What message do you want to attach with your LinkedIn invitation"
-              className="min-h-[200px] resize-none"
-            />
-            <div className="text-right text-xs text-muted-foreground mt-1">0/200</div>
+            <Label className="text-sm mb-2 block">Message</Label>
+            <div className="relative">
+              <Textarea
+                placeholder="What message do you want to send?"
+                className="min-h-[200px] resize-none pr-12"
+              />
+              <div className="absolute top-2 right-2 flex flex-col gap-1">
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                  </svg>
+                </Button>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                  </svg>
+                </Button>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M4 7V4h16v3M9 20h6M12 4v16"/>
+                  </svg>
+                </Button>
+              </div>
+              <div className="text-right text-xs text-muted-foreground mt-1">0/8000</div>
+            </div>
           </div>
 
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="flex-1">
-              Add personalization
-            </Button>
-            <Button variant="outline" size="sm">
+          <div className="flex gap-2 items-center">
+            <Popover open={personalizationOpen} onOpenChange={setPersonalizationOpen}>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="sm" className="gap-1">
+                  Add personalization
+                  <ChevronDown className="h-3 w-3" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[360px] p-0" align="start" side="top">
+                <div className="p-3 border-b">
+                  <div className="text-sm font-medium mb-2">LinkedIn account used to send message</div>
+                  <Tabs value={activeTab} onValueChange={setActiveTab}>
+                    <TabsList className="grid w-full grid-cols-2">
+                      <TabsTrigger value="liquid" className="text-xs">Liquid syntax</TabsTrigger>
+                      <TabsTrigger value="custom" className="text-xs">Custom variables</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="liquid" className="mt-3 space-y-2">
+                      <div className="relative">
+                        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Input placeholder="Search" className="pl-8 h-9" />
+                      </div>
+                      <div className="max-h-[300px] overflow-y-auto space-y-1">
+                        {liquidSyntaxOptions.map((option, idx) => (
+                          <button
+                            key={idx}
+                            className="w-full flex items-center justify-between px-3 py-2 text-sm hover:bg-accent rounded-md transition-colors"
+                            onClick={() => {
+                              // TODO: Insert personalization
+                              console.log('Insert:', option.label);
+                            }}
+                          >
+                            <span>{option.label}</span>
+                            <Info className="h-4 w-4 text-muted-foreground" />
+                          </button>
+                        ))}
+                      </div>
+                    </TabsContent>
+
+                    <TabsContent value="custom" className="mt-3 space-y-2">
+                      <div className="relative">
+                        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Input placeholder="Search" className="pl-8 h-9" />
+                      </div>
+                      <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-primary hover:bg-accent rounded-md transition-colors">
+                        <Plus className="h-4 w-4" />
+                        Create a new one
+                      </button>
+                      <div className="max-h-[300px] overflow-y-auto space-y-1">
+                        {customVariablesFull.map((option, idx) => (
+                          <button
+                            key={idx}
+                            className="w-full flex items-center justify-between px-3 py-2 text-sm hover:bg-accent rounded-md transition-colors group"
+                            onClick={() => {
+                              // TODO: Insert variable
+                              console.log('Insert:', option.value);
+                            }}
+                          >
+                            <div className="flex items-center gap-2">
+                              <span>{option.icon}</span>
+                              <span>{option.label}</span>
+                            </div>
+                            <span className="text-xs text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                              {option.value}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </TabsContent>
+                  </Tabs>
+                </div>
+              </PopoverContent>
+            </Popover>
+
+            <Button variant="outline" size="sm" className="gap-1">
+              <Sparkles className="h-3.5 w-3.5" />
               Ask AI
             </Button>
-            <Button variant="ghost" size="sm">
-              ⋯
+            <Button variant="outline" size="sm" className="px-2">
+              <Image className="h-3.5 w-3.5" />
+            </Button>
+            <Button variant="outline" size="sm" className="px-2">
+              <MoreVertical className="h-3.5 w-3.5" />
             </Button>
           </div>
 
-          <Button variant="outline" size="sm" className="w-full">
-            👁 Preview
+          <Button variant="outline" size="sm" className="w-full gap-2">
+            <Eye className="h-4 w-4" />
+            Preview
           </Button>
         </div>
       </div>
