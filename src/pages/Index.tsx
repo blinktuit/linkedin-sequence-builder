@@ -31,27 +31,24 @@ const Index = () => {
       subtitle: getStepSubtitle(type),
       isConditional: type.startsWith('condition')
     };
-    
+
     // Check if insertAfterStepId is in a branch
     const afterStep = insertAfterStepId ? campaign.steps.find(s => s.id === insertAfterStepId) : null;
     const effectiveBranch = insertBranch || afterStep?.parentBranch;
     const effectiveParentStepId = afterStep?.parentStepId || (effectiveBranch ? insertAfterStepId : null);
-    
     if (effectiveBranch && (effectiveParentStepId || insertAfterStepId)) {
       // Adding to a branch
       newStep.parentBranch = effectiveBranch;
-      
+
       // Find the root parent of the branch
       const rootParentId = effectiveParentStepId || insertAfterStepId;
       let rootParent = campaign.steps.find(s => s.id === rootParentId);
-      
+
       // If the step we're inserting after is in a branch, find its root parent
       if (rootParent?.parentStepId) {
         rootParent = campaign.steps.find(s => s.id === rootParent!.parentStepId);
       }
-      
       newStep.parentStepId = rootParent?.id;
-      
       if (rootParent) {
         const updatedParentStep = {
           ...rootParent,
@@ -60,17 +57,15 @@ const Index = () => {
             no: []
           }
         };
-        
+
         // Insert after the specified step in the branch
         const branchArray = effectiveBranch === 'yes' ? updatedParentStep.branches.yes : updatedParentStep.branches.no;
         const insertIndex = insertAfterStepId ? branchArray.indexOf(insertAfterStepId) : -1;
-        
         if (insertIndex >= 0) {
           branchArray.splice(insertIndex + 1, 0, newStep.id);
         } else {
           branchArray.push(newStep.id);
         }
-        
         setCampaign({
           ...campaign,
           steps: [...campaign.steps.map(s => s.id === rootParent!.id ? updatedParentStep : s), newStep],
@@ -164,70 +159,10 @@ const Index = () => {
           <div className="flex items-start justify-center min-h-full p-12">
             <div className="w-full max-w-4xl">
               {campaign.steps.filter(s => !s.parentStepId).map((step, index) => <div key={step.id}>
-                  {step.isConditional ? (
-                    <div className="flex justify-center items-start">
-                      <ConditionalBranch 
-                        onAddYesStep={() => handleOpenStepLibrary(step.id, 'yes')} 
-                        onAddNoStep={() => handleOpenStepLibrary(step.id, 'no')} 
-                        hasYesSteps={step.branches?.yes && step.branches.yes.length > 0} 
-                        hasNoSteps={step.branches?.no && step.branches.no.length > 0}
-                      >
+                  {step.isConditional ? <div className="flex justify-center items-start">
+                      <ConditionalBranch onAddYesStep={() => handleOpenStepLibrary(step.id, 'yes')} onAddNoStep={() => handleOpenStepLibrary(step.id, 'no')} hasYesSteps={step.branches?.yes && step.branches.yes.length > 0} hasNoSteps={step.branches?.no && step.branches.no.length > 0}>
                         <div className="w-full">
                           <StepCard step={step} isActive={step.id === campaign.activeStepId} onClick={() => setCampaign({
-                        ...campaign,
-                        activeStepId: step.id
-                      })} activeVersion={step.id === campaign.activeStepId ? campaign.activeVersion : 'A'} onVersionClick={version => {
-                        setCampaign({
-                          ...campaign,
-                          activeStepId: step.id,
-                          activeVersion: version
-                        });
-                      }} onDuplicate={() => {
-                        const duplicatedStep: CampaignStep = {
-                          ...step,
-                          id: Date.now().toString()
-                        };
-                        const stepIndex = campaign.steps.findIndex(s => s.id === step.id);
-                        const newSteps = [...campaign.steps];
-                        newSteps.splice(stepIndex + 1, 0, duplicatedStep);
-                        setCampaign({
-                          ...campaign,
-                          steps: newSteps
-                        });
-                      }} onABTest={() => {
-                        // Convert step to A/B test
-                        const updatedStep: CampaignStep = {
-                          ...step,
-                          type: 'ab-test',
-                          versionA: {
-                            config: step.config || {}
-                          },
-                          versionB: {
-                            config: {}
-                          }
-                        };
-                        setCampaign({
-                          ...campaign,
-                          steps: campaign.steps.map(s => s.id === step.id ? updatedStep : s),
-                          activeStepId: step.id,
-                          activeVersion: 'A'
-                        });
-                      }} onDelete={() => {
-                        if (step.type !== 'start') {
-                          setCampaign({
-                            ...campaign,
-                            steps: campaign.steps.filter(s => s.id !== step.id),
-                            activeStepId: campaign.activeStepId === step.id ? undefined : campaign.activeStepId
-                          });
-                        }
-                      }} />
-                        </div>
-                      </ConditionalBranch>
-                    </div>
-                  ) : (
-                    <div className="flex justify-center">
-                      <div className="w-full max-w-[460px]">
-                        <StepCard step={step} isActive={step.id === campaign.activeStepId} onClick={() => setCampaign({
                       ...campaign,
                       activeStepId: step.id
                     })} activeVersion={step.id === campaign.activeStepId ? campaign.activeVersion : 'A'} onVersionClick={version => {
@@ -275,9 +210,60 @@ const Index = () => {
                         });
                       }
                     }} />
+                        </div>
+                      </ConditionalBranch>
+                    </div> : <div className="flex justify-center">
+                      <div className="w-full max-w-[460px]">
+                        <StepCard step={step} isActive={step.id === campaign.activeStepId} onClick={() => setCampaign({
+                    ...campaign,
+                    activeStepId: step.id
+                  })} activeVersion={step.id === campaign.activeStepId ? campaign.activeVersion : 'A'} onVersionClick={version => {
+                    setCampaign({
+                      ...campaign,
+                      activeStepId: step.id,
+                      activeVersion: version
+                    });
+                  }} onDuplicate={() => {
+                    const duplicatedStep: CampaignStep = {
+                      ...step,
+                      id: Date.now().toString()
+                    };
+                    const stepIndex = campaign.steps.findIndex(s => s.id === step.id);
+                    const newSteps = [...campaign.steps];
+                    newSteps.splice(stepIndex + 1, 0, duplicatedStep);
+                    setCampaign({
+                      ...campaign,
+                      steps: newSteps
+                    });
+                  }} onABTest={() => {
+                    // Convert step to A/B test
+                    const updatedStep: CampaignStep = {
+                      ...step,
+                      type: 'ab-test',
+                      versionA: {
+                        config: step.config || {}
+                      },
+                      versionB: {
+                        config: {}
+                      }
+                    };
+                    setCampaign({
+                      ...campaign,
+                      steps: campaign.steps.map(s => s.id === step.id ? updatedStep : s),
+                      activeStepId: step.id,
+                      activeVersion: 'A'
+                    });
+                  }} onDelete={() => {
+                    if (step.type !== 'start') {
+                      setCampaign({
+                        ...campaign,
+                        steps: campaign.steps.filter(s => s.id !== step.id),
+                        activeStepId: campaign.activeStepId === step.id ? undefined : campaign.activeStepId
+                      });
+                    }
+                  }} />
                       </div>
-                    </div>
-                  )}
+                    </div>}
                   
                   {/* Connection and add button after each step */}
                   {step.isConditional ? <>
@@ -430,7 +416,7 @@ const Index = () => {
                             <Plus className="h-3.5 w-3.5 text-primary" />
                           </Button>
                         </div>
-                        <div className="h-2 w-0.5 bg-border" />
+                        
                       </div>
                     </div>}
                 </div>)}
