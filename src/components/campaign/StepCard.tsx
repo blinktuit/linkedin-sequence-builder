@@ -1,4 +1,5 @@
-import { Clock, Edit2, MoreVertical, AlertCircle, AlertTriangle, Copy, TestTube2, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { Clock, Edit2, MoreVertical, AlertCircle, AlertTriangle, Copy, TestTube2, Trash2, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -7,6 +8,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import type { CampaignStep } from "@/types/campaign";
 
@@ -61,6 +74,9 @@ const StepIcon = ({ type }: { type: string }) => {
 export const StepCard = ({ step, isActive, onClick, onDuplicate, onABTest, onDelete }: StepCardProps) => {
   const hasError = !!step.error;
   const hasWarning = !!step.warning;
+  const [delayOpen, setDelayOpen] = useState(false);
+  const [waitAmount, setWaitAmount] = useState(1);
+  const [waitUnit, setWaitUnit] = useState('day');
   
   return (
     <div
@@ -81,9 +97,75 @@ export const StepCard = ({ step, isActive, onClick, onDuplicate, onABTest, onDel
       ) : (
         <>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">
-              {step.type === 'wait' ? 'Wait for' : 'Send immediately'}
-            </span>
+            <Popover open={delayOpen} onOpenChange={setDelayOpen}>
+              <PopoverTrigger asChild>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setDelayOpen(true);
+                  }}
+                  className="text-[10px] font-medium uppercase tracking-wide hover:opacity-80 transition-opacity text-left"
+                >
+                  <span className="text-muted-foreground">
+                    {step.type === 'wait' ? 'Wait for ' : 'Send '}
+                  </span>
+                  <span className="text-primary cursor-pointer">
+                    {step.type === 'wait' ? `${waitAmount} ${waitUnit}${waitAmount > 1 ? 's' : ''}` : 'immediately'}
+                  </span>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-80 p-4" align="start" onClick={(e) => e.stopPropagation()}>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">Wait</span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-destructive hover:text-destructive"
+                      onClick={() => setDelayOpen(false)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-10 w-10"
+                      onClick={() => setWaitAmount(Math.max(1, waitAmount - 1))}
+                    >
+                      <Minus className="h-4 w-4" />
+                    </Button>
+                    
+                    <div className="flex-1 flex items-center justify-center border rounded-md h-10">
+                      <span className="text-lg font-medium">{waitAmount}</span>
+                    </div>
+                    
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-10 w-10"
+                      onClick={() => setWaitAmount(waitAmount + 1)}
+                    >
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                    
+                    <Select value={waitUnit} onValueChange={setWaitUnit}>
+                      <SelectTrigger className="w-[100px] h-10">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="minute">minute</SelectItem>
+                        <SelectItem value="hour">hour</SelectItem>
+                        <SelectItem value="day">day</SelectItem>
+                        <SelectItem value="week">week</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
             
             <div className="flex items-center gap-0.5">
               <Button 
