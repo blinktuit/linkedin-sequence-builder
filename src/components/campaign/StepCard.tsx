@@ -1,6 +1,12 @@
-import { Clock, Edit2, MoreVertical, AlertCircle, AlertTriangle } from "lucide-react";
+import { Clock, Edit2, MoreVertical, AlertCircle, AlertTriangle, Copy, TestTube2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import type { CampaignStep } from "@/types/campaign";
 
@@ -8,6 +14,9 @@ interface StepCardProps {
   step: CampaignStep;
   isActive: boolean;
   onClick: () => void;
+  onDuplicate?: () => void;
+  onABTest?: () => void;
+  onDelete?: () => void;
 }
 
 const StepIcon = ({ type }: { type: string }) => {
@@ -49,7 +58,7 @@ const StepIcon = ({ type }: { type: string }) => {
   }
 };
 
-export const StepCard = ({ step, isActive, onClick }: StepCardProps) => {
+export const StepCard = ({ step, isActive, onClick, onDuplicate, onABTest, onDelete }: StepCardProps) => {
   const hasError = !!step.error;
   const hasWarning = !!step.warning;
   
@@ -104,9 +113,39 @@ export const StepCard = ({ step, isActive, onClick }: StepCardProps) => {
               <div className="h-9 w-9 rounded-full bg-emerald-500 flex items-center justify-center shadow-sm">
                 <span className="text-white text-xs font-semibold">SI</span>
               </div>
-              <Button variant="ghost" size="icon" className="h-7 w-7 hover:bg-muted/50">
-                <MoreVertical className="h-4 w-4" />
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                  <Button variant="ghost" size="icon" className="h-7 w-7 hover:bg-muted/50">
+                    <MoreVertical className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem onClick={(e) => {
+                    e.stopPropagation();
+                    onDuplicate?.();
+                  }}>
+                    <Copy className="h-4 w-4 mr-2" />
+                    Duplicate
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={(e) => {
+                    e.stopPropagation();
+                    onABTest?.();
+                  }}>
+                    <TestTube2 className="h-4 w-4 mr-2" />
+                    A/B test this step
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete?.();
+                    }}
+                    className="text-destructive focus:text-destructive"
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete this step
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
 

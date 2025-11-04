@@ -128,6 +128,32 @@ const Index = () => {
                     step={step}
                     isActive={step.id === campaign.activeStepId}
                     onClick={() => setCampaign({ ...campaign, activeStepId: step.id })}
+                    onDuplicate={() => {
+                      const duplicatedStep: CampaignStep = {
+                        ...step,
+                        id: Date.now().toString(),
+                      };
+                      const stepIndex = campaign.steps.findIndex(s => s.id === step.id);
+                      const newSteps = [...campaign.steps];
+                      newSteps.splice(stepIndex + 1, 0, duplicatedStep);
+                      setCampaign({
+                        ...campaign,
+                        steps: newSteps,
+                      });
+                    }}
+                    onABTest={() => {
+                      // TODO: Implement A/B test functionality
+                      console.log('A/B test', step.id);
+                    }}
+                    onDelete={() => {
+                      if (step.type !== 'start') {
+                        setCampaign({
+                          ...campaign,
+                          steps: campaign.steps.filter(s => s.id !== step.id),
+                          activeStepId: campaign.activeStepId === step.id ? undefined : campaign.activeStepId,
+                        });
+                      }
+                    }}
                   />
                   
                   {/* Connection and add button after each step */}
