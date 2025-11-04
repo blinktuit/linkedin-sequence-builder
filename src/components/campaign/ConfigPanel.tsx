@@ -5,10 +5,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
+import { Slider } from "@/components/ui/slider";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ChevronDown, Plus, Search, Info, Sparkles, Eye, Image, MoreVertical, User, Building2, GraduationCap, Flame, MessageCircle, Calendar, Globe, AlertCircle } from "lucide-react";
+import { ChevronDown, Plus, Search, Info, Sparkles, Eye, Image, MoreVertical, User, Building2, GraduationCap, Flame, MessageCircle, Calendar, Globe, AlertCircle, X, InfoIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { CampaignStep } from "@/types/campaign";
 
@@ -21,6 +24,7 @@ interface ConfigPanelProps {
 export const ConfigPanel = ({ step, onConfigChange, activeVersion = 'A' }: ConfigPanelProps) => {
   const [personalizationOpen, setPersonalizationOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("liquid");
+  const [advancedOpen, setAdvancedOpen] = useState(false);
 
   if (!step || step.type === 'start') {
     return (
@@ -167,6 +171,151 @@ export const ConfigPanel = ({ step, onConfigChange, activeVersion = 'A' }: Confi
                   </SelectContent>
                 </Select>
               </div>
+            </>
+          ) : step.type === 'ai-generate' ? (
+            <>
+              <Alert className="bg-blue-50 border-blue-200">
+                <InfoIcon className="h-4 w-4 text-blue-600" />
+                <AlertDescription className="text-sm text-blue-900">
+                  If the lead variable is already filled then the step will be skipped.
+                </AlertDescription>
+              </Alert>
+
+              <div>
+                <Label className="text-sm mb-2 block">Select AI variable</Label>
+                <Select 
+                  value={step.config?.aiVariable || ""} 
+                  onValueChange={(value) => onConfigChange({ ...step.config, aiVariable: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a variable" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="isASaaSCompany">isASaaSCompany</SelectItem>
+                    <SelectItem value="companySize">companySize</SelectItem>
+                    <SelectItem value="industry">industry</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <Label className="text-sm">Use template</Label>
+                </div>
+                {step.config?.template && (
+                  <Badge variant="secondary" className="gap-1">
+                    {step.config.template}
+                    <X 
+                      className="h-3 w-3 cursor-pointer" 
+                      onClick={() => onConfigChange({ ...step.config, template: null })}
+                    />
+                  </Badge>
+                )}
+              </div>
+
+              <div>
+                <div className="flex items-center gap-1 mb-2">
+                  <Label className="text-sm">Prompt</Label>
+                  <InfoIcon className="h-3.5 w-3.5 text-muted-foreground" />
+                </div>
+                <Textarea
+                  id="ai-prompt-textarea"
+                  placeholder="Enter your AI prompt..."
+                  className="min-h-[300px] resize-none font-mono text-xs"
+                  value={step.config?.prompt || "You are an expert in identifying Software as a Service (SaaS) companies.\nYour task is to determine if the following company is a SaaS (Software as a Service) business based on its description.\nReturn \"True\" if it is a SaaS company, \"False\" otherwise.\nInvalid inputs that should return an empty string include:\n- Empty text\n- Single characters or punctuation marks\n- Random letters or gibberish\n- Whitespace\n- Any text that doesn't describe a company\nAlways return only \"True\" or \"False\" without any explanation or additional text.\nDo not return anything if it couldn't be determined. Never return explanatory text.\nCompany description: {{companyDescription}}"}
+                  onChange={(e) => onConfigChange({ ...step.config, prompt: e.target.value })}
+                />
+              </div>
+
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" className="gap-1" onClick={() => setPersonalizationOpen(true)}>
+                  Add personalization
+                  <ChevronDown className="h-3 w-3" />
+                </Button>
+                <Button variant="outline" size="sm" className="gap-1">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  Ask AI
+                </Button>
+              </div>
+
+              <Collapsible open={advancedOpen} onOpenChange={setAdvancedOpen}>
+                <CollapsibleTrigger asChild>
+                  <Button variant="ghost" size="sm" className="w-full justify-between px-0">
+                    <span className="font-semibold">Advanced settings</span>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="text-xs">openai</Badge>
+                      <ChevronDown className={cn("h-4 w-4 transition-transform", advancedOpen && "rotate-180")} />
+                    </div>
+                  </Button>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="space-y-4 pt-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label className="text-sm mb-2 block">Consumption mode</Label>
+                      <Select value={step.config?.consumptionMode || "lemlist"}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="lemlist">lemlist credits</SelectItem>
+                          <SelectItem value="own">Own API key</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label className="text-sm mb-2 block">Cost</Label>
+                      <Badge variant="outline" className="w-full justify-center">
+                        1 / request
+                      </Badge>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <Label className="text-sm">Temperature</Label>
+                      <span className="text-sm text-muted-foreground">
+                        {step.config?.temperature || 0.2}
+                      </span>
+                    </div>
+                    <Slider
+                      value={[step.config?.temperature || 0.2]}
+                      onValueChange={([value]) => onConfigChange({ ...step.config, temperature: value })}
+                      min={0.2}
+                      max={2}
+                      step={0.1}
+                      className="w-full"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label className="text-sm mb-2 block">AI to use</Label>
+                      <Select value={step.config?.aiProvider || "openai"}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="openai">OpenAI (GPT)</SelectItem>
+                          <SelectItem value="anthropic">Anthropic (Claude)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label className="text-sm mb-2 block">AI model</Label>
+                      <Select value={step.config?.aiModel || "gpt-4o"}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="gpt-4o">GPT 4o</SelectItem>
+                          <SelectItem value="gpt-4">GPT 4</SelectItem>
+                          <SelectItem value="gpt-3.5">GPT 3.5</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
             </>
           ) : (
             <>
