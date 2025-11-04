@@ -15,26 +15,25 @@ export const ConditionalBranch = ({
   hasNoSteps,
 }: ConditionalBranchProps) => {
   return (
-    <div className="relative w-full flex items-start justify-center gap-4">
-      {/* Left (Yes) branch */}
-      <div className="flex flex-col items-end flex-1 max-w-[200px]">
-        {/* Yes label */}
-        <div className="text-xs font-medium text-green-600 mb-2 mr-4">Yes</div>
-        
-        {/* Horizontal line with rounded corner going down */}
-        <div className="relative w-full h-16 flex justify-end">
-          <svg width="100%" height="100%" className="absolute top-0 right-0" preserveAspectRatio="none">
+    <div className="relative w-full py-2">
+      {/* Branch container */}
+      <div className="relative flex justify-center items-start gap-16 px-4">
+        {/* Left (Yes) branch */}
+        <div className="flex flex-col items-center">
+          {/* Vertical line down with rounded corner from center */}
+          <svg width="80" height="60" className="overflow-visible">
             <path
-              d="M 100% 0 L 80% 0 Q 70% 0, 70% 10 L 70% 100%"
+              d="M 40 0 L 40 20 Q 40 30, 30 30 L 10 30 L 10 60"
               fill="none"
               stroke="hsl(142, 76%, 36%)"
               strokeWidth="2"
             />
           </svg>
-        </div>
-        
-        {/* Add button aligned to the right */}
-        <div className="flex justify-end w-full pr-[30%]">
+          
+          {/* Yes label */}
+          <div className="text-xs font-medium text-green-600 -mt-8 mb-2">Yes</div>
+          
+          {/* Add button */}
           <Button
             onClick={onAddYesStep}
             variant="ghost"
@@ -43,35 +42,27 @@ export const ConditionalBranch = ({
           >
             <Plus className="h-3.5 w-3.5 text-green-600" />
           </Button>
+          
+          {/* Extension line if has steps */}
+          {hasYesSteps && <div className="h-4 w-0.5 bg-green-600/30 mt-1" />}
         </div>
-        
-        {/* Extension line if has steps */}
-        {hasYesSteps && (
-          <div className="flex justify-end w-full pr-[30%]">
-            <div className="h-4 w-0.5 bg-green-600/30 mt-1" />
-          </div>
-        )}
-      </div>
 
-      {/* Right (No) branch */}
-      <div className="flex flex-col items-start flex-1 max-w-[200px]">
-        {/* No label */}
-        <div className="text-xs font-medium text-[#f49854] mb-2 ml-4">No</div>
-        
-        {/* Horizontal line with rounded corner going down */}
-        <div className="relative w-full h-16">
-          <svg width="100%" height="100%" className="absolute top-0 left-0" preserveAspectRatio="none">
+        {/* Right (No) branch */}
+        <div className="flex flex-col items-center">
+          {/* Vertical line down with rounded corner from center */}
+          <svg width="80" height="60" className="overflow-visible">
             <path
-              d="M 0% 0 L 20% 0 Q 30% 0, 30% 10 L 30% 100%"
+              d="M 40 0 L 40 20 Q 40 30, 50 30 L 70 30 L 70 60"
               fill="none"
               stroke="hsl(25, 88%, 63%)"
               strokeWidth="2"
             />
           </svg>
-        </div>
-        
-        {/* Add button aligned to the left */}
-        <div className="flex justify-start w-full pl-[30%]">
+          
+          {/* No label */}
+          <div className="text-xs font-medium text-[#f49854] -mt-8 mb-2">No</div>
+          
+          {/* Add button */}
           <Button
             onClick={onAddNoStep}
             variant="ghost"
@@ -80,14 +71,10 @@ export const ConditionalBranch = ({
           >
             <Plus className="h-3.5 w-3.5 text-[#f49854]" />
           </Button>
+          
+          {/* Extension line if has steps */}
+          {hasNoSteps && <div className="h-4 w-0.5 bg-[#f49854]/30 mt-1" />}
         </div>
-        
-        {/* Extension line if has steps */}
-        {hasNoSteps && (
-          <div className="flex justify-start w-full pl-[30%]">
-            <div className="h-4 w-0.5 bg-[#f49854]/30 mt-1" />
-          </div>
-        )}
       </div>
     </div>
   );
