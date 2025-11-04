@@ -129,9 +129,6 @@ export const StepCard = ({ step, isActive, onClick, onDuplicate, onABTest, onDel
             <div className="flex items-center gap-2 flex-shrink-0">
               {hasError && <AlertCircle className="h-4 w-4 text-destructive" />}
               {hasWarning && <AlertTriangle className="h-4 w-4 text-warning" />}
-              <div className="h-9 w-9 rounded-full bg-emerald-500 flex items-center justify-center shadow-sm">
-                <span className="text-white text-xs font-semibold">SI</span>
-              </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
                   <Button variant="ghost" size="icon" className="h-7 w-7 hover:bg-muted/50">
