@@ -100,7 +100,10 @@ const Index = () => {
 
       <div className="flex-1 flex overflow-hidden">
         {/* Main canvas */}
-        <div className="flex-1 relative overflow-auto">
+        <div className="flex-1 relative overflow-auto bg-canvas-bg" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E")`,
+          backgroundSize: '200px 200px'
+        }}>
           {/* Toolbar */}
           <div className="absolute top-4 left-4 flex gap-2 z-10">
             <Button variant="secondary" size="icon" className="h-9 w-9">
