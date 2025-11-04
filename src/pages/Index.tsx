@@ -29,7 +29,7 @@ const Index = () => {
       type: type as any,
       title: getStepTitle(type),
       subtitle: getStepSubtitle(type),
-      isConditional: type === 'condition'
+      isConditional: type.startsWith('condition')
     };
     
     // Check if insertAfterStepId is in a branch
@@ -112,7 +112,13 @@ const Index = () => {
       'linkedin-like-post': 'Like a post',
       'api-call': 'API Call',
       'send-to-campaign': 'Send to campaign',
-      'ai-generate': 'AI variable'
+      'ai-generate': 'AI variable',
+      'condition-accepted-invite': 'Accepted invite',
+      'condition-lead-info': 'Has email address',
+      'condition-linkedin-url': 'Has LinkedIn URL',
+      'condition-custom': 'Custom condition',
+      'condition-opened-email': 'Opened email',
+      'condition-clicked-link': 'Clicked on link in email'
     };
     return titles[type] || 'New step';
   };
@@ -123,7 +129,8 @@ const Index = () => {
       'linkedin-invitation': 'Send on LinkedIn',
       'linkedin-profile-visit': 'Visit profile',
       'linkedin-like-post': 'Like on LinkedIn',
-      'api-call': 'Call an API'
+      'api-call': 'Call an API',
+      'condition-accepted-invite': 'LinkedIn'
     };
     return subtitles[type] || '';
   };
