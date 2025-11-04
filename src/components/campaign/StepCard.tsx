@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Clock, Edit2, MoreVertical, AlertCircle, AlertTriangle, Copy, TestTube2, Trash2, Plus, Minus } from "lucide-react";
+import { Clock, Edit2, MoreVertical, AlertCircle, AlertTriangle, Copy, TestTube2, Trash2, Plus, Minus, Eye, Code, Send, Phone, Sparkles, Brain, Tags, BarChart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -36,6 +36,10 @@ const StepIcon = ({
           <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="currentColor" strokeWidth="2" fill="none" />
           <circle cx="4" cy="4" r="1" fill="#0077B5" />
         </svg>;
+    case 'linkedin-profile-visit':
+      return <Eye className={iconClass} />;
+    case 'linkedin-voice':
+      return <Phone className={iconClass} />;
     case 'linkedin-like-post':
       return <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
@@ -46,6 +50,18 @@ const StepIcon = ({
       return <svg className={iconClass} viewBox="0 0 24 24" fill="none">
           <path d="M12 2l9 5v6c0 5.5-3.8 10.7-9 12-5.2-1.3-9-6.5-9-12V7l9-5z" stroke="currentColor" strokeWidth="2" fill="none" />
         </svg>;
+    case 'api-call':
+      return <Code className={iconClass} />;
+    case 'send-to-campaign':
+      return <Send className={iconClass} />;
+    case 'ai-perplexity':
+      return <Sparkles className={iconClass} />;
+    case 'ai-generate':
+      return <Sparkles className={iconClass} />;
+    case 'ai-classify':
+      return <Tags className={iconClass} />;
+    case 'ai-analyze':
+      return <BarChart className={iconClass} />;
     default:
       return <div className="h-4 w-4 rounded bg-muted" />;
   }
@@ -138,13 +154,7 @@ export const StepCard = ({
                 <StepIcon type={step.type} />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-semibold text-sm leading-tight mb-0.5">{step.title}</div>
-                {step.subtitle && <div className="text-[11px] text-muted-foreground flex items-center gap-1">
-                    <svg className="h-2.5 w-2.5 flex-shrink-0" viewBox="0 0 24 24" fill="#0077B5">
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                    </svg>
-                    <span className="truncate">{step.subtitle}</span>
-                  </div>}
+                <div className="font-semibold text-sm leading-tight">{step.title}</div>
               </div>
             </div>
 
