@@ -123,8 +123,8 @@ const Index = () => {
           </div>
 
           {/* Steps container */}
-          <div className="flex items-start justify-center min-h-full p-20">
-            <div className="w-full max-w-md">
+          <div className="flex items-start justify-center min-h-full p-12">
+            <div className="w-full max-w-sm">
               {campaign.steps.map((step, index) => (
                 <div key={step.id}>
                   <StepCard
@@ -160,21 +160,21 @@ const Index = () => {
                   />
                   
                   {/* Connection and add button after each step */}
-                  <div className="relative flex flex-col items-center py-2">
+                  <div className="relative flex flex-col items-center py-1">
                     {/* Straight connector line with circle */}
                     <div className="flex flex-col items-center">
-                      <div className="h-8 w-0.5 bg-border" />
-                      <div className="my-1">
+                      <div className="h-4 w-0.5 bg-border" />
+                      <div className="my-0.5">
                         <Button
                           onClick={() => handleOpenStepLibrary(step.id)}
                           variant="ghost"
                           size="icon"
-                          className="h-8 w-8 rounded-full border-2 border-dashed border-primary/50 hover:border-primary hover:bg-primary/5 transition-colors"
+                          className="h-7 w-7 rounded-full border-2 border-dashed border-primary/50 hover:border-primary hover:bg-primary/5 transition-colors"
                         >
-                          <Plus className="h-4 w-4 text-primary" />
+                          <Plus className="h-3.5 w-3.5 text-primary" />
                         </Button>
                       </div>
-                      <div className="h-8 w-0.5 bg-border" />
+                      <div className="h-4 w-0.5 bg-border" />
                     </div>
                   </div>
                 </div>
