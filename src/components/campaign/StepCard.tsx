@@ -64,16 +64,19 @@ export const StepCard = ({ step, isActive, onClick, onDuplicate, onABTest, onDel
   
   return (
     <div
-      onClick={onClick}
+      onClick={step.type === 'start' ? undefined : onClick}
       className={cn(
-        "relative bg-card border rounded-xl p-4 cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02]",
-        isActive ? "border-primary shadow-md ring-2 ring-primary/20" : "border-border",
+        "relative bg-card border rounded-xl p-4 transition-all",
+        step.type === 'start' 
+          ? "cursor-default" 
+          : "cursor-pointer hover:shadow-lg hover:scale-[1.02]",
+        isActive && step.type !== 'start' ? "border-primary shadow-md ring-2 ring-primary/20" : "border-border",
         hasError && "border-destructive ring-2 ring-destructive/20"
       )}
     >
       {step.type === 'start' ? (
         <div className="text-center text-sm text-muted-foreground py-3">
-          Sequence start
+          Start
         </div>
       ) : (
         <>
