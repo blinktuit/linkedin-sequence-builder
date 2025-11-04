@@ -18,16 +18,16 @@ export const ConditionalBranch = ({
   children,
 }: ConditionalBranchProps) => {
   return (
-    <div className="relative flex items-start justify-center gap-4">
+    <div className="relative flex items-start justify-center gap-2">
       {/* Left (Yes) branch */}
       <div className="flex flex-col items-center pt-8">
         {/* Yes label */}
         <div className="text-xs font-medium text-green-600 mb-1">Yes</div>
         
         {/* Horizontal line with rounded corner going down */}
-        <svg width="120" height="60" className="overflow-visible">
+        <svg width="100" height="60" className="overflow-visible">
           <path
-            d="M 120 20 L 70 20 Q 60 20, 60 30 L 60 60"
+            d="M 100 20 L 60 20 Q 50 20, 50 30 L 50 60"
             fill="none"
             stroke="hsl(142, 76%, 36%)"
             strokeWidth="2"
@@ -51,7 +51,7 @@ export const ConditionalBranch = ({
       </div>
 
       {/* Center card */}
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 min-w-[460px]">
         {children}
       </div>
 
@@ -61,9 +61,9 @@ export const ConditionalBranch = ({
         <div className="text-xs font-medium text-[#f49854] mb-1">No</div>
         
         {/* Horizontal line with rounded corner going down */}
-        <svg width="120" height="60" className="overflow-visible">
+        <svg width="100" height="60" className="overflow-visible">
           <path
-            d="M 0 20 L 50 20 Q 60 20, 60 30 L 60 60"
+            d="M 0 20 L 40 20 Q 50 20, 50 30 L 50 60"
             fill="none"
             stroke="hsl(25, 88%, 63%)"
             strokeWidth="2"
