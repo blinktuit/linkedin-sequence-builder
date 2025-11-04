@@ -89,26 +89,8 @@ export const ConfigPanel = ({ step, onConfigChange }: ConfigPanelProps) => {
             <div className="relative">
               <Textarea
                 placeholder="What message do you want to send?"
-                className="min-h-[200px] resize-none pr-12"
+                className="min-h-[200px] resize-none"
               />
-              <div className="absolute top-2 right-2 flex flex-col gap-1">
-                <Button variant="ghost" size="icon" className="h-8 w-8">
-                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                    <polyline points="9 22 9 12 15 12 15 22"/>
-                  </svg>
-                </Button>
-                <Button variant="ghost" size="icon" className="h-8 w-8">
-                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M4 7h16M4 12h16M4 17h16"/>
-                  </svg>
-                </Button>
-                <Button variant="ghost" size="icon" className="h-8 w-8">
-                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M4 7V4h16v3M9 20h6M12 4v16"/>
-                  </svg>
-                </Button>
-              </div>
               <div className="text-right text-xs text-muted-foreground mt-1">0/8000</div>
             </div>
           </div>
