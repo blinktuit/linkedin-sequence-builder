@@ -3,6 +3,7 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
+  DrawerDescription,
   DrawerClose,
 } from "@/components/ui/drawer";
 import { MessageSquare, Phone, UserPlus, Eye, ThumbsUp, Sparkles, Lock, X } from "lucide-react";
@@ -41,6 +42,9 @@ export const StepLibrary = ({ open, onClose, onSelectStep }: StepLibraryProps) =
       <DrawerContent className="max-h-[85vh]">
         <DrawerHeader className="relative border-b">
           <DrawerTitle>Add a step</DrawerTitle>
+          <DrawerDescription className="sr-only">
+            Select a step type to add to your campaign workflow
+          </DrawerDescription>
           <DrawerClose className="absolute right-4 top-4">
             <X className="h-4 w-4" />
           </DrawerClose>
