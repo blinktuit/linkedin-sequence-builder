@@ -289,9 +289,11 @@ export const ConfigPanel = ({ step, onConfigChange, activeVersion = 'A' }: Confi
                   <Sparkles className="h-3.5 w-3.5" />
                   Ask AI
                 </Button>
-                <Button variant="outline" size="sm" className="px-2">
-                  <Image className="h-3.5 w-3.5" />
-                </Button>
+                {step.type !== 'linkedin-invitation' && (
+                  <Button variant="outline" size="sm" className="px-2">
+                    <Image className="h-3.5 w-3.5" />
+                  </Button>
+                )}
                 <Button variant="outline" size="sm" className="px-2">
                   <MoreVertical className="h-3.5 w-3.5" />
                 </Button>
