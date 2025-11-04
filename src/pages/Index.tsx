@@ -172,7 +172,7 @@ const Index = () => {
                         hasYesSteps={step.branches?.yes && step.branches.yes.length > 0} 
                         hasNoSteps={step.branches?.no && step.branches.no.length > 0}
                       >
-                        <div className="w-full max-w-[460px]">
+                        <div className="w-full max-w-[560px]">
                           <StepCard step={step} isActive={step.id === campaign.activeStepId} onClick={() => setCampaign({
                         ...campaign,
                         activeStepId: step.id
