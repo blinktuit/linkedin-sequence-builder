@@ -46,41 +46,9 @@ export const ConfigPanel = ({ step, onConfigChange }: ConfigPanelProps) => {
               <span className="text-destructive underline cursor-pointer">Show errors</span>
             </div>
           )}
-
-          <div className="flex items-center justify-between mb-6">
-            <Label htmlFor="manual-mode" className="text-sm">Mark as manual</Label>
-            <Switch id="manual-mode" />
-          </div>
         </div>
 
         <div className="space-y-4">
-          <div>
-            <Label className="text-sm mb-2 block">
-              LinkedIn account used to send an invitation
-              <span className="text-destructive ml-1">*</span>
-            </Label>
-            <Select defaultValue="saleshacking">
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="saleshacking">
-                  <div className="flex items-center gap-2">
-                    <div className="h-6 w-6 rounded-full bg-emerald-500 flex items-center justify-center">
-                      <span className="text-white text-xs">SI</span>
-                    </div>
-                    Saleshacking | BlinktUit
-                  </div>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <Label htmlFor="specific-sender" className="text-sm">Force a specific sender for this step</Label>
-            <Switch id="specific-sender" />
-          </div>
-
           <div>
             <Label className="text-sm mb-2 block">
               Message attached to the invitation
