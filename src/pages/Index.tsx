@@ -157,62 +157,123 @@ const Index = () => {
           <div className="flex items-start justify-center min-h-full p-12">
             <div className="w-full max-w-4xl">
               {campaign.steps.filter(s => !s.parentStepId).map((step, index) => <div key={step.id}>
-                  <div className="flex justify-center">
-                    <div className="w-full max-w-sm">
-                      <StepCard step={step} isActive={step.id === campaign.activeStepId} onClick={() => setCampaign({
-                    ...campaign,
-                    activeStepId: step.id
-                  })} activeVersion={step.id === campaign.activeStepId ? campaign.activeVersion : 'A'} onVersionClick={version => {
-                    setCampaign({
+                  {step.isConditional ? (
+                    <div className="flex justify-center items-start">
+                      <ConditionalBranch 
+                        onAddYesStep={() => handleOpenStepLibrary(step.id, 'yes')} 
+                        onAddNoStep={() => handleOpenStepLibrary(step.id, 'no')} 
+                        hasYesSteps={step.branches?.yes && step.branches.yes.length > 0} 
+                        hasNoSteps={step.branches?.no && step.branches.no.length > 0}
+                      >
+                        <div className="w-full max-w-sm">
+                          <StepCard step={step} isActive={step.id === campaign.activeStepId} onClick={() => setCampaign({
+                        ...campaign,
+                        activeStepId: step.id
+                      })} activeVersion={step.id === campaign.activeStepId ? campaign.activeVersion : 'A'} onVersionClick={version => {
+                        setCampaign({
+                          ...campaign,
+                          activeStepId: step.id,
+                          activeVersion: version
+                        });
+                      }} onDuplicate={() => {
+                        const duplicatedStep: CampaignStep = {
+                          ...step,
+                          id: Date.now().toString()
+                        };
+                        const stepIndex = campaign.steps.findIndex(s => s.id === step.id);
+                        const newSteps = [...campaign.steps];
+                        newSteps.splice(stepIndex + 1, 0, duplicatedStep);
+                        setCampaign({
+                          ...campaign,
+                          steps: newSteps
+                        });
+                      }} onABTest={() => {
+                        // Convert step to A/B test
+                        const updatedStep: CampaignStep = {
+                          ...step,
+                          type: 'ab-test',
+                          versionA: {
+                            config: step.config || {}
+                          },
+                          versionB: {
+                            config: {}
+                          }
+                        };
+                        setCampaign({
+                          ...campaign,
+                          steps: campaign.steps.map(s => s.id === step.id ? updatedStep : s),
+                          activeStepId: step.id,
+                          activeVersion: 'A'
+                        });
+                      }} onDelete={() => {
+                        if (step.type !== 'start') {
+                          setCampaign({
+                            ...campaign,
+                            steps: campaign.steps.filter(s => s.id !== step.id),
+                            activeStepId: campaign.activeStepId === step.id ? undefined : campaign.activeStepId
+                          });
+                        }
+                      }} />
+                        </div>
+                      </ConditionalBranch>
+                    </div>
+                  ) : (
+                    <div className="flex justify-center">
+                      <div className="w-full max-w-sm">
+                        <StepCard step={step} isActive={step.id === campaign.activeStepId} onClick={() => setCampaign({
                       ...campaign,
-                      activeStepId: step.id,
-                      activeVersion: version
-                    });
-                  }} onDuplicate={() => {
-                    const duplicatedStep: CampaignStep = {
-                      ...step,
-                      id: Date.now().toString()
-                    };
-                    const stepIndex = campaign.steps.findIndex(s => s.id === step.id);
-                    const newSteps = [...campaign.steps];
-                    newSteps.splice(stepIndex + 1, 0, duplicatedStep);
-                    setCampaign({
-                      ...campaign,
-                      steps: newSteps
-                    });
-                  }} onABTest={() => {
-                    // Convert step to A/B test
-                    const updatedStep: CampaignStep = {
-                      ...step,
-                      type: 'ab-test',
-                      versionA: {
-                        config: step.config || {}
-                      },
-                      versionB: {
-                        config: {}
-                      }
-                    };
-                    setCampaign({
-                      ...campaign,
-                      steps: campaign.steps.map(s => s.id === step.id ? updatedStep : s),
-                      activeStepId: step.id,
-                      activeVersion: 'A'
-                    });
-                  }} onDelete={() => {
-                    if (step.type !== 'start') {
+                      activeStepId: step.id
+                    })} activeVersion={step.id === campaign.activeStepId ? campaign.activeVersion : 'A'} onVersionClick={version => {
                       setCampaign({
                         ...campaign,
-                        steps: campaign.steps.filter(s => s.id !== step.id),
-                        activeStepId: campaign.activeStepId === step.id ? undefined : campaign.activeStepId
+                        activeStepId: step.id,
+                        activeVersion: version
                       });
-                    }
-                  }} />
+                    }} onDuplicate={() => {
+                      const duplicatedStep: CampaignStep = {
+                        ...step,
+                        id: Date.now().toString()
+                      };
+                      const stepIndex = campaign.steps.findIndex(s => s.id === step.id);
+                      const newSteps = [...campaign.steps];
+                      newSteps.splice(stepIndex + 1, 0, duplicatedStep);
+                      setCampaign({
+                        ...campaign,
+                        steps: newSteps
+                      });
+                    }} onABTest={() => {
+                      // Convert step to A/B test
+                      const updatedStep: CampaignStep = {
+                        ...step,
+                        type: 'ab-test',
+                        versionA: {
+                          config: step.config || {}
+                        },
+                        versionB: {
+                          config: {}
+                        }
+                      };
+                      setCampaign({
+                        ...campaign,
+                        steps: campaign.steps.map(s => s.id === step.id ? updatedStep : s),
+                        activeStepId: step.id,
+                        activeVersion: 'A'
+                      });
+                    }} onDelete={() => {
+                      if (step.type !== 'start') {
+                        setCampaign({
+                          ...campaign,
+                          steps: campaign.steps.filter(s => s.id !== step.id),
+                          activeStepId: campaign.activeStepId === step.id ? undefined : campaign.activeStepId
+                        });
+                      }
+                    }} />
+                      </div>
                     </div>
-                  </div>
+                  )}
                   
                   {/* Connection and add button after each step */}
                   {step.isConditional ? <>
-                      <ConditionalBranch onAddYesStep={() => handleOpenStepLibrary(step.id, 'yes')} onAddNoStep={() => handleOpenStepLibrary(step.id, 'no')} hasYesSteps={step.branches?.yes && step.branches.yes.length > 0} hasNoSteps={step.branches?.no && step.branches.no.length > 0} />
                       
                       {/* Render branched steps side by side */}
                       {step.branches?.yes.length || step.branches?.no.length ? <div className="flex gap-8 justify-center">

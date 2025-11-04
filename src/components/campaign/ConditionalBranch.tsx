@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { ReactNode } from "react";
 
 interface ConditionalBranchProps {
   onAddYesStep: () => void;
   onAddNoStep: () => void;
   hasYesSteps?: boolean;
   hasNoSteps?: boolean;
+  children: ReactNode;
 }
 
 export const ConditionalBranch = ({
@@ -13,28 +15,27 @@ export const ConditionalBranch = ({
   onAddNoStep,
   hasYesSteps,
   hasNoSteps,
+  children,
 }: ConditionalBranchProps) => {
   return (
-    <div className="relative w-full flex items-start justify-center gap-4">
+    <div className="relative flex items-start gap-4">
       {/* Left (Yes) branch */}
-      <div className="flex flex-col items-end flex-1 max-w-[200px]">
+      <div className="flex flex-col items-end pt-8">
         {/* Yes label */}
-        <div className="text-xs font-medium text-green-600 mb-2 mr-4">Yes</div>
+        <div className="text-xs font-medium text-green-600 mb-1">Yes</div>
         
         {/* Horizontal line with rounded corner going down */}
-        <div className="relative w-full h-16 flex justify-end">
-          <svg width="100%" height="100%" className="absolute top-0 right-0" preserveAspectRatio="none">
-            <path
-              d="M 100% 0 L 80% 0 Q 70% 0, 70% 10 L 70% 100%"
-              fill="none"
-              stroke="hsl(142, 76%, 36%)"
-              strokeWidth="2"
-            />
-          </svg>
-        </div>
+        <svg width="120" height="80" className="overflow-visible">
+          <path
+            d="M 120 20 L 60 20 Q 50 20, 50 30 L 50 80"
+            fill="none"
+            stroke="hsl(142, 76%, 36%)"
+            strokeWidth="2"
+          />
+        </svg>
         
-        {/* Add button aligned to the right */}
-        <div className="flex justify-end w-full pr-[30%]">
+        {/* Add button */}
+        <div className="ml-[50px]">
           <Button
             onClick={onAddYesStep}
             variant="ghost"
@@ -47,31 +48,34 @@ export const ConditionalBranch = ({
         
         {/* Extension line if has steps */}
         {hasYesSteps && (
-          <div className="flex justify-end w-full pr-[30%]">
+          <div className="ml-[50px]">
             <div className="h-4 w-0.5 bg-green-600/30 mt-1" />
           </div>
         )}
       </div>
 
+      {/* Center card */}
+      <div className="flex-shrink-0">
+        {children}
+      </div>
+
       {/* Right (No) branch */}
-      <div className="flex flex-col items-start flex-1 max-w-[200px]">
+      <div className="flex flex-col items-start pt-8">
         {/* No label */}
-        <div className="text-xs font-medium text-[#f49854] mb-2 ml-4">No</div>
+        <div className="text-xs font-medium text-[#f49854] mb-1">No</div>
         
         {/* Horizontal line with rounded corner going down */}
-        <div className="relative w-full h-16">
-          <svg width="100%" height="100%" className="absolute top-0 left-0" preserveAspectRatio="none">
-            <path
-              d="M 0% 0 L 20% 0 Q 30% 0, 30% 10 L 30% 100%"
-              fill="none"
-              stroke="hsl(25, 88%, 63%)"
-              strokeWidth="2"
-            />
-          </svg>
-        </div>
+        <svg width="120" height="80" className="overflow-visible">
+          <path
+            d="M 0 20 L 60 20 Q 70 20, 70 30 L 70 80"
+            fill="none"
+            stroke="hsl(25, 88%, 63%)"
+            strokeWidth="2"
+          />
+        </svg>
         
-        {/* Add button aligned to the left */}
-        <div className="flex justify-start w-full pl-[30%]">
+        {/* Add button */}
+        <div className="mr-[50px]">
           <Button
             onClick={onAddNoStep}
             variant="ghost"
@@ -84,7 +88,7 @@ export const ConditionalBranch = ({
         
         {/* Extension line if has steps */}
         {hasNoSteps && (
-          <div className="flex justify-start w-full pl-[30%]">
+          <div className="mr-[50px]">
             <div className="h-4 w-0.5 bg-[#f49854]/30 mt-1" />
           </div>
         )}
