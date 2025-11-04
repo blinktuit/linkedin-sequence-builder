@@ -213,7 +213,7 @@ const Index = () => {
                         </div>
                       </ConditionalBranch>
                     </div> : <div className="flex justify-center">
-                      <div className="w-full max-w-[380px]">
+                      <div className="w-full max-w-[320px]">
                         <StepCard step={step} isActive={step.id === campaign.activeStepId} onClick={() => setCampaign({
                     ...campaign,
                     activeStepId: step.id
