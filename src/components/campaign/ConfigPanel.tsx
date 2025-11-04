@@ -3,6 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,9 +18,10 @@ import type { CampaignStep } from "@/types/campaign";
 interface ConfigPanelProps {
   step: CampaignStep | null;
   onConfigChange: (config: any) => void;
+  activeVersion?: 'A' | 'B';
 }
 
-export const ConfigPanel = ({ step, onConfigChange }: ConfigPanelProps) => {
+export const ConfigPanel = ({ step, onConfigChange, activeVersion = 'A' }: ConfigPanelProps) => {
   const [personalizationOpen, setPersonalizationOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("liquid");
 
@@ -69,8 +71,15 @@ export const ConfigPanel = ({ step, onConfigChange }: ConfigPanelProps) => {
                 </svg>
               )}
             </div>
-            <div>
-              <div className="font-medium">{step.title}</div>
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <div className="font-medium">{step.title}</div>
+                {step.type === 'ab-test' && (
+                  <Badge variant="outline" className="text-[10px] px-1.5 py-0">
+                    Version {activeVersion}
+                  </Badge>
+                )}
+              </div>
               <div className="text-xs text-muted-foreground">{step.subtitle}</div>
             </div>
           </div>

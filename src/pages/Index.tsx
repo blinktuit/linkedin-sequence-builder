@@ -22,6 +22,7 @@ const Index = () => {
       },
     ],
     activeStepId: undefined,
+    activeVersion: 'A',
   });
 
   const [insertAfterStepId, setInsertAfterStepId] = useState<string | null>(null);
@@ -131,6 +132,14 @@ const Index = () => {
                     step={step}
                     isActive={step.id === campaign.activeStepId}
                     onClick={() => setCampaign({ ...campaign, activeStepId: step.id })}
+                    activeVersion={step.id === campaign.activeStepId ? campaign.activeVersion : 'A'}
+                    onVersionClick={(version) => {
+                      setCampaign({ 
+                        ...campaign, 
+                        activeStepId: step.id,
+                        activeVersion: version 
+                      });
+                    }}
                     onDuplicate={() => {
                       const duplicatedStep: CampaignStep = {
                         ...step,
@@ -145,8 +154,25 @@ const Index = () => {
                       });
                     }}
                     onABTest={() => {
-                      // TODO: Implement A/B test functionality
-                      console.log('A/B test', step.id);
+                      // Convert step to A/B test
+                      const updatedStep: CampaignStep = {
+                        ...step,
+                        type: 'ab-test',
+                        versionA: {
+                          config: step.config || {},
+                        },
+                        versionB: {
+                          config: {},
+                          error: 'Information is required',
+                        },
+                      };
+                      
+                      setCampaign({
+                        ...campaign,
+                        steps: campaign.steps.map(s => s.id === step.id ? updatedStep : s),
+                        activeStepId: step.id,
+                        activeVersion: 'A',
+                      });
                     }}
                     onDelete={() => {
                       if (step.type !== 'start') {
@@ -186,6 +212,7 @@ const Index = () => {
         {/* Config panel */}
         <ConfigPanel
           step={activeStep}
+          activeVersion={campaign.activeVersion}
           onConfigChange={(config) => {
             if (activeStep) {
               setCampaign({

@@ -25,6 +25,14 @@ export interface CampaignStep {
   warning?: string;
   nextSteps?: string[];
   position?: { x: number; y: number };
+  versionA?: {
+    config?: any;
+    error?: string;
+  };
+  versionB?: {
+    config?: any;
+    error?: string;
+  };
 }
 
 export interface Campaign {
@@ -32,4 +40,5 @@ export interface Campaign {
   name: string;
   steps: CampaignStep[];
   activeStepId?: string;
+  activeVersion?: 'A' | 'B';
 }

@@ -30,6 +30,8 @@ interface StepCardProps {
   onDuplicate?: () => void;
   onABTest?: () => void;
   onDelete?: () => void;
+  onVersionClick?: (version: 'A' | 'B') => void;
+  activeVersion?: 'A' | 'B';
 }
 
 const StepIcon = ({ type }: { type: string }) => {
@@ -71,7 +73,7 @@ const StepIcon = ({ type }: { type: string }) => {
   }
 };
 
-export const StepCard = ({ step, isActive, onClick, onDuplicate, onABTest, onDelete }: StepCardProps) => {
+export const StepCard = ({ step, isActive, onClick, onDuplicate, onABTest, onDelete, onVersionClick, activeVersion = 'A' }: StepCardProps) => {
   const hasError = !!step.error;
   const hasWarning = !!step.warning;
   const [delayOpen, setDelayOpen] = useState(false);
@@ -246,18 +248,75 @@ export const StepCard = ({ step, isActive, onClick, onDuplicate, onABTest, onDel
 
           {step.type === 'ab-test' && (
             <div className="mt-2 space-y-1">
-              <div className="flex items-center gap-1.5 p-1.5 border border-border rounded bg-background hover:bg-muted/50 transition-colors cursor-pointer">
-                <div className="h-5 w-5 rounded border border-border flex items-center justify-center bg-card">
-                  <span className="text-[10px] font-medium">A</span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onVersionClick?.('A');
+                }}
+                className={cn(
+                  "w-full flex items-center justify-between gap-1.5 p-2 border rounded bg-background transition-colors text-left",
+                  activeVersion === 'A' 
+                    ? "border-primary bg-primary/5 hover:bg-primary/10" 
+                    : "border-border hover:bg-muted/50"
+                )}
+              >
+                <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                  <div className={cn(
+                    "h-5 w-5 rounded border flex items-center justify-center bg-card flex-shrink-0",
+                    activeVersion === 'A' ? "border-primary" : "border-border"
+                  )}>
+                    <span className={cn(
+                      "text-[10px] font-medium",
+                      activeVersion === 'A' && "text-primary"
+                    )}>A</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className={cn(
+                      "text-[11px] font-medium",
+                      activeVersion === 'A' && "text-primary"
+                    )}>Version A</div>
+                    {step.versionA?.error && (
+                      <div className="text-[10px] text-destructive truncate">{step.versionA.error}</div>
+                    )}
+                  </div>
                 </div>
-                <span className="text-[11px]">Version A</span>
-              </div>
-              <div className="flex items-center gap-1.5 p-1.5 border border-primary/50 rounded bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer">
-                <div className="h-5 w-5 rounded border border-primary flex items-center justify-center bg-card">
-                  <span className="text-[10px] font-medium text-primary">B</span>
+                <MoreVertical className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
+              </button>
+              
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onVersionClick?.('B');
+                }}
+                className={cn(
+                  "w-full flex items-center justify-between gap-1.5 p-2 border rounded bg-background transition-colors text-left",
+                  activeVersion === 'B' 
+                    ? "border-primary bg-primary/5 hover:bg-primary/10" 
+                    : "border-border hover:bg-muted/50"
+                )}
+              >
+                <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                  <div className={cn(
+                    "h-5 w-5 rounded border flex items-center justify-center bg-card flex-shrink-0",
+                    activeVersion === 'B' ? "border-primary" : "border-border"
+                  )}>
+                    <span className={cn(
+                      "text-[10px] font-medium",
+                      activeVersion === 'B' && "text-primary"
+                    )}>B</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className={cn(
+                      "text-[11px] font-medium",
+                      activeVersion === 'B' && "text-primary"
+                    )}>Version B</div>
+                    {step.versionB?.error && (
+                      <div className="text-[10px] text-destructive truncate">{step.versionB.error}</div>
+                    )}
+                  </div>
                 </div>
-                <span className="text-[11px] text-primary">Version B</span>
-              </div>
+                <MoreVertical className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
+              </button>
             </div>
           )}
         </>
