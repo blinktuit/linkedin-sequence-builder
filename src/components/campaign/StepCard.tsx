@@ -83,8 +83,27 @@ export const StepCard = ({ step, isActive, onClick, onDuplicate, onABTest, onDel
             </span>
             
             <div className="flex items-center gap-1">
-              <Button variant="ghost" size="icon" className="h-7 w-7 hover:bg-muted/50">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="h-7 w-7 hover:bg-muted/50"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // TODO: Implement edit functionality
+                }}
+              >
                 <Edit2 className="h-3.5 w-3.5" />
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="h-7 w-7 hover:bg-destructive/10 hover:text-destructive"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete?.();
+                }}
+              >
+                <Trash2 className="h-3.5 w-3.5" />
               </Button>
             </div>
           </div>
@@ -133,16 +152,6 @@ export const StepCard = ({ step, isActive, onClick, onDuplicate, onABTest, onDel
                   }}>
                     <TestTube2 className="h-4 w-4 mr-2" />
                     A/B test this step
-                  </DropdownMenuItem>
-                  <DropdownMenuItem 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDelete?.();
-                    }}
-                    className="text-destructive focus:text-destructive"
-                  >
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    Delete this step
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
