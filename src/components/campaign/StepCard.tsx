@@ -93,10 +93,15 @@ export const StepCard = ({
               setDelayOpen(true);
             }} className="text-[10px] font-medium uppercase tracking-wide hover:opacity-80 transition-opacity text-left">
                   <span className="text-muted-foreground">
-                    {step.type === 'wait' ? 'Wait for ' : 'Send '}
+                    {step.type === 'wait' ? 'Wait for ' : waitAmount === 0 ? 'Send ' : 'Send in '}
                   </span>
                   <span className="text-primary cursor-pointer">
-                    {step.type === 'wait' ? `${waitAmount} ${waitUnit}${waitAmount > 1 ? 's' : ''}` : 'immediately'}
+                    {step.type === 'wait' 
+                      ? `${waitAmount} ${waitUnit}${waitAmount > 1 ? 's' : ''}` 
+                      : waitAmount === 0 
+                        ? 'immediately' 
+                        : `${waitAmount} ${waitUnit}${waitAmount > 1 ? 's' : ''}`
+                    }
                   </span>
                 </button>
               </PopoverTrigger>
@@ -137,7 +142,7 @@ export const StepCard = ({
               </PopoverContent>
             </Popover>
             
-            <div className="flex items-center gap-0.5">
+            <div className="flex items-center gap-0.5 mr-2">
               
               <Button variant="ghost" size="icon" className="h-6 w-6 hover:bg-destructive/10 hover:text-destructive" onClick={e => {
             e.stopPropagation();
