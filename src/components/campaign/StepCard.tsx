@@ -82,9 +82,7 @@ export const StepCard = ({
   const [waitAmount, setWaitAmount] = useState(1);
   const [waitUnit, setWaitUnit] = useState('day');
   return <div onClick={step.type === 'start' ? undefined : onClick} className={cn("relative bg-card border rounded-lg p-3 transition-all", step.type === 'start' ? "cursor-default" : "cursor-pointer hover:shadow-md hover:scale-[1.01]", isActive && step.type !== 'start' ? "border-primary shadow-md ring-2 ring-primary/20" : "border-border", hasError && "border-destructive ring-2 ring-destructive/20")}>
-      {step.type === 'start' ? <div className="text-center text-xs text-muted-foreground py-2">
-          Start
-        </div> : <>
+      {step.type === 'start' ? <div className="text-center text-xs text-muted-foreground py-2">Start campaign 🚀</div> : <>
           <div className="flex items-center justify-between mb-2">
             <Popover open={delayOpen} onOpenChange={setDelayOpen}>
               <PopoverTrigger asChild>
@@ -96,12 +94,7 @@ export const StepCard = ({
                     {step.type === 'wait' ? 'Wait for ' : waitAmount === 0 ? 'Send ' : 'Send in '}
                   </span>
                   <span className="text-primary cursor-pointer">
-                    {step.type === 'wait' 
-                      ? `${waitAmount} ${waitUnit}${waitAmount > 1 ? 's' : ''}` 
-                      : waitAmount === 0 
-                        ? 'immediately' 
-                        : `${waitAmount} ${waitUnit}${waitAmount > 1 ? 's' : ''}`
-                    }
+                    {step.type === 'wait' ? `${waitAmount} ${waitUnit}${waitAmount > 1 ? 's' : ''}` : waitAmount === 0 ? 'immediately' : `${waitAmount} ${waitUnit}${waitAmount > 1 ? 's' : ''}`}
                   </span>
                 </button>
               </PopoverTrigger>
@@ -160,22 +153,16 @@ export const StepCard = ({
               </div>
               <div className="flex-1 min-w-0">
                 <div className="font-semibold text-sm leading-tight">{step.title}</div>
-                {(step.subtitle || (step.type === 'send-to-campaign' && step.config?.targetCampaign)) && (
-                  <div className="text-[11px] text-muted-foreground flex items-center gap-1 mt-0.5">
-                    {step.type === 'send-to-campaign' && step.config?.targetCampaign ? (
-                      <>
+                {(step.subtitle || step.type === 'send-to-campaign' && step.config?.targetCampaign) && <div className="text-[11px] text-muted-foreground flex items-center gap-1 mt-0.5">
+                    {step.type === 'send-to-campaign' && step.config?.targetCampaign ? <>
                         <span>👤</span>
                         <span className="truncate">
                           {step.config.targetCampaign === 'ai-lookalike' && 'AI - Lookalike - Saleshacking...'}
                           {step.config.targetCampaign === 'outbound-campaign' && 'Outbound Campaign'}
                           {step.config.targetCampaign === 'follow-up' && 'Follow-up Campaign'}
                         </span>
-                      </>
-                    ) : (
-                      <span className="truncate">{step.subtitle}</span>
-                    )}
-                  </div>
-                )}
+                      </> : <span className="truncate">{step.subtitle}</span>}
+                  </div>}
               </div>
             </div>
 
