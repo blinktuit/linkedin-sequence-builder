@@ -341,7 +341,13 @@ export const ConfigPanel = ({
               </Collapsible>
             </> : <>
               <div>
-                <Label className="text-sm mb-2 block">Message</Label>
+                <div className="flex items-center justify-between mb-2">
+                  <Label className="text-sm">Message</Label>
+                  <Button variant="ghost" size="sm" className="h-auto p-0 gap-1.5 text-primary hover:text-primary hover:bg-transparent font-normal">
+                    <Sparkles className="h-4 w-4" />
+                    AI
+                  </Button>
+                </div>
                 <div className="relative">
                   <Textarea id="message-textarea" placeholder="What message do you want to send?" className="min-h-[200px] resize-none pr-10" value={step.config?.message || ""} onChange={e => onConfigChange({
                 ...step.config,
