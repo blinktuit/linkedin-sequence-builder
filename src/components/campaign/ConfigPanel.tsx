@@ -27,18 +27,19 @@ export const ConfigPanel = ({
   const [personalizationOpen, setPersonalizationOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("liquid");
   const [advancedOpen, setAdvancedOpen] = useState(false);
-  const [uploadedImages, setUploadedImages] = useState<Array<{ id: string; url: string; file: File }>>(step?.config?.images || []);
-
+  const [uploadedImages, setUploadedImages] = useState<Array<{
+    id: string;
+    url: string;
+    file: File;
+  }>>(step?.config?.images || []);
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
-
     const newImages = Array.from(files).map(file => ({
       id: Math.random().toString(36).substring(7),
       url: URL.createObjectURL(file),
       file
     }));
-
     const updatedImages = [...uploadedImages, ...newImages];
     setUploadedImages(updatedImages);
     onConfigChange({
@@ -46,7 +47,6 @@ export const ConfigPanel = ({
       images: updatedImages
     });
   };
-
   const removeImage = (id: string) => {
     const updatedImages = uploadedImages.filter(img => img.id !== id);
     setUploadedImages(updatedImages);
@@ -343,33 +343,14 @@ export const ConfigPanel = ({
               <div>
                 <Label className="text-sm mb-2 block">Message</Label>
                 <div className="relative">
-                  <Textarea 
-                    id="message-textarea" 
-                    placeholder="What message do you want to send?" 
-                    className="min-h-[200px] resize-none pr-10" 
-                    value={step.config?.message || ""} 
-                    onChange={e => onConfigChange({
-                      ...step.config,
-                      message: e.target.value
-                    })} 
-                  />
+                  <Textarea id="message-textarea" placeholder="What message do you want to send?" className="min-h-[200px] resize-none pr-10" value={step.config?.message || ""} onChange={e => onConfigChange({
+                ...step.config,
+                message: e.target.value
+              })} />
                   <div className="absolute bottom-3 left-3 flex gap-2">
-                    <input
-                      type="file"
-                      id="image-upload"
-                      accept="image/*"
-                      multiple
-                      className="hidden"
-                      onChange={handleImageUpload}
-                    />
+                    <input type="file" id="image-upload" accept="image/*" multiple className="hidden" onChange={handleImageUpload} />
                     <label htmlFor="image-upload">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 hover:bg-muted"
-                        asChild
-                      >
+                      <Button type="button" variant="ghost" size="icon" className="h-8 w-8 hover:bg-muted" asChild>
                         <span className="cursor-pointer">
                           <Image className="h-4 w-4 text-muted-foreground" />
                         </span>
@@ -381,25 +362,14 @@ export const ConfigPanel = ({
                   </div>
                 </div>
 
-                {uploadedImages.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {uploadedImages.map((image) => (
-                      <div key={image.id} className="relative group">
-                        <img
-                          src={image.url}
-                          alt="Uploaded"
-                          className="h-16 w-16 object-cover rounded-md border border-border"
-                        />
-                        <button
-                          onClick={() => removeImage(image.id)}
-                          className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
+                {uploadedImages.length > 0 && <div className="mt-3 flex flex-wrap gap-2">
+                    {uploadedImages.map(image => <div key={image.id} className="relative group">
+                        <img src={image.url} alt="Uploaded" className="h-16 w-16 object-cover rounded-md border border-border" />
+                        <button onClick={() => removeImage(image.id)} className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                           <X className="h-3 w-3" />
                         </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                      </div>)}
+                  </div>}
               </div>
 
               <div className="flex gap-2 items-center">
@@ -499,9 +469,7 @@ export const ConfigPanel = ({
                   <Sparkles className="h-3.5 w-3.5" />
                   Ask AI
                 </Button>
-                {step.type !== 'linkedin-invitation' && <Button variant="outline" size="sm" className="px-2">
-                    <Image className="h-3.5 w-3.5" />
-                  </Button>}
+                {step.type !== 'linkedin-invitation'}
                 <Button variant="outline" size="sm" className="px-2">
                   <MoreVertical className="h-3.5 w-3.5" />
                 </Button>
