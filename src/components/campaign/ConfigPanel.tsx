@@ -475,10 +475,7 @@ export const ConfigPanel = ({
                 </Button>
               </div>
 
-              <Button variant="outline" size="sm" className="w-full gap-2">
-                <Eye className="h-4 w-4" />
-                Preview
-              </Button>
+              
             </>}
         </div>
       </div>
