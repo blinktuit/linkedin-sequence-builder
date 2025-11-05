@@ -382,7 +382,7 @@ export const ConfigPanel = ({
                 <Popover open={personalizationOpen} onOpenChange={setPersonalizationOpen}>
                   <PopoverTrigger asChild>
                     <Button variant="outline" size="sm" className="gap-1">
-                      Add personalization
+                      Add dynamic tags
                       <ChevronDown className="h-3 w-3" />
                     </Button>
                   </PopoverTrigger>
