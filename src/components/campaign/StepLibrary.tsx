@@ -6,7 +6,7 @@ import {
   DrawerDescription,
   DrawerClose,
 } from "@/components/ui/drawer";
-import { MessageSquare, Phone, UserPlus, Eye, ThumbsUp, Sparkles, Lock, X } from "lucide-react";
+import { MessageSquare, Phone, UserPlus, Eye, ThumbsUp, Sparkles, Lock, X, Link, Send } from "lucide-react";
 
 interface StepLibraryProps {
   open: boolean;
@@ -23,8 +23,8 @@ const allSteps = [
   { icon: <Phone className="h-4 w-4" />, label: "Voice message", subtitle: "Send on LinkedIn", locked: false, type: 'linkedin-voice', warning: true },
   
   // Integration
-  { icon: "🔗", label: "Call an API", subtitle: "Call an API", locked: false, type: 'api-call' },
-  { icon: "📤", label: "Send to another campaign", subtitle: "", locked: false, type: 'send-to-campaign' },
+  { icon: <Link className="h-4 w-4" />, label: "Call an API", subtitle: "Call an API", locked: false, type: 'api-call' },
+  { icon: <Send className="h-4 w-4" />, label: "Send to another campaign", subtitle: "", locked: false, type: 'send-to-campaign' },
   
   // AI
   { icon: <Sparkles className="h-4 w-4" />, label: "AI variable", subtitle: "Automatically fill a variable", locked: false, type: 'ai-generate' },
