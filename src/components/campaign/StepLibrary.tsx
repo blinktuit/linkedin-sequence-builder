@@ -31,8 +31,23 @@ const allSteps = [
 ];
 
 const conditionSteps = [
-  { label: "Custom condition", type: 'condition-custom' },
-  { label: "Accepted invite", subtitle: "LinkedIn", type: 'condition-accepted-invite' },
+  { 
+    label: "Custom condition", 
+    type: 'condition-custom',
+    icon: <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none">
+      <path d="M12 2l9 5v6c0 5.5-3.8 10.7-9 12-5.2-1.3-9-6.5-9-12V7l9-5z" stroke="currentColor" strokeWidth="2"/>
+    </svg>
+  },
+  { 
+    label: "Accepted invite", 
+    subtitle: "LinkedIn", 
+    type: 'condition-accepted-invite',
+    icon: <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none">
+      <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" fill="currentColor" />
+      <circle cx="4" cy="4" r="2" fill="currentColor" />
+      <path d="M9 16l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  },
 ];
 
 export const StepLibrary = ({ open, onClose, onSelectStep }: StepLibraryProps) => {
@@ -104,9 +119,9 @@ export const StepLibrary = ({ open, onClose, onSelectStep }: StepLibraryProps) =
                     }}
                     className="flex flex-col items-start gap-1.5 p-3 bg-white border border-border rounded-lg hover:bg-muted/50 hover:border-primary transition-colors text-left"
                   >
-                    <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none">
-                      <path d="M12 2l9 5v6c0 5.5-3.8 10.7-9 12-5.2-1.3-9-6.5-9-12V7l9-5z" stroke="currentColor" strokeWidth="2"/>
-                    </svg>
+                    <div className="text-primary">
+                      {step.icon}
+                    </div>
                     <div className="flex-1">
                       <div className="font-medium text-sm">{step.label}</div>
                       {step.subtitle && <div className="text-xs text-muted-foreground">{step.subtitle}</div>}
