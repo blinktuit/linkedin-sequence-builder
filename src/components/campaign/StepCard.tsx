@@ -23,6 +23,18 @@ const StepIcon = ({
   type: string;
 }) => {
   const iconClass = "h-4 w-4";
+
+  // Check if it's a condition type
+  if (type.startsWith('condition-')) {
+    return <svg className={iconClass} viewBox="0 0 24 24" fill="none">
+      <path d="M12 3v8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <path d="M12 11l-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <path d="M12 11l6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="6" cy="17" r="1.5" fill="currentColor" />
+      <circle cx="18" cy="17" r="1.5" fill="currentColor" />
+    </svg>;
+  }
+
   switch (type) {
     case 'start':
       return <div className="text-muted-foreground text-xs">🏁</div>;
@@ -81,6 +93,24 @@ export const StepCard = ({
   const [delayOpen, setDelayOpen] = useState(false);
   const [waitAmount, setWaitAmount] = useState(1);
   const [waitUnit, setWaitUnit] = useState('day');
+
+  // For condition-accepted-invite, get the display text
+  const getConditionWaitText = () => {
+    if (step.type === 'condition-accepted-invite') {
+      const waitMode = step.config?.waitMode || 'wait-until';
+      if (waitMode === 'wait-until') {
+        return { label: 'Wait until', value: 'Accepted invite' };
+      } else {
+        const timeLimit = step.config?.timeLimit || 1;
+        const timeUnit = step.config?.timeUnit || 'day';
+        return { label: 'If accepted within', value: `${timeLimit} ${timeUnit}${timeLimit > 1 ? 's' : ''}` };
+      }
+    }
+    return null;
+  };
+
+  const conditionWaitText = getConditionWaitText();
+
   return <div onClick={step.type === 'start' ? undefined : onClick} className={cn("relative bg-card border rounded-lg p-3 transition-all", step.type === 'start' ? "cursor-default" : "cursor-pointer hover:shadow-md hover:scale-[1.01]", isActive && step.type !== 'start' ? "border-primary shadow-md ring-2 ring-primary/20" : "border-border", hasError && "border-destructive ring-2 ring-destructive/20")}>
       {step.type === 'start' ? <div className="text-center text-xs text-muted-foreground py-2">Start campaign 🚀</div> : <>
           <div className="flex items-center justify-between mb-2">
@@ -90,58 +120,167 @@ export const StepCard = ({
               e.stopPropagation();
               setDelayOpen(true);
             }} className="text-[10px] font-medium uppercase tracking-wide hover:opacity-80 transition-opacity text-left">
-                  <span className="text-muted-foreground">
-                    {step.type === 'wait' ? 'Wait for ' : waitAmount === 0 ? 'Send ' : 'Send in '}
-                  </span>
-                  <span className="text-primary cursor-pointer">
-                    {step.type === 'wait' ? `${waitAmount} ${waitUnit}${waitAmount > 1 ? 's' : ''}` : waitAmount === 0 ? 'immediately' : `${waitAmount} ${waitUnit}${waitAmount > 1 ? 's' : ''}`}
-                  </span>
+                  {conditionWaitText ? (
+                    <>
+                      <span className="text-muted-foreground">{conditionWaitText.label} </span>
+                      <span className="text-primary cursor-pointer">{conditionWaitText.value}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-muted-foreground">
+                        {step.type === 'wait' ? 'Wait for ' : waitAmount === 0 ? 'Send ' : 'Wait '}
+                      </span>
+                      <span className="text-primary cursor-pointer">
+                        {step.type === 'wait' ? `${waitAmount} ${waitUnit}${waitAmount > 1 ? 's' : ''}` : waitAmount === 0 ? 'immediately' : `${waitAmount} ${waitUnit}${waitAmount > 1 ? 's' : ''}`}
+                      </span>
+                    </>
+                  )}
                 </button>
               </PopoverTrigger>
               <PopoverContent className="w-72 p-3" align="start" onClick={e => e.stopPropagation()}>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-medium text-muted-foreground">Wait</span>
-                  <Button variant="outline" size="icon" className="h-7 w-7 flex-shrink-0" onClick={() => setWaitAmount(Math.max(1, waitAmount - 1))}>
-                    <Minus className="h-3 w-3" />
-                  </Button>
-                  
-                  <div className="flex items-center justify-center border rounded-md h-7 w-12 flex-shrink-0">
-                    <span className="text-sm font-medium">{waitAmount}</span>
+                {step.type === 'condition-accepted-invite' ? (
+                  <div className="space-y-3">
+                    <div className="text-xs font-medium text-muted-foreground mb-2">Lead action</div>
+                    <div className="space-y-2">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="waitMode"
+                          value="wait-until"
+                          checked={(step.config?.waitMode || 'wait-until') === 'wait-until'}
+                          onChange={(e) => {
+                            const event = new CustomEvent('updateStepConfig', {
+                              detail: { ...step.config, waitMode: 'wait-until' }
+                            });
+                            window.dispatchEvent(event);
+                          }}
+                          className="h-4 w-4 accent-[#36b39a]"
+                        />
+                        <span className="text-sm">Wait until Accepted invite</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="waitMode"
+                          value="within"
+                          checked={step.config?.waitMode === 'within'}
+                          onChange={(e) => {
+                            const event = new CustomEvent('updateStepConfig', {
+                              detail: { ...step.config, waitMode: 'within' }
+                            });
+                            window.dispatchEvent(event);
+                          }}
+                          className="h-4 w-4 accent-[#36b39a]"
+                        />
+                        <span className="text-sm">If Accepted within</span>
+                      </label>
+                    </div>
+
+                    {step.config?.waitMode === 'within' && (
+                      <div className="flex items-center gap-2 pt-2">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="h-7 w-7 flex-shrink-0"
+                          onClick={() => {
+                            const event = new CustomEvent('updateStepConfig', {
+                              detail: {
+                                ...step.config,
+                                timeLimit: Math.max(0, (step.config?.timeLimit || 1) - 1)
+                              }
+                            });
+                            window.dispatchEvent(event);
+                          }}
+                        >
+                          <Minus className="h-3 w-3" />
+                        </Button>
+
+                        <div className="flex items-center justify-center border rounded-md h-7 w-12 flex-shrink-0">
+                          <span className="text-sm font-medium">{step.config?.timeLimit || 1}</span>
+                        </div>
+
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="h-7 w-7 flex-shrink-0"
+                          onClick={() => {
+                            const event = new CustomEvent('updateStepConfig', {
+                              detail: {
+                                ...step.config,
+                                timeLimit: (step.config?.timeLimit || 1) + 1
+                              }
+                            });
+                            window.dispatchEvent(event);
+                          }}
+                        >
+                          <Plus className="h-3 w-3" />
+                        </Button>
+
+                        <Select
+                          value={step.config?.timeUnit || 'day'}
+                          onValueChange={(value) => {
+                            const event = new CustomEvent('updateStepConfig', {
+                              detail: { ...step.config, timeUnit: value }
+                            });
+                            window.dispatchEvent(event);
+                          }}
+                        >
+                          <SelectTrigger className="w-20 h-7 text-xs flex-shrink-0">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="day">day</SelectItem>
+                            <SelectItem value="week">week</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
                   </div>
-                  
-                  <Button variant="outline" size="icon" className="h-7 w-7 flex-shrink-0" onClick={() => setWaitAmount(waitAmount + 1)}>
-                    <Plus className="h-3 w-3" />
-                  </Button>
-                  
-                  <Select value={waitUnit} onValueChange={setWaitUnit}>
-                    <SelectTrigger className="w-20 h-7 text-xs flex-shrink-0">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="minute">min</SelectItem>
-                      <SelectItem value="hour">hour</SelectItem>
-                      <SelectItem value="day">day</SelectItem>
-                      <SelectItem value="week">week</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  
-                  <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive hover:text-destructive flex-shrink-0 ml-auto" onClick={() => {
-                setDelayOpen(false);
-                setWaitAmount(0);
-              }}>
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </Button>
-                </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium text-muted-foreground">Wait</span>
+                    <Button variant="outline" size="icon" className="h-7 w-7 flex-shrink-0" onClick={() => setWaitAmount(Math.max(0, waitAmount - 1))}>
+                      <Minus className="h-3 w-3" />
+                    </Button>
+
+                    <div className="flex items-center justify-center border rounded-md h-7 w-12 flex-shrink-0">
+                      <span className="text-sm font-medium">{waitAmount}</span>
+                    </div>
+
+                    <Button variant="outline" size="icon" className="h-7 w-7 flex-shrink-0" onClick={() => setWaitAmount(waitAmount + 1)}>
+                      <Plus className="h-3 w-3" />
+                    </Button>
+
+                    <Select value={waitUnit} onValueChange={setWaitUnit}>
+                      <SelectTrigger className="w-20 h-7 text-xs flex-shrink-0">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="minute">min</SelectItem>
+                        <SelectItem value="hour">hour</SelectItem>
+                        <SelectItem value="day">day</SelectItem>
+                        <SelectItem value="week">week</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive hover:text-destructive flex-shrink-0 ml-auto" onClick={() => {
+                  setDelayOpen(false);
+                  setWaitAmount(0);
+                }}>
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                )}
               </PopoverContent>
             </Popover>
-            
-            <div className="flex items-center gap-0.5 mr-2">
-              
+
+            <div className="flex items-center gap-1">
+
               <Button variant="ghost" size="icon" className="h-6 w-6 hover:bg-destructive/10 hover:text-destructive" onClick={e => {
             e.stopPropagation();
             onDelete?.();
           }}>
-                <Trash2 className="h-3 w-3" />
+                <Trash2 className="h-3.5 w-3.5" />
               </Button>
             </div>
           </div>
@@ -153,16 +292,28 @@ export const StepCard = ({
               </div>
               <div className="flex-1 min-w-0">
                 <div className="font-semibold text-sm leading-tight">{step.title}</div>
-                {(step.subtitle || step.type === 'send-to-campaign' && step.config?.targetCampaign) && <div className="text-[11px] text-muted-foreground flex items-center gap-1 mt-0.5">
-                    {step.type === 'send-to-campaign' && step.config?.targetCampaign ? <>
+                {step.type === 'send-to-campaign' && step.config?.targetCampaign && (
+                  <div className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1">
+                    {step.config.targetCampaign === 'ai-lookalike' && (
+                      <>
                         <span>👤</span>
-                        <span className="truncate">
-                          {step.config.targetCampaign === 'ai-lookalike' && 'AI - Lookalike - Saleshacking...'}
-                          {step.config.targetCampaign === 'outbound-campaign' && 'Outbound Campaign'}
-                          {step.config.targetCampaign === 'follow-up' && 'Follow-up Campaign'}
-                        </span>
-                      </> : <span className="truncate">{step.subtitle}</span>}
-                  </div>}
+                        <span>AI - Lookalike - Saleshacking...</span>
+                      </>
+                    )}
+                    {step.config.targetCampaign === 'outbound-campaign' && (
+                      <>
+                        <span>📤</span>
+                        <span>Outbound Campaign</span>
+                      </>
+                    )}
+                    {step.config.targetCampaign === 'follow-up' && (
+                      <>
+                        <span>🔄</span>
+                        <span>Follow-up Campaign</span>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 

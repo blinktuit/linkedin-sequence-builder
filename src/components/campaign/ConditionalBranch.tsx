@@ -22,28 +22,28 @@ export const ConditionalBranch = ({
       {/* Left (Yes) branch */}
       <div className="flex flex-col items-center pt-8">
         {/* Yes label */}
-        <div className="text-xs font-medium text-green-600 mb-1">Yes</div>
-        
+        <div className="text-xs font-medium text-[#36b39a] mb-1">Yes</div>
+
         {/* Horizontal line with rounded corner going down */}
         <svg width="100" height="60" className="overflow-visible">
           <path
             d="M 100 20 L 60 20 Q 50 20, 50 30 L 50 60"
             fill="none"
-            stroke="hsl(142, 76%, 36%)"
+            stroke="#36b39a"
             strokeWidth="2"
           />
         </svg>
-        
+
         {/* Add button */}
         <Button
           onClick={onAddYesStep}
           variant="ghost"
           size="icon"
-          className="h-7 w-7 rounded-full border-2 border-dashed border-green-600/50 hover:border-green-600 hover:bg-green-600/5 transition-colors"
+          className="h-7 w-7 rounded-full border-2 border-dashed border-[#36b39a]/50 hover:border-[#36b39a] hover:bg-[#36b39a]/5 transition-colors"
         >
-          <Plus className="h-3.5 w-3.5 text-green-600" />
+          <Plus className="h-3.5 w-3.5 text-[#36b39a]" />
         </Button>
-        
+
         {/* Extension line if has steps */}
         {hasYesSteps && (
           <div className="h-4 w-0.5 bg-[#36b39a] mt-1" />
@@ -51,7 +51,7 @@ export const ConditionalBranch = ({
       </div>
 
       {/* Center card */}
-      <div className="flex-shrink-0 min-w-[460px]">
+      <div className="flex-shrink-0 w-[320px]">
         {children}
       </div>
 
@@ -59,17 +59,17 @@ export const ConditionalBranch = ({
       <div className="flex flex-col items-center pt-8">
         {/* No label */}
         <div className="text-xs font-medium text-[#f49854] mb-1">No</div>
-        
+
         {/* Horizontal line with rounded corner going down */}
         <svg width="100" height="60" className="overflow-visible">
           <path
             d="M 0 20 L 40 20 Q 50 20, 50 30 L 50 60"
             fill="none"
-            stroke="hsl(25, 88%, 63%)"
+            stroke="#f49854"
             strokeWidth="2"
           />
         </svg>
-        
+
         {/* Add button */}
         <Button
           onClick={onAddNoStep}
@@ -79,7 +79,7 @@ export const ConditionalBranch = ({
         >
           <Plus className="h-3.5 w-3.5 text-[#f49854]" />
         </Button>
-        
+
         {/* Extension line if has steps */}
         {hasNoSteps && (
           <div className="h-4 w-0.5 bg-[#f49854]/30 mt-1" />

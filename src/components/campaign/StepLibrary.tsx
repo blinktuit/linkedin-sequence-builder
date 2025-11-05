@@ -16,31 +16,32 @@ interface StepLibraryProps {
 
 const allSteps = [
   // LinkedIn Actions
-  { icon: <UserPlus className="h-4 w-4" />, label: "Invitation", subtitle: "Send on LinkedIn", locked: false, type: 'linkedin-invitation' },
-  { icon: <Eye className="h-4 w-4" />, label: "Visit profile", subtitle: "Visit profile", locked: false, type: 'linkedin-profile-visit' },
-  { icon: <MessageSquare className="h-4 w-4" />, label: "Chat message", subtitle: "Send on LinkedIn", locked: false, type: 'linkedin-chat' },
-  { icon: <ThumbsUp className="h-4 w-4" />, label: "Like a post", subtitle: "Like on LinkedIn", locked: false, type: 'linkedin-like-post' },
-  { icon: <Phone className="h-4 w-4" />, label: "Voice message", subtitle: "Send on LinkedIn", locked: false, type: 'linkedin-voice', warning: true },
-  
+  { icon: <UserPlus className="h-4 w-4" />, label: "Invitation", subtitle: "Connection invite, with or without message", locked: false, type: 'linkedin-invitation' },
+  { icon: <Eye className="h-4 w-4" />, label: "Visit profile", subtitle: "Visit the lead's profile", locked: false, type: 'linkedin-profile-visit' },
+  { icon: <MessageSquare className="h-4 w-4" />, label: "Chat message", subtitle: "Send a LinkedIn DM", locked: false, type: 'linkedin-chat' },
+  { icon: <ThumbsUp className="h-4 w-4" />, label: "Like a post", subtitle: "Like the last (unliked) post", locked: false, type: 'linkedin-like-post' },
+  { icon: <Phone className="h-4 w-4" />, label: "Voice message", subtitle: "Send voice message in DM", locked: false, type: 'linkedin-voice', warning: true },
+
   // Integration
-  { icon: <Link className="h-4 w-4" />, label: "Call an API", subtitle: "Call an API", locked: false, type: 'api-call' },
-  { icon: <Send className="h-4 w-4" />, label: "Send to another campaign", subtitle: "", locked: false, type: 'send-to-campaign' },
-  
+  { icon: <Link className="h-4 w-4" />, label: "Call an API", subtitle: "Do a custom API request", locked: false, type: 'api-call' },
+  { icon: <Send className="h-4 w-4" />, label: "Move to another campaign", subtitle: "Keep nurturing the lead", locked: false, type: 'send-to-campaign' },
+
   // AI
-  { icon: <Sparkles className="h-4 w-4" />, label: "AI variable", subtitle: "Automatically fill a variable", locked: false, type: 'ai-generate' },
+  { icon: <Sparkles className="h-4 w-4" />, label: "AI variable", subtitle: "Research & enrich data for messages", locked: false, type: 'ai-generate' },
 ];
 
 const conditionSteps = [
-  { 
-    label: "Custom condition", 
+  {
+    label: "Custom condition",
+    subtitle: "Advanced conditional logic",
     type: 'condition-custom',
     icon: <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none">
       <path d="M12 2l9 5v6c0 5.5-3.8 10.7-9 12-5.2-1.3-9-6.5-9-12V7l9-5z" stroke="currentColor" strokeWidth="2"/>
     </svg>
   },
-  { 
-    label: "Accepted invite", 
-    subtitle: "LinkedIn", 
+  {
+    label: "Accepted invite",
+    subtitle: "LinkedIn connection accepted",
     type: 'condition-accepted-invite',
     icon: <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none">
       <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" fill="currentColor" />

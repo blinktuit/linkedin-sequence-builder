@@ -1,14 +1,15 @@
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { 
-  MoreVertical, 
-  X, 
-  Share2, 
-  FileText, 
-  Copy, 
-  Archive, 
+import { Switch } from "@/components/ui/switch";
+import {
+  MoreVertical,
+  X,
+  Share2,
+  FileText,
+  Copy,
+  Archive,
   Trash2,
-  ChevronRight,
-  ToggleLeft
+  ChevronRight
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -17,43 +18,133 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 
 interface CampaignHeaderProps {
   campaignName: string;
   activeTab: 'sequence' | 'leadlist' | 'launch';
   onTabChange: (tab: 'sequence' | 'leadlist' | 'launch') => void;
   onNextStep: () => void;
+  onBackToCampaigns?: () => void;
+  onCampaignNameChange?: (name: string) => void;
+  campaignActive?: boolean;
+  onToggleCampaign?: (active: boolean) => void;
+  campaignEmoji?: string;
+  onEmojiChange?: (emoji: string) => void;
 }
 
-export const CampaignHeader = ({ 
-  campaignName, 
-  activeTab, 
+export const CampaignHeader = ({
+  campaignName,
+  activeTab,
   onTabChange,
-  onNextStep 
+  onNextStep,
+  onBackToCampaigns,
+  onCampaignNameChange,
+  campaignActive = true,
+  onToggleCampaign,
+  campaignEmoji = "📧",
+  onEmojiChange
 }: CampaignHeaderProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedName, setEditedName] = useState(campaignName);
+  const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const commonEmojis = [
+    "📧", "🚀", "🙏", "🤖", "💼", "📊", "🎯", "💡",
+    "⭐", "🔥", "💪", "🎉", "📈", "✨", "🌟", "💰",
+    "🏆", "📱", "💻", "🎨", "🔔", "📢", "🌐", "🔗"
+  ];
+
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.select();
+    }
+  }, [isEditing]);
+
+  const handleSave = () => {
+    if (editedName.trim() && onCampaignNameChange) {
+      onCampaignNameChange(editedName.trim());
+    } else {
+      setEditedName(campaignName);
+    }
+    setIsEditing(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSave();
+    } else if (e.key === 'Escape') {
+      setEditedName(campaignName);
+      setIsEditing(false);
+    }
+  };
   return (
     <div className="h-16 bg-card border-b border-border flex items-center justify-between px-4">
       <div className="flex items-center gap-3">
-        <Button variant="ghost" size="icon" className="h-8 w-8">
+        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onBackToCampaigns}>
           <X className="h-4 w-4" />
         </Button>
         
         <div className="flex items-center gap-2">
-          <div className="h-8 w-8 bg-primary/10 rounded flex items-center justify-center">
-            <span className="text-primary text-sm font-medium">📧</span>
-          </div>
-          <span className="font-medium">{campaignName}</span>
-          <Badge variant="secondary" className="text-xs">2</Badge>
+          <Popover open={emojiPickerOpen} onOpenChange={setEmojiPickerOpen}>
+            <PopoverTrigger asChild>
+              <button className="h-8 w-8 bg-primary/10 rounded flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer">
+                <span className="text-primary text-sm font-medium">{campaignEmoji}</span>
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-64 p-3" align="start">
+              <div className="space-y-2">
+                <p className="text-sm font-medium">Choose an emoji</p>
+                <div className="grid grid-cols-8 gap-2">
+                  {commonEmojis.map((emoji) => (
+                    <button
+                      key={emoji}
+                      onClick={() => {
+                        if (onEmojiChange) {
+                          onEmojiChange(emoji);
+                        }
+                        setEmojiPickerOpen(false);
+                      }}
+                      className="h-8 w-8 flex items-center justify-center text-lg hover:bg-muted rounded transition-colors"
+                    >
+                      {emoji}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
+          {isEditing ? (
+            <Input
+              ref={inputRef}
+              value={editedName}
+              onChange={(e) => setEditedName(e.target.value)}
+              onBlur={handleSave}
+              onKeyDown={handleKeyDown}
+              className="h-8 w-64 font-medium"
+            />
+          ) : (
+            <span
+              className="font-medium cursor-pointer hover:text-primary transition-colors"
+              onClick={() => setIsEditing(true)}
+            >
+              {campaignName}
+            </span>
+          )}
         </div>
 
-        <ToggleLeft className="h-5 w-5 text-primary ml-2" />
-
-        <Button variant="ghost" size="icon" className="h-8 w-8">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-          </svg>
-        </Button>
+        <Switch
+          checked={campaignActive}
+          onCheckedChange={onToggleCampaign}
+        />
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

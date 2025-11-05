@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { CampaignHeader } from "@/components/campaign/CampaignHeader";
 import { StepCard } from "@/components/campaign/StepCard";
 import { ConfigPanel } from "@/components/campaign/ConfigPanel";
@@ -8,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, Search, ZoomIn, ZoomOut } from "lucide-react";
 import type { Campaign, CampaignStep } from "@/types/campaign";
 const Index = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'sequence' | 'leadlist' | 'launch'>('sequence');
   const [isStepLibraryOpen, setIsStepLibraryOpen] = useState(false);
   const [campaign, setCampaign] = useState<Campaign>({
@@ -19,10 +21,74 @@ const Index = () => {
       title: 'Sequence start'
     }],
     activeStepId: undefined,
-    activeVersion: 'A'
+    activeVersion: 'A',
+    isActive: true,
+    emoji: "📧"
   });
   const [insertAfterStepId, setInsertAfterStepId] = useState<string | null>(null);
   const [insertBranch, setInsertBranch] = useState<'yes' | 'no' | null>(null);
+
+  // Pan functionality state
+  const [isPanning, setIsPanning] = useState(false);
+  const [panStart, setPanStart] = useState({ x: 0, y: 0 });
+  const [scrollStart, setScrollStart] = useState({ x: 0, y: 0 });
+  const canvasRef = useState<HTMLDivElement | null>(null)[0];
+
+  // Pan functionality handlers
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.button === 0 && e.target === e.currentTarget) { // Left mouse button and clicking on canvas directly
+      setIsPanning(true);
+      setPanStart({ x: e.clientX, y: e.clientY });
+      const canvas = e.currentTarget;
+      setScrollStart({ x: canvas.scrollLeft, y: canvas.scrollTop });
+      canvas.style.cursor = 'grabbing';
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isPanning) {
+      const canvas = e.currentTarget;
+      const dx = e.clientX - panStart.x;
+      const dy = e.clientY - panStart.y;
+      canvas.scrollLeft = scrollStart.x - dx;
+      canvas.scrollTop = scrollStart.y - dy;
+    }
+  };
+
+  const handleMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isPanning) {
+      setIsPanning(false);
+      e.currentTarget.style.cursor = 'grab';
+    }
+  };
+
+  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isPanning) {
+      setIsPanning(false);
+      e.currentTarget.style.cursor = 'grab';
+    }
+  };
+
+  // Listen for config updates from StepCard
+  useEffect(() => {
+    const handleConfigUpdate = (event: CustomEvent) => {
+      if (campaign.activeStepId) {
+        setCampaign({
+          ...campaign,
+          steps: campaign.steps.map(s =>
+            s.id === campaign.activeStepId
+              ? { ...s, config: event.detail }
+              : s
+          )
+        });
+      }
+    };
+
+    window.addEventListener('updateStepConfig', handleConfigUpdate as EventListener);
+    return () => {
+      window.removeEventListener('updateStepConfig', handleConfigUpdate as EventListener);
+    };
+  }, [campaign]);
   const handleAddStep = (type: string) => {
     const newStep: CampaignStep = {
       id: Date.now().toString(),
@@ -106,7 +172,7 @@ const Index = () => {
       'linkedin-profile-visit': 'Visit profile',
       'linkedin-like-post': 'Like a post',
       'api-call': 'API Call',
-      'send-to-campaign': 'Send to campaign',
+      'send-to-campaign': 'Move to campaign',
       'ai-generate': 'AI variable',
       'condition-accepted-invite': 'Accepted invite',
       'condition-lead-info': 'Has email address',
@@ -131,14 +197,48 @@ const Index = () => {
   };
   const activeStep = campaign.steps.find(s => s.id === campaign.activeStepId) || null;
   return <div className="h-screen flex flex-col bg-canvas-bg">
-      <CampaignHeader campaignName={campaign.name} activeTab={activeTab} onTabChange={setActiveTab} onNextStep={() => {}} />
+      <CampaignHeader
+        campaignName={campaign.name}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        onNextStep={() => {}}
+        onBackToCampaigns={() => navigate('/campaigns')}
+        onCampaignNameChange={(newName) => {
+          setCampaign({
+            ...campaign,
+            name: newName
+          });
+        }}
+        campaignActive={campaign.isActive}
+        onToggleCampaign={(active) => {
+          setCampaign({
+            ...campaign,
+            isActive: active
+          });
+        }}
+        campaignEmoji={campaign.emoji}
+        onEmojiChange={(emoji) => {
+          setCampaign({
+            ...campaign,
+            emoji: emoji
+          });
+        }}
+      />
 
       <div className="flex-1 flex overflow-hidden">
         {/* Main canvas */}
-        <div className="flex-1 relative overflow-auto bg-canvas-bg" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E")`,
-        backgroundSize: '200px 200px'
-      }}>
+        <div
+          className="flex-1 relative overflow-auto bg-canvas-bg select-none"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E")`,
+            backgroundSize: '200px 200px',
+            cursor: isPanning ? 'grabbing' : 'grab'
+          }}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseLeave}
+        >
           {/* Toolbar */}
           <div className="absolute top-4 left-4 flex gap-2 z-10">
             
@@ -271,7 +371,7 @@ const Index = () => {
                       {/* Render branched steps side by side */}
                       {step.branches?.yes.length || step.branches?.no.length ? <div className="flex gap-8 justify-center items-start">
                           {/* Yes branch */}
-                          <div className="w-full max-w-[460px] flex flex-col items-center">
+                          <div className="w-full max-w-[320px] flex flex-col items-center">
                             {step.branches?.yes.map(yesStepId => {
                       const yesStep = campaign.steps.find(s => s.id === yesStepId);
                       if (!yesStep) return null;
@@ -315,19 +415,33 @@ const Index = () => {
                             activeVersion: 'A'
                           });
                         }} onDelete={() => {
+                          // Remove step from steps array and from parent's branches
+                          const parentStep = campaign.steps.find(s => s.id === yesStep.parentStepId);
+                          const updatedSteps = campaign.steps.filter(s => s.id !== yesStep.id).map(s => {
+                            if (s.id === parentStep?.id && s.branches?.yes) {
+                              return {
+                                ...s,
+                                branches: {
+                                  ...s.branches,
+                                  yes: s.branches.yes.filter(id => id !== yesStep.id)
+                                }
+                              };
+                            }
+                            return s;
+                          });
                           setCampaign({
                             ...campaign,
-                            steps: campaign.steps.filter(s => s.id !== yesStep.id),
+                            steps: updatedSteps,
                             activeStepId: campaign.activeStepId === yesStep.id ? undefined : campaign.activeStepId
                           });
                         }} />
                                   
                                   {/* Connector after branch step */}
                                   <div className="flex flex-col items-center py-0.5">
-                                    <div className="h-2 w-0.5 bg-green-600/30" />
+                                    <div className="h-2 w-0.5 bg-[#36b39a]/30" />
                                     <div className="my-0.5">
-                                      <Button onClick={() => handleOpenStepLibrary(yesStep.id, 'yes')} variant="ghost" size="icon" className="h-7 w-7 rounded-full border-2 border-dashed border-green-600/50 hover:border-green-600 hover:bg-green-600/5 transition-colors">
-                                        <Plus className="h-3.5 w-3.5 text-green-600" />
+                                      <Button onClick={() => handleOpenStepLibrary(yesStep.id, 'yes')} variant="ghost" size="icon" className="h-7 w-7 rounded-full border-2 border-dashed border-[#36b39a]/50 hover:border-[#36b39a] hover:bg-[#36b39a]/5 transition-colors">
+                                        <Plus className="h-3.5 w-3.5 text-[#36b39a]" />
                                       </Button>
                                     </div>
                                     
@@ -335,9 +449,9 @@ const Index = () => {
                                 </div>;
                     })}
                           </div>
-                          
+
                           {/* No branch */}
-                          <div className="w-full max-w-[460px] flex flex-col items-center">
+                          <div className="w-full max-w-[320px] flex flex-col items-center">
                             {step.branches?.no.map(noStepId => {
                       const noStep = campaign.steps.find(s => s.id === noStepId);
                       if (!noStep) return null;
@@ -381,9 +495,23 @@ const Index = () => {
                             activeVersion: 'A'
                           });
                         }} onDelete={() => {
+                          // Remove step from steps array and from parent's branches
+                          const parentStep = campaign.steps.find(s => s.id === noStep.parentStepId);
+                          const updatedSteps = campaign.steps.filter(s => s.id !== noStep.id).map(s => {
+                            if (s.id === parentStep?.id && s.branches?.no) {
+                              return {
+                                ...s,
+                                branches: {
+                                  ...s.branches,
+                                  no: s.branches.no.filter(id => id !== noStep.id)
+                                }
+                              };
+                            }
+                            return s;
+                          });
                           setCampaign({
                             ...campaign,
-                            steps: campaign.steps.filter(s => s.id !== noStep.id),
+                            steps: updatedSteps,
                             activeStepId: campaign.activeStepId === noStep.id ? undefined : campaign.activeStepId
                           });
                         }} />

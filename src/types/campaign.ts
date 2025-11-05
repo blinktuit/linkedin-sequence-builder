@@ -48,4 +48,6 @@ export interface Campaign {
   steps: CampaignStep[];
   activeStepId?: string;
   activeVersion?: 'A' | 'B';
+  isActive?: boolean;
+  emoji?: string;
 }
