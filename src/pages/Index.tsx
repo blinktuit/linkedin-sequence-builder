@@ -202,7 +202,7 @@ const Index = () => {
         activeTab={activeTab}
         onTabChange={setActiveTab}
         onNextStep={() => {}}
-        onBackToCampaigns={() => navigate('/campaigns')}
+        onBackToCampaigns={() => navigate('/')}
         onCampaignNameChange={(newName) => {
           setCampaign({
             ...campaign,

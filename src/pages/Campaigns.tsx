@@ -262,8 +262,9 @@ export default function Campaigns() {
     // Create a new campaign with the data from the modal
     // In a real app, this would make an API call
     console.log('Creating campaign with data:', data);
-    // For now, just navigate to the campaign builder
-    navigate('/');
+    // For now, just navigate to the campaign builder with a new ID
+    const newCampaignId = Date.now().toString();
+    navigate(`/campaign/${newCampaignId}`);
   };
 
   return (
@@ -463,7 +464,7 @@ export default function Campaigns() {
                   </td>
                   <td className="p-4">
                     <button
-                      onClick={() => navigate('/')}
+                      onClick={() => navigate(`/campaign/${campaign.id}`)}
                       className="flex items-center gap-2 text-left hover:text-primary transition-colors"
                     >
                       <span className="text-lg">{campaign.emoji}</span>
