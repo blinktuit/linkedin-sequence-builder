@@ -471,10 +471,7 @@ export const ConfigPanel = ({
                   </PopoverContent>
                 </Popover>
 
-                <Button variant="outline" size="sm" className="gap-1">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  Ask AI
-                </Button>
+                
                 {step.type !== 'linkedin-invitation'}
                 <Button variant="outline" size="sm" className="px-2">
                   <MoreVertical className="h-3.5 w-3.5" />
