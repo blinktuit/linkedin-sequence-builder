@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 import {
   Upload,
   Search,
@@ -17,7 +18,8 @@ import {
   ChevronRight,
   X,
   Check,
-  Clock
+  Clock,
+  FileText
 } from "lucide-react";
 
 type LeadSource =
@@ -41,6 +43,7 @@ export const CreateCampaignModal = ({
   onComplete
 }: CreateCampaignModalProps) => {
   const [step, setStep] = useState<1 | 2>(1);
+  const [isMultiStep, setIsMultiStep] = useState(true);
   const [selectedSource, setSelectedSource] = useState<LeadSource | null>(null);
   const [csvFile, setCsvFile] = useState<File | null>(null);
   const [pastedUrls, setPastedUrls] = useState('');
@@ -63,48 +66,18 @@ export const CreateCampaignModal = ({
     ? recentTemplates.filter(t => t.name.toLowerCase().includes(templateSearch.toLowerCase()))
     : recentTemplates;
 
-  const leadSources = [
-    {
-      id: 'upload' as LeadSource,
-      title: 'Upload leads',
-      description: 'Import from CSV or paste URLs',
-      icon: <Upload className="h-6 w-6" />
-    },
-    {
-      id: 'target-search' as LeadSource,
-      title: 'Target search list',
-      description: 'Use LinkedIn search results',
-      icon: <Search className="h-6 w-6" />
-    },
-    {
-      id: 'other-campaign' as LeadSource,
-      title: 'Use from other campaign',
-      description: 'Reuse leads from existing campaign',
-      icon: <Users className="h-6 w-6" />
-    },
+  const specialCampaigns = [
     {
       id: 'event-inviter' as LeadSource,
       title: 'LinkedIn event inviter',
       description: 'Target event attendees',
-      icon: <Calendar className="h-6 w-6" />
+      icon: <Calendar className="h-5 w-5" />
     },
     {
       id: 'company-page' as LeadSource,
       title: 'Invite to follow company page',
       description: 'Get company page followers',
-      icon: <Building2 className="h-6 w-6" />
-    },
-    {
-      id: 'active-search' as LeadSource,
-      title: 'Active search',
-      description: 'Auto-refresh search results',
-      icon: <Zap className="h-6 w-6" />
-    },
-    {
-      id: 'post-engagers' as LeadSource,
-      title: 'Post engagers',
-      description: 'Target post interactions',
-      icon: <MessageSquare className="h-6 w-6" />
+      icon: <Building2 className="h-5 w-5" />
     }
   ];
 
@@ -128,9 +101,14 @@ export const CreateCampaignModal = ({
   };
 
   const handleNext = () => {
-    if (step === 1 && selectedSource) {
+    if (step === 1 && (isMultiStep || selectedSource)) {
       setStep(2);
     }
+  };
+
+  const handleCampaignTypeSelect = (campaignId: LeadSource) => {
+    setSelectedSource(campaignId);
+    setIsMultiStep(false);
   };
 
   const handleComplete = () => {
@@ -355,47 +333,76 @@ export const CreateCampaignModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] flex flex-col p-0">
         <DialogHeader className="px-6 pt-6 pb-4 border-b">
-          <DialogTitle className="flex items-center gap-4">
-            <span>Create Campaign</span>
-            <div className="flex items-center gap-2 text-sm font-normal text-muted-foreground">
-              <span className={step === 1 ? "text-primary font-medium" : ""}>Step 1: Lead Source</span>
-              <ChevronRight className="h-4 w-4" />
-              <span className={step === 2 ? "text-primary font-medium" : ""}>Step 2: Template</span>
-            </div>
-          </DialogTitle>
+          <DialogTitle>Create Campaign</DialogTitle>
         </DialogHeader>
 
         {step === 1 && (
           <>
             <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {leadSources.map((source) => (
-                <button
-                  key={source.id}
-                  onClick={() => setSelectedSource(source.id)}
-                  className={`p-4 rounded-lg border-2 transition-all text-left shadow-sm hover:shadow-md ${
-                    selectedSource === source.id
-                      ? 'border-primary bg-primary/5 shadow-md'
-                      : 'border-border bg-card hover:border-primary/50'
-                  }`}
-                >
-                  <div className={`mb-3 ${selectedSource === source.id ? 'text-primary' : 'text-muted-foreground'}`}>
-                    {source.icon}
-                  </div>
-                  <h3 className="font-medium text-sm mb-1">{source.title}</h3>
-                  <p className="text-xs text-muted-foreground">{source.description}</p>
-                </button>
-              ))}
+              <div className="space-y-1">
+                <h3 className="text-sm font-normal text-foreground">Choose type of campaign</h3>
               </div>
 
-              {renderSourceOptions()}
+              {/* Multi-step campaign option */}
+              <div className="space-y-3">
+                <button
+                  onClick={() => setIsMultiStep(!isMultiStep)}
+                  className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
+                    isMultiStep
+                      ? 'border-primary bg-primary/5'
+                      : 'border-border bg-card hover:border-border'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className={`${isMultiStep ? 'text-primary' : 'text-muted-foreground'}`}>
+                        <FileText className="h-5 w-5" />
+                      </div>
+                      <span className="font-medium text-sm">Multi step campaign</span>
+                    </div>
+                    <Switch
+                      checked={isMultiStep}
+                      onCheckedChange={setIsMultiStep}
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  </div>
+                </button>
+              </div>
+
+              {/* Special single step campaigns */}
+              <div className="space-y-3">
+                <h4 className="text-sm font-normal text-foreground">Special single step campaigns</h4>
+                <div className="space-y-2">
+                  {specialCampaigns.map((campaign) => (
+                    <button
+                      key={campaign.id}
+                      onClick={() => handleCampaignTypeSelect(campaign.id)}
+                      className={`w-full p-4 rounded-lg border transition-all text-left ${
+                        !isMultiStep && selectedSource === campaign.id
+                          ? 'border-primary bg-primary/5'
+                          : 'border-border bg-card hover:border-border'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`mt-0.5 ${!isMultiStep && selectedSource === campaign.id ? 'text-primary' : 'text-muted-foreground'}`}>
+                          {campaign.icon}
+                        </div>
+                        <div>
+                          <h3 className="font-medium text-sm mb-0.5">{campaign.title}</h3>
+                          <p className="text-xs text-muted-foreground">{campaign.description}</p>
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
 
             <div className="flex justify-end gap-2 px-6 py-4 border-t bg-background">
               <Button variant="outline" onClick={() => onOpenChange(false)} className="shadow-sm">
                 Cancel
               </Button>
-              <Button onClick={handleNext} disabled={!selectedSource} className="shadow-sm">
+              <Button onClick={handleNext} disabled={!isMultiStep && !selectedSource} className="shadow-sm">
                 Next
                 <ChevronRight className="h-4 w-4 ml-1" />
               </Button>
