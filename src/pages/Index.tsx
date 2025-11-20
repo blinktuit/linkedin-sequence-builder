@@ -5,13 +5,16 @@ import { StepCard } from "@/components/campaign/StepCard";
 import { ConfigPanel } from "@/components/campaign/ConfigPanel";
 import { StepLibrary } from "@/components/campaign/StepLibrary";
 import { ConditionalBranch } from "@/components/campaign/ConditionalBranch";
+import { LeadListView } from "@/components/campaign/LeadListView";
+import { TemplateImportModal } from "@/components/campaign/TemplateImportModal";
 import { Button } from "@/components/ui/button";
-import { Plus, Search, ZoomIn, ZoomOut } from "lucide-react";
+import { Plus, Search, ZoomIn, ZoomOut, FileText } from "lucide-react";
 import type { Campaign, CampaignStep } from "@/types/campaign";
 const Index = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'sequence' | 'leadlist' | 'launch'>('sequence');
   const [isStepLibraryOpen, setIsStepLibraryOpen] = useState(false);
+  const [isTemplateImportOpen, setIsTemplateImportOpen] = useState(false);
   const [campaign, setCampaign] = useState<Campaign>({
     id: '1',
     name: "Saleshacking's campaign",
@@ -33,6 +36,17 @@ const Index = () => {
   const [panStart, setPanStart] = useState({ x: 0, y: 0 });
   const [scrollStart, setScrollStart] = useState({ x: 0, y: 0 });
   const canvasRef = useState<HTMLDivElement | null>(null)[0];
+
+  // Zoom functionality state
+  const [zoom, setZoom] = useState(1);
+
+  const handleZoomIn = () => {
+    setZoom(prev => Math.min(prev + 0.1, 2));
+  };
+
+  const handleZoomOut = () => {
+    setZoom(prev => Math.max(prev - 0.1, 0.5));
+  };
 
   // Pan functionality handlers
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -197,376 +211,411 @@ const Index = () => {
   };
   const activeStep = campaign.steps.find(s => s.id === campaign.activeStepId) || null;
   return <div className="h-screen flex flex-col bg-canvas-bg">
-      <CampaignHeader
-        campaignName={campaign.name}
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-        onNextStep={() => {}}
-        onBackToCampaigns={() => navigate('/')}
-        onCampaignNameChange={(newName) => {
-          setCampaign({
-            ...campaign,
-            name: newName
-          });
-        }}
-        campaignActive={campaign.isActive}
-        onToggleCampaign={(active) => {
-          setCampaign({
-            ...campaign,
-            isActive: active
-          });
-        }}
-        campaignEmoji={campaign.emoji}
-        onEmojiChange={(emoji) => {
-          setCampaign({
-            ...campaign,
-            emoji: emoji
-          });
-        }}
-      />
+    <CampaignHeader
+      campaignName={campaign.name}
+      activeTab={activeTab}
+      onTabChange={setActiveTab}
+      onNextStep={() => { }}
+      onBackToCampaigns={() => navigate('/')}
+      onCampaignNameChange={(newName) => {
+        setCampaign({
+          ...campaign,
+          name: newName
+        });
+      }}
+      campaignActive={campaign.isActive}
+      onToggleCampaign={(active) => {
+        setCampaign({
+          ...campaign,
+          isActive: active
+        });
+      }}
+      campaignEmoji={campaign.emoji}
+      onEmojiChange={(emoji) => {
+        setCampaign({
+          ...campaign,
+          emoji: emoji
+        });
+      }}
+    />
 
-      <div className="flex-1 flex overflow-hidden">
-        {/* Main canvas */}
-        <div
-          className="flex-1 relative overflow-auto bg-canvas-bg select-none"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E")`,
-            backgroundSize: '200px 200px',
-            cursor: isPanning ? 'grabbing' : 'grab'
-          }}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseLeave}
-        >
+    <div className="flex-1 flex overflow-hidden">
+      {activeTab === 'leadlist' ? (
+        <LeadListView />
+      ) : (
+        <div className="flex-1 relative flex overflow-hidden">
           {/* Toolbar */}
-          <div className="absolute top-4 left-4 flex gap-2 z-10">
-            
-            <Button variant="secondary" size="icon" className="h-9 w-9">
-              <ZoomIn className="h-4 w-4" />
-            </Button>
-            <Button variant="secondary" size="icon" className="h-9 w-9">
-              <ZoomOut className="h-4 w-4" />
-            </Button>
-            <Button variant="secondary" size="icon" className="h-9 w-9">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2v20M2 12h20" stroke="currentColor" strokeWidth="2" />
-              </svg>
-            </Button>
+          <div className="absolute top-4 left-4 flex gap-2 z-10 pointer-events-none">
+            <div className="pointer-events-auto flex gap-2">
+              <Button
+                variant="secondary"
+                size="sm"
+                className="h-9 gap-2 shadow-sm border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+                onClick={() => setIsTemplateImportOpen(true)}
+              >
+                <FileText className="h-4 w-4" />
+                Import Template
+              </Button>
+              <Button
+                variant="secondary"
+                size="icon"
+                className="h-9 w-9 shadow-sm border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+                onClick={handleZoomIn}
+              >
+                <ZoomIn className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="secondary"
+                size="icon"
+                className="h-9 w-9 shadow-sm border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+                onClick={handleZoomOut}
+              >
+                <ZoomOut className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
 
-          {/* Steps container */}
-          <div className="flex items-start justify-center min-h-full p-12">
-            <div className="w-full max-w-4xl">
-              {campaign.steps.filter(s => !s.parentStepId).map((step, index) => <div key={step.id}>
+          <div
+            className="flex-1 relative overflow-auto select-none"
+            style={{
+              background: '#ffffff',
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0 L45 13 L45 39 L30 52 L15 39 L15 13 Z' fill='none' stroke='%23d1fae5' stroke-width='1' opacity='0.3'/%3E%3C/svg%3E"), linear-gradient(135deg, rgba(16, 185, 129, 0.03) 0%, rgba(52, 211, 153, 0.05) 100%)`,
+              backgroundSize: '90px 78px, 100% 100%',
+              cursor: isPanning ? 'grabbing' : 'grab'
+            }}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseLeave}
+          >
+
+            {/* Steps container */}
+            <div
+              className="flex items-start justify-center min-h-full p-12 transition-transform duration-200 ease-out origin-top"
+              style={{ transform: `scale(${zoom})` }}
+            >
+              <div className="w-full max-w-4xl">
+                {campaign.steps.filter(s => !s.parentStepId).map((step, index) => <div key={step.id}>
                   {step.isConditional ? <div className="flex justify-center items-start">
-                      <ConditionalBranch onAddYesStep={() => handleOpenStepLibrary(step.id, 'yes')} onAddNoStep={() => handleOpenStepLibrary(step.id, 'no')} hasYesSteps={step.branches?.yes && step.branches.yes.length > 0} hasNoSteps={step.branches?.no && step.branches.no.length > 0}>
-                        <div className="w-full">
-                          <StepCard step={step} isActive={step.id === campaign.activeStepId} onClick={() => setCampaign({
-                      ...campaign,
-                      activeStepId: step.id
-                    })} activeVersion={step.id === campaign.activeStepId ? campaign.activeVersion : 'A'} onVersionClick={version => {
-                      setCampaign({
+                    <ConditionalBranch onAddYesStep={() => handleOpenStepLibrary(step.id, 'yes')} onAddNoStep={() => handleOpenStepLibrary(step.id, 'no')} hasYesSteps={step.branches?.yes && step.branches.yes.length > 0} hasNoSteps={step.branches?.no && step.branches.no.length > 0}>
+                      <div className="w-full">
+                        <StepCard step={step} isActive={step.id === campaign.activeStepId} onClick={() => setCampaign({
+                          ...campaign,
+                          activeStepId: step.id
+                        })} activeVersion={step.id === campaign.activeStepId ? campaign.activeVersion : 'A'} onVersionClick={version => {
+                          setCampaign({
+                            ...campaign,
+                            activeStepId: step.id,
+                            activeVersion: version
+                          });
+                        }} onDuplicate={() => {
+                          const duplicatedStep: CampaignStep = {
+                            ...step,
+                            id: Date.now().toString()
+                          };
+                          const stepIndex = campaign.steps.findIndex(s => s.id === step.id);
+                          const newSteps = [...campaign.steps];
+                          newSteps.splice(stepIndex + 1, 0, duplicatedStep);
+                          setCampaign({
+                            ...campaign,
+                            steps: newSteps
+                          });
+                        }} onABTest={() => {
+                          // Convert step to A/B test
+                          const updatedStep: CampaignStep = {
+                            ...step,
+                            type: 'ab-test',
+                            versionA: {
+                              config: step.config || {}
+                            },
+                            versionB: {
+                              config: {}
+                            }
+                          };
+                          setCampaign({
+                            ...campaign,
+                            steps: campaign.steps.map(s => s.id === step.id ? updatedStep : s),
+                            activeStepId: step.id,
+                            activeVersion: 'A'
+                          });
+                        }} onDelete={() => {
+                          if (step.type !== 'start') {
+                            setCampaign({
+                              ...campaign,
+                              steps: campaign.steps.filter(s => s.id !== step.id),
+                              activeStepId: campaign.activeStepId === step.id ? undefined : campaign.activeStepId
+                            });
+                          }
+                        }} />
+                      </div>
+                    </ConditionalBranch>
+                  </div> : <div className="flex justify-center">
+                    <div className="w-full max-w-[320px]">
+                      <StepCard step={step} isActive={step.id === campaign.activeStepId} onClick={() => setCampaign({
                         ...campaign,
-                        activeStepId: step.id,
-                        activeVersion: version
-                      });
-                    }} onDuplicate={() => {
-                      const duplicatedStep: CampaignStep = {
-                        ...step,
-                        id: Date.now().toString()
-                      };
-                      const stepIndex = campaign.steps.findIndex(s => s.id === step.id);
-                      const newSteps = [...campaign.steps];
-                      newSteps.splice(stepIndex + 1, 0, duplicatedStep);
-                      setCampaign({
-                        ...campaign,
-                        steps: newSteps
-                      });
-                    }} onABTest={() => {
-                      // Convert step to A/B test
-                      const updatedStep: CampaignStep = {
-                        ...step,
-                        type: 'ab-test',
-                        versionA: {
-                          config: step.config || {}
-                        },
-                        versionB: {
-                          config: {}
-                        }
-                      };
-                      setCampaign({
-                        ...campaign,
-                        steps: campaign.steps.map(s => s.id === step.id ? updatedStep : s),
-                        activeStepId: step.id,
-                        activeVersion: 'A'
-                      });
-                    }} onDelete={() => {
-                      if (step.type !== 'start') {
+                        activeStepId: step.id
+                      })} activeVersion={step.id === campaign.activeStepId ? campaign.activeVersion : 'A'} onVersionClick={version => {
                         setCampaign({
                           ...campaign,
-                          steps: campaign.steps.filter(s => s.id !== step.id),
-                          activeStepId: campaign.activeStepId === step.id ? undefined : campaign.activeStepId
+                          activeStepId: step.id,
+                          activeVersion: version
                         });
-                      }
-                    }} />
-                        </div>
-                      </ConditionalBranch>
-                    </div> : <div className="flex justify-center">
-                      <div className="w-full max-w-[320px]">
-                        <StepCard step={step} isActive={step.id === campaign.activeStepId} onClick={() => setCampaign({
-                    ...campaign,
-                    activeStepId: step.id
-                  })} activeVersion={step.id === campaign.activeStepId ? campaign.activeVersion : 'A'} onVersionClick={version => {
-                    setCampaign({
-                      ...campaign,
-                      activeStepId: step.id,
-                      activeVersion: version
-                    });
-                  }} onDuplicate={() => {
-                    const duplicatedStep: CampaignStep = {
-                      ...step,
-                      id: Date.now().toString()
-                    };
-                    const stepIndex = campaign.steps.findIndex(s => s.id === step.id);
-                    const newSteps = [...campaign.steps];
-                    newSteps.splice(stepIndex + 1, 0, duplicatedStep);
-                    setCampaign({
-                      ...campaign,
-                      steps: newSteps
-                    });
-                  }} onABTest={() => {
-                    // Convert step to A/B test
-                    const updatedStep: CampaignStep = {
-                      ...step,
-                      type: 'ab-test',
-                      versionA: {
-                        config: step.config || {}
-                      },
-                      versionB: {
-                        config: {}
-                      }
-                    };
-                    setCampaign({
-                      ...campaign,
-                      steps: campaign.steps.map(s => s.id === step.id ? updatedStep : s),
-                      activeStepId: step.id,
-                      activeVersion: 'A'
-                    });
-                  }} onDelete={() => {
-                    if (step.type !== 'start') {
-                      setCampaign({
-                        ...campaign,
-                        steps: campaign.steps.filter(s => s.id !== step.id),
-                        activeStepId: campaign.activeStepId === step.id ? undefined : campaign.activeStepId
-                      });
-                    }
-                  }} />
-                      </div>
-                    </div>}
-                  
+                      }} onDuplicate={() => {
+                        const duplicatedStep: CampaignStep = {
+                          ...step,
+                          id: Date.now().toString()
+                        };
+                        const stepIndex = campaign.steps.findIndex(s => s.id === step.id);
+                        const newSteps = [...campaign.steps];
+                        newSteps.splice(stepIndex + 1, 0, duplicatedStep);
+                        setCampaign({
+                          ...campaign,
+                          steps: newSteps
+                        });
+                      }} onABTest={() => {
+                        // Convert step to A/B test
+                        const updatedStep: CampaignStep = {
+                          ...step,
+                          type: 'ab-test',
+                          versionA: {
+                            config: step.config || {}
+                          },
+                          versionB: {
+                            config: {}
+                          }
+                        };
+                        setCampaign({
+                          ...campaign,
+                          steps: campaign.steps.map(s => s.id === step.id ? updatedStep : s),
+                          activeStepId: step.id,
+                          activeVersion: 'A'
+                        });
+                      }} onDelete={() => {
+                        if (step.type !== 'start') {
+                          setCampaign({
+                            ...campaign,
+                            steps: campaign.steps.filter(s => s.id !== step.id),
+                            activeStepId: campaign.activeStepId === step.id ? undefined : campaign.activeStepId
+                          });
+                        }
+                      }} />
+                    </div>
+                  </div>}
+
                   {/* Connection and add button after each step */}
                   {step.isConditional ? <>
-                      
-                      {/* Render branched steps side by side */}
-                      {step.branches?.yes.length || step.branches?.no.length ? <div className="flex gap-8 justify-center items-start">
-                          {/* Yes branch */}
-                          <div className="w-full max-w-[320px] flex flex-col items-center">
-                            {step.branches?.yes.map(yesStepId => {
-                      const yesStep = campaign.steps.find(s => s.id === yesStepId);
-                      if (!yesStep) return null;
-                      return <div key={yesStep.id} className="w-full">
-                                  <StepCard step={yesStep} isActive={yesStep.id === campaign.activeStepId} onClick={() => setCampaign({
-                          ...campaign,
-                          activeStepId: yesStep.id
-                        })} activeVersion={yesStep.id === campaign.activeStepId ? campaign.activeVersion : 'A'} onVersionClick={version => {
-                          setCampaign({
-                            ...campaign,
-                            activeStepId: yesStep.id,
-                            activeVersion: version
-                          });
-                        }} onDuplicate={() => {
-                          const duplicatedStep: CampaignStep = {
-                            ...yesStep,
-                            id: Date.now().toString()
-                          };
-                          const stepIndex = campaign.steps.findIndex(s => s.id === yesStep.id);
-                          const newSteps = [...campaign.steps];
-                          newSteps.splice(stepIndex + 1, 0, duplicatedStep);
-                          setCampaign({
-                            ...campaign,
-                            steps: newSteps
-                          });
-                        }} onABTest={() => {
-                          const updatedStep: CampaignStep = {
-                            ...yesStep,
-                            type: 'ab-test',
-                            versionA: {
-                              config: yesStep.config || {}
-                            },
-                            versionB: {
-                              config: {}
-                            }
-                          };
-                          setCampaign({
-                            ...campaign,
-                            steps: campaign.steps.map(s => s.id === yesStep.id ? updatedStep : s),
-                            activeStepId: yesStep.id,
-                            activeVersion: 'A'
-                          });
-                        }} onDelete={() => {
-                          // Remove step from steps array and from parent's branches
-                          const parentStep = campaign.steps.find(s => s.id === yesStep.parentStepId);
-                          const updatedSteps = campaign.steps.filter(s => s.id !== yesStep.id).map(s => {
-                            if (s.id === parentStep?.id && s.branches?.yes) {
-                              return {
-                                ...s,
-                                branches: {
-                                  ...s.branches,
-                                  yes: s.branches.yes.filter(id => id !== yesStep.id)
-                                }
-                              };
-                            }
-                            return s;
-                          });
-                          setCampaign({
-                            ...campaign,
-                            steps: updatedSteps,
-                            activeStepId: campaign.activeStepId === yesStep.id ? undefined : campaign.activeStepId
-                          });
-                        }} />
-                                  
-                                  {/* Connector after branch step */}
-                                  <div className="flex flex-col items-center py-0.5">
-                                    <div className="h-2 w-0.5 bg-[#36b39a]/30" />
-                                    <div className="my-0.5">
-                                      <Button onClick={() => handleOpenStepLibrary(yesStep.id, 'yes')} variant="ghost" size="icon" className="h-7 w-7 rounded-full border-2 border-dashed border-[#36b39a]/50 hover:border-[#36b39a] hover:bg-[#36b39a]/5 transition-colors">
-                                        <Plus className="h-3.5 w-3.5 text-[#36b39a]" />
-                                      </Button>
-                                    </div>
-                                    
-                                  </div>
-                                </div>;
-                    })}
-                          </div>
 
-                          {/* No branch */}
-                          <div className="w-full max-w-[320px] flex flex-col items-center">
-                            {step.branches?.no.map(noStepId => {
-                      const noStep = campaign.steps.find(s => s.id === noStepId);
-                      if (!noStep) return null;
-                      return <div key={noStep.id} className="w-full">
-                                  <StepCard step={noStep} isActive={noStep.id === campaign.activeStepId} onClick={() => setCampaign({
-                          ...campaign,
-                          activeStepId: noStep.id
-                        })} activeVersion={noStep.id === campaign.activeStepId ? campaign.activeVersion : 'A'} onVersionClick={version => {
-                          setCampaign({
-                            ...campaign,
-                            activeStepId: noStep.id,
-                            activeVersion: version
-                          });
-                        }} onDuplicate={() => {
-                          const duplicatedStep: CampaignStep = {
-                            ...noStep,
-                            id: Date.now().toString()
-                          };
-                          const stepIndex = campaign.steps.findIndex(s => s.id === noStep.id);
-                          const newSteps = [...campaign.steps];
-                          newSteps.splice(stepIndex + 1, 0, duplicatedStep);
-                          setCampaign({
-                            ...campaign,
-                            steps: newSteps
-                          });
-                        }} onABTest={() => {
-                          const updatedStep: CampaignStep = {
-                            ...noStep,
-                            type: 'ab-test',
-                            versionA: {
-                              config: noStep.config || {}
-                            },
-                            versionB: {
-                              config: {}
-                            }
-                          };
-                          setCampaign({
-                            ...campaign,
-                            steps: campaign.steps.map(s => s.id === noStep.id ? updatedStep : s),
-                            activeStepId: noStep.id,
-                            activeVersion: 'A'
-                          });
-                        }} onDelete={() => {
-                          // Remove step from steps array and from parent's branches
-                          const parentStep = campaign.steps.find(s => s.id === noStep.parentStepId);
-                          const updatedSteps = campaign.steps.filter(s => s.id !== noStep.id).map(s => {
-                            if (s.id === parentStep?.id && s.branches?.no) {
-                              return {
-                                ...s,
-                                branches: {
-                                  ...s.branches,
-                                  no: s.branches.no.filter(id => id !== noStep.id)
+                    {/* Render branched steps side by side */}
+                    {step.branches?.yes.length || step.branches?.no.length ? <div className="flex gap-8 justify-center items-start">
+                      {/* Yes branch */}
+                      <div className="w-full max-w-[320px] flex flex-col items-center">
+                        {step.branches?.yes.map(yesStepId => {
+                          const yesStep = campaign.steps.find(s => s.id === yesStepId);
+                          if (!yesStep) return null;
+                          return <div key={yesStep.id} className="w-full">
+                            <StepCard step={yesStep} isActive={yesStep.id === campaign.activeStepId} onClick={() => setCampaign({
+                              ...campaign,
+                              activeStepId: yesStep.id
+                            })} activeVersion={yesStep.id === campaign.activeStepId ? campaign.activeVersion : 'A'} onVersionClick={version => {
+                              setCampaign({
+                                ...campaign,
+                                activeStepId: yesStep.id,
+                                activeVersion: version
+                              });
+                            }} onDuplicate={() => {
+                              const duplicatedStep: CampaignStep = {
+                                ...yesStep,
+                                id: Date.now().toString()
+                              };
+                              const stepIndex = campaign.steps.findIndex(s => s.id === yesStep.id);
+                              const newSteps = [...campaign.steps];
+                              newSteps.splice(stepIndex + 1, 0, duplicatedStep);
+                              setCampaign({
+                                ...campaign,
+                                steps: newSteps
+                              });
+                            }} onABTest={() => {
+                              const updatedStep: CampaignStep = {
+                                ...yesStep,
+                                type: 'ab-test',
+                                versionA: {
+                                  config: yesStep.config || {}
+                                },
+                                versionB: {
+                                  config: {}
                                 }
                               };
-                            }
-                            return s;
-                          });
-                          setCampaign({
-                            ...campaign,
-                            steps: updatedSteps,
-                            activeStepId: campaign.activeStepId === noStep.id ? undefined : campaign.activeStepId
-                          });
-                        }} />
-                                  
-                                  {/* Connector after branch step */}
-                                  <div className="flex flex-col items-center py-0.5">
-                                    <div className="h-2 w-0.5 bg-[#f49854]/30" />
-                                    <div className="my-0.5">
-                                      <Button onClick={() => handleOpenStepLibrary(noStep.id, 'no')} variant="ghost" size="icon" className="h-7 w-7 rounded-full border-2 border-dashed border-[#f49854]/50 hover:border-[#f49854] hover:bg-[#f49854]/5 transition-colors">
-                                        <Plus className="h-3.5 w-3.5 text-[#f49854]" />
-                                      </Button>
-                                    </div>
-                                    
-                                  </div>
-                                </div>;
-                    })}
-                          </div>
-                        </div> : null}
-                      
-                      {/* Merge point */}
-                      {step.branches?.yes.length || step.branches?.no.length ? <div className="flex justify-center">
-                          <div className="h-4 w-0.5 bg-border" />
-                        </div> : null}
-                    </> : <div className="relative flex flex-col items-center py-0.5">
-                      {/* Straight connector line with circle */}
-                      <div className="flex flex-col items-center">
-                        <div className="h-2 w-0.5 bg-border" />
-                        <div className="my-0.5">
-                          <Button onClick={() => handleOpenStepLibrary(step.id)} variant="ghost" size="icon" className="h-7 w-7 rounded-full border-2 border-dashed border-primary/50 hover:border-primary hover:bg-primary/5 transition-colors">
-                            <Plus className="h-3.5 w-3.5 text-primary" />
-                          </Button>
-                        </div>
-                        
+                              setCampaign({
+                                ...campaign,
+                                steps: campaign.steps.map(s => s.id === yesStep.id ? updatedStep : s),
+                                activeStepId: yesStep.id,
+                                activeVersion: 'A'
+                              });
+                            }} onDelete={() => {
+                              // Remove step from steps array and from parent's branches
+                              const parentStep = campaign.steps.find(s => s.id === yesStep.parentStepId);
+                              const updatedSteps = campaign.steps.filter(s => s.id !== yesStep.id).map(s => {
+                                if (s.id === parentStep?.id && s.branches?.yes) {
+                                  return {
+                                    ...s,
+                                    branches: {
+                                      ...s.branches,
+                                      yes: s.branches.yes.filter(id => id !== yesStep.id)
+                                    }
+                                  };
+                                }
+                                return s;
+                              });
+                              setCampaign({
+                                ...campaign,
+                                steps: updatedSteps,
+                                activeStepId: campaign.activeStepId === yesStep.id ? undefined : campaign.activeStepId
+                              });
+                            }} />
+
+                            {/* Connector after branch step */}
+                            <div className="flex flex-col items-center py-0.5">
+                              <div className="h-2 w-0.5 bg-[#36b39a]/30" />
+                              <div className="my-0.5">
+                                <Button onClick={() => handleOpenStepLibrary(yesStep.id, 'yes')} variant="ghost" size="icon" className="h-7 w-7 rounded-full border-2 border-dashed border-[#36b39a]/50 hover:border-[#36b39a] hover:bg-[#36b39a]/5 transition-colors">
+                                  <Plus className="h-3.5 w-3.5 text-[#36b39a]" />
+                                </Button>
+                              </div>
+
+                            </div>
+                          </div>;
+                        })}
                       </div>
-                    </div>}
+
+                      {/* No branch */}
+                      <div className="w-full max-w-[320px] flex flex-col items-center">
+                        {step.branches?.no.map(noStepId => {
+                          const noStep = campaign.steps.find(s => s.id === noStepId);
+                          if (!noStep) return null;
+                          return <div key={noStep.id} className="w-full">
+                            <StepCard step={noStep} isActive={noStep.id === campaign.activeStepId} onClick={() => setCampaign({
+                              ...campaign,
+                              activeStepId: noStep.id
+                            })} activeVersion={noStep.id === campaign.activeStepId ? campaign.activeVersion : 'A'} onVersionClick={version => {
+                              setCampaign({
+                                ...campaign,
+                                activeStepId: noStep.id,
+                                activeVersion: version
+                              });
+                            }} onDuplicate={() => {
+                              const duplicatedStep: CampaignStep = {
+                                ...noStep,
+                                id: Date.now().toString()
+                              };
+                              const stepIndex = campaign.steps.findIndex(s => s.id === noStep.id);
+                              const newSteps = [...campaign.steps];
+                              newSteps.splice(stepIndex + 1, 0, duplicatedStep);
+                              setCampaign({
+                                ...campaign,
+                                steps: newSteps
+                              });
+                            }} onABTest={() => {
+                              const updatedStep: CampaignStep = {
+                                ...noStep,
+                                type: 'ab-test',
+                                versionA: {
+                                  config: noStep.config || {}
+                                },
+                                versionB: {
+                                  config: {}
+                                }
+                              };
+                              setCampaign({
+                                ...campaign,
+                                steps: campaign.steps.map(s => s.id === noStep.id ? updatedStep : s),
+                                activeStepId: noStep.id,
+                                activeVersion: 'A'
+                              });
+                            }} onDelete={() => {
+                              // Remove step from steps array and from parent's branches
+                              const parentStep = campaign.steps.find(s => s.id === noStep.parentStepId);
+                              const updatedSteps = campaign.steps.filter(s => s.id !== noStep.id).map(s => {
+                                if (s.id === parentStep?.id && s.branches?.no) {
+                                  return {
+                                    ...s,
+                                    branches: {
+                                      ...s.branches,
+                                      no: s.branches.no.filter(id => id !== noStep.id)
+                                    }
+                                  };
+                                }
+                                return s;
+                              });
+                              setCampaign({
+                                ...campaign,
+                                steps: updatedSteps,
+                                activeStepId: campaign.activeStepId === noStep.id ? undefined : campaign.activeStepId
+                              });
+                            }} />
+
+                            {/* Connector after branch step */}
+                            <div className="flex flex-col items-center py-0.5">
+                              <div className="h-2 w-0.5 bg-[#f49854]/30" />
+                              <div className="my-0.5">
+                                <Button onClick={() => handleOpenStepLibrary(noStep.id, 'no')} variant="ghost" size="icon" className="h-7 w-7 rounded-full border-2 border-dashed border-[#f49854]/50 hover:border-[#f49854] hover:bg-[#f49854]/5 transition-colors">
+                                  <Plus className="h-3.5 w-3.5 text-[#f49854]" />
+                                </Button>
+                              </div>
+
+                            </div>
+                          </div>;
+                        })}
+                      </div>
+                    </div> : null}
+
+                    {/* Merge point */}
+                    {step.branches?.yes.length || step.branches?.no.length ? <div className="flex justify-center">
+                      <div className="h-4 w-0.5 bg-border" />
+                    </div> : null}
+                  </> : <div className="relative flex flex-col items-center py-0.5">
+                    {/* Straight connector line with circle */}
+                    <div className="flex flex-col items-center">
+                      <div className="h-2 w-0.5 bg-border" />
+                      <div className="my-0.5">
+                        <Button onClick={() => handleOpenStepLibrary(step.id)} variant="ghost" size="icon" className="h-7 w-7 rounded-full border-2 border-dashed border-primary/50 hover:border-primary hover:bg-primary/5 transition-colors">
+                          <Plus className="h-3.5 w-3.5 text-primary" />
+                        </Button>
+                      </div>
+
+                    </div>
+                  </div>}
                 </div>)}
+              </div>
             </div>
           </div>
         </div>
+      )}
 
-        {/* Config panel */}
+      {/* Config panel - only show for sequence tab */}
+      {activeTab === 'sequence' && (
         <ConfigPanel step={activeStep} activeVersion={campaign.activeVersion} onConfigChange={config => {
-        if (activeStep) {
-          setCampaign({
-            ...campaign,
-            steps: campaign.steps.map(s => s.id === activeStep.id ? {
-              ...s,
-              config
-            } : s)
-          });
-        }
-      }} />
-      </div>
+          if (activeStep) {
+            setCampaign({
+              ...campaign,
+              steps: campaign.steps.map(s => s.id === activeStep.id ? {
+                ...s,
+                config
+              } : s)
+            });
+          }
+        }} />
+      )}
+    </div>
 
-      <StepLibrary open={isStepLibraryOpen} onClose={() => setIsStepLibraryOpen(false)} onSelectStep={handleAddStep} />
-    </div>;
+    <StepLibrary open={isStepLibraryOpen} onClose={() => setIsStepLibraryOpen(false)} onSelectStep={handleAddStep} />
+    <TemplateImportModal
+      open={isTemplateImportOpen}
+      onOpenChange={setIsTemplateImportOpen}
+      onSelectTemplate={(template) => {
+        console.log('Selected template:', template);
+        // TODO: Import template steps into campaign
+      }}
+    />
+  </div>;
 };
 export default Index;

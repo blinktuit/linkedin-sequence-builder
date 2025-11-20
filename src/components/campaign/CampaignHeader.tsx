@@ -92,7 +92,7 @@ export const CampaignHeader = ({
         <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onBackToCampaigns}>
           <X className="h-4 w-4" />
         </Button>
-        
+
         <div className="flex items-center gap-2">
           <Popover open={emojiPickerOpen} onOpenChange={setEmojiPickerOpen}>
             <PopoverTrigger asChild>
@@ -179,40 +179,52 @@ export const CampaignHeader = ({
       </div>
 
       <div className="flex items-center gap-3">
-        <nav className="flex gap-1">
-          <Button
-            variant={activeTab === 'sequence' ? 'secondary' : 'ghost'}
+        <nav className="flex items-center gap-2 mr-4">
+          <button
             onClick={() => onTabChange('sequence')}
-            className="gap-2"
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${activeTab === 'sequence'
+              ? 'bg-primary/10 text-primary'
+              : 'text-muted-foreground hover:text-foreground'
+              }`}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="3" fill="currentColor"/>
-              <path d="M12 5v2M12 17v2M5 12h2M17 12h2" stroke="currentColor" strokeWidth="2"/>
-            </svg>
+            <span className={`flex items-center justify-center w-5 h-5 rounded-full text-xs border ${activeTab === 'sequence'
+              ? 'border-primary bg-primary text-primary-foreground'
+              : 'border-muted-foreground/30'
+              }`}>1</span>
             Sequence
-          </Button>
-          <Button
-            variant={activeTab === 'leadlist' ? 'secondary' : 'ghost'}
+          </button>
+
+          <div className="h-px w-4 bg-border" />
+
+          <button
             onClick={() => onTabChange('leadlist')}
-            className="gap-2"
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${activeTab === 'leadlist'
+              ? 'bg-primary/10 text-primary'
+              : 'text-muted-foreground hover:text-foreground'
+              }`}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <circle cx="9" cy="7" r="2" stroke="currentColor" strokeWidth="2"/>
-              <circle cx="15" cy="17" r="2" stroke="currentColor" strokeWidth="2"/>
-              <path d="M9 9v6M15 9v6" stroke="currentColor" strokeWidth="2"/>
-            </svg>
+            <span className={`flex items-center justify-center w-5 h-5 rounded-full text-xs border ${activeTab === 'leadlist'
+              ? 'border-primary bg-primary text-primary-foreground'
+              : 'border-muted-foreground/30'
+              }`}>2</span>
             Lead list
-          </Button>
-          <Button
-            variant={activeTab === 'launch' ? 'secondary' : 'ghost'}
+          </button>
+
+          <div className="h-px w-4 bg-border" />
+
+          <button
             onClick={() => onTabChange('launch')}
-            className="gap-2"
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${activeTab === 'launch'
+              ? 'bg-primary/10 text-primary'
+              : 'text-muted-foreground hover:text-foreground'
+              }`}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" strokeWidth="2"/>
-            </svg>
+            <span className={`flex items-center justify-center w-5 h-5 rounded-full text-xs border ${activeTab === 'launch'
+              ? 'border-primary bg-primary text-primary-foreground'
+              : 'border-muted-foreground/30'
+              }`}>3</span>
             Launch
-          </Button>
+          </button>
         </nav>
 
         <Button onClick={onNextStep} className="gap-2">

@@ -152,7 +152,9 @@ export default function Campaigns() {
 
       switch (sortColumn) {
         case 'active':
-          comparison = (a.isActive === b.isActive) ? 0 : a.isActive ? -1 : 1;
+          const aActive = a.status !== 'paused';
+          const bActive = b.status !== 'paused';
+          comparison = (aActive === bActive) ? 0 : aActive ? -1 : 1;
           break;
         case 'name':
           comparison = a.name.localeCompare(b.name);
@@ -362,18 +364,18 @@ export default function Campaigns() {
         )}
 
         {/* Table */}
-        <div className="border rounded-lg bg-card">
+        <div className="border rounded-xl bg-card overflow-hidden">
           <table className="w-full">
             <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="w-12 px-4 py-3 text-left">
+              <tr className="border-b">
+                <th className="w-12 px-6 py-4 text-left">
                   <Checkbox
                     checked={selectedCampaigns.size === filteredCampaigns.length && filteredCampaigns.length > 0}
                     onCheckedChange={toggleAllCampaigns}
                   />
                 </th>
                 <th
-                  className="px-4 py-3 text-left text-xs font-normal text-muted-foreground cursor-pointer hover:text-foreground"
+                  className="px-6 py-4 text-left text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
                   onClick={() => handleSort('active')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -382,7 +384,7 @@ export default function Campaigns() {
                   </div>
                 </th>
                 <th
-                  className="px-4 py-3 text-left text-xs font-normal text-muted-foreground cursor-pointer hover:text-foreground"
+                  className="px-6 py-4 text-left text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
                   onClick={() => handleSort('name')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -391,7 +393,7 @@ export default function Campaigns() {
                   </div>
                 </th>
                 <th
-                  className="px-4 py-3 text-left text-xs font-normal text-muted-foreground cursor-pointer hover:text-foreground"
+                  className="px-6 py-4 text-left text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
                   onClick={() => handleSort('status')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -400,7 +402,7 @@ export default function Campaigns() {
                   </div>
                 </th>
                 <th
-                  className="px-4 py-3 text-left text-xs font-normal text-muted-foreground cursor-pointer hover:text-foreground"
+                  className="px-6 py-4 text-left text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
                   onClick={() => handleSort('invites')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -409,7 +411,7 @@ export default function Campaigns() {
                   </div>
                 </th>
                 <th
-                  className="px-4 py-3 text-left text-xs font-normal text-muted-foreground cursor-pointer hover:text-foreground"
+                  className="px-6 py-4 text-left text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
                   onClick={() => handleSort('leads')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -418,7 +420,7 @@ export default function Campaigns() {
                   </div>
                 </th>
                 <th
-                  className="px-4 py-3 text-left text-xs font-normal text-muted-foreground cursor-pointer hover:text-foreground"
+                  className="px-6 py-4 text-left text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
                   onClick={() => handleSort('accepted')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -427,7 +429,7 @@ export default function Campaigns() {
                   </div>
                 </th>
                 <th
-                  className="px-4 py-3 text-left text-xs font-normal text-muted-foreground cursor-pointer hover:text-foreground"
+                  className="px-6 py-4 text-left text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
                   onClick={() => handleSort('replied')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -436,7 +438,7 @@ export default function Campaigns() {
                   </div>
                 </th>
                 <th
-                  className="px-6 py-3 text-left text-xs font-normal text-muted-foreground cursor-pointer hover:text-foreground"
+                  className="px-6 py-4 text-left text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
                   onClick={() => handleSort('createdAt')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -444,56 +446,54 @@ export default function Campaigns() {
                     <ChevronDown className={`h-3 w-3 transition-transform ${sortColumn === 'createdAt' && sortOrder === 'asc' ? 'rotate-180' : ''}`} />
                   </div>
                 </th>
-                <th className="w-12 px-4 py-3"></th>
+                <th className="w-12 px-6 py-4"></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-border/40">
               {filteredCampaigns.map((campaign) => (
-                <tr key={campaign.id} className="border-b hover:bg-muted/30 transition-colors">
-                  <td className="p-4">
+                <tr key={campaign.id} className="group hover:bg-muted/10 transition-colors">
+                  <td className="px-6 py-4">
                     <Checkbox
                       checked={selectedCampaigns.has(campaign.id)}
                       onCheckedChange={() => toggleCampaignSelection(campaign.id)}
                     />
                   </td>
-                  <td className="p-4">
+                  <td className="px-6 py-4">
                     <Switch
                       checked={campaign.status !== 'paused'}
                       onCheckedChange={() => toggleCampaignStatus(campaign.id)}
                     />
                   </td>
-                  <td className="p-4">
+                  <td className="px-6 py-4">
                     <button
                       onClick={() => navigate(`/campaign/${campaign.id}`)}
-                      className="flex items-center gap-2 text-left hover:text-primary transition-colors"
+                      className="flex items-center gap-3 text-left group-hover:text-primary transition-colors"
                     >
-                      <span className="text-lg">{campaign.emoji}</span>
-                      <span className="font-medium">{campaign.name}</span>
+                      <span className="text-2xl">{campaign.emoji}</span>
+                      <span className="font-medium text-base">{campaign.name}</span>
                     </button>
                   </td>
-                  <td className="p-4">
+                  <td className="px-6 py-4">
                     {getStatusBadge(campaign.status)}
                   </td>
-                  <td className="p-4">
-                    <span className="text-sm">
+                  <td className="px-6 py-4">
+                    <span className="text-sm text-muted-foreground">
                       {campaign.connectionRequests.sent}/{campaign.connectionRequests.total}
                     </span>
                   </td>
-                  <td className="p-4">
-                    <span className="text-sm">{campaign.leads}</span>
+                  <td className="px-6 py-4">
+                    <span className="text-sm text-muted-foreground">{campaign.leads}</span>
                   </td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-1 text-sm">
-                      <span>{campaign.acceptanceRatio.percentage}%</span>
-                      <span>{campaign.acceptanceRatio.count}</span>
-                      <UserCheck className="h-3.5 w-3.5 text-muted-foreground" />
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                      <span className="text-foreground">{campaign.acceptanceRatio.percentage}%</span>
+                      <span className="text-xs opacity-70">({campaign.acceptanceRatio.count})</span>
                     </div>
                   </td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-1 text-sm">
-                      <span>{campaign.replyRatio.percentage}%</span>
-                      <span>{campaign.replyRatio.count}</span>
-                      <MessageSquare className="h-3.5 w-3.5 text-muted-foreground" />
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                      <span className="text-foreground">{campaign.replyRatio.percentage}%</span>
+                      <span className="text-xs opacity-70">({campaign.replyRatio.count})</span>
                     </div>
                   </td>
                   <td className="px-6 py-4">
@@ -501,10 +501,10 @@ export default function Campaigns() {
                       {getRelativeTime(campaign.createdAt)}
                     </span>
                   </td>
-                  <td className="p-4">
+                  <td className="px-6 py-4">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <Button variant="ghost" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-foreground">
                           <MoreVertical className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
@@ -546,8 +546,14 @@ export default function Campaigns() {
           </table>
 
           {filteredCampaigns.length === 0 && (
-            <div className="p-12 text-center">
-              <p className="text-muted-foreground">No campaigns found</p>
+            <div className="p-16 text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted/50 mb-4">
+                <Search className="h-8 w-8 text-muted-foreground/40" />
+              </div>
+              <h3 className="text-lg font-medium mb-1">No campaigns found</h3>
+              <p className="text-muted-foreground">
+                Try adjusting your search or filters
+              </p>
             </div>
           )}
         </div>
