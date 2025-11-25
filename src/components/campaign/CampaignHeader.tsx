@@ -20,14 +20,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
-import { CampaignIconDisplay, ICON_LIST } from "./CampaignIconPicker";
-import type { CampaignIcon } from "@/types/campaigns";
 
 interface CampaignHeaderProps {
   campaignName: string;
@@ -38,8 +31,6 @@ interface CampaignHeaderProps {
   onCampaignNameChange?: (name: string) => void;
   campaignActive?: boolean;
   onToggleCampaign?: (active: boolean) => void;
-  campaignIcon?: CampaignIcon;
-  onIconChange?: (icon: CampaignIcon) => void;
   campaignSource?: string;
 }
 
@@ -52,13 +43,10 @@ export const CampaignHeader = ({
   onCampaignNameChange,
   campaignActive = true,
   onToggleCampaign,
-  campaignIcon = "mail",
-  onIconChange,
   campaignSource
 }: CampaignHeaderProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(campaignName);
-  const [iconPickerOpen, setIconPickerOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -153,34 +141,6 @@ export const CampaignHeader = ({
       {/* Right: Campaign info + Next step + Menu */}
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2">
-          <Popover open={iconPickerOpen} onOpenChange={setIconPickerOpen}>
-            <PopoverTrigger asChild>
-              <button className="h-8 w-8 bg-primary/10 rounded flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer">
-                <CampaignIconDisplay icon={campaignIcon} className="text-primary" size={16} />
-              </button>
-            </PopoverTrigger>
-            <PopoverContent className="w-64 p-3" align="end">
-              <div className="space-y-2">
-                <p className="text-sm font-medium">Choose an icon</p>
-                <div className="grid grid-cols-6 gap-2">
-                  {ICON_LIST.map((icon) => (
-                    <button
-                      key={icon}
-                      onClick={() => {
-                        if (onIconChange) {
-                          onIconChange(icon);
-                        }
-                        setIconPickerOpen(false);
-                      }}
-                      className={`h-8 w-8 flex items-center justify-center hover:bg-muted rounded transition-colors ${campaignIcon === icon ? 'bg-primary/10 text-primary' : ''}`}
-                    >
-                      <CampaignIconDisplay icon={icon} size={16} />
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </PopoverContent>
-          </Popover>
           {isEditing ? (
             <Input
               ref={inputRef}
