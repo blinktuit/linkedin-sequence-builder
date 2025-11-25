@@ -666,9 +666,9 @@ export const CreateCampaignModal = ({
                             )}
                           </div>
 
-                          <Alert className="bg-[#f0fdf9] border-[#d1fae5]">
-                            <Info className="h-4 w-4 text-[#059669]" />
-                            <AlertDescription className="text-xs text-[#047857] space-y-1 ml-2">
+                          <Alert className="bg-primary/5 border-primary/20">
+                            <Info className="h-4 w-4 text-primary" />
+                            <AlertDescription className="text-xs text-foreground/70 space-y-1 ml-2">
                               <p>• Je kan deze campagne als laatste stap in je multi step campaign zetten</p>
                               <p>• Er geldt een limiet van maximaal 1000 uitnodigingen per week per gebruiker, dus niet per evenement</p>
                               <p>• Alleen 1e-graads connecties kunnen worden uitgenodigd voor een event, dus mensen waarmee je direct verbonden bent op LinkedIn. Mensen die geen connectie zijn worden overgeslagen</p>
@@ -709,9 +709,9 @@ export const CreateCampaignModal = ({
                             )}
                           </div>
 
-                          <Alert className="bg-[#f0fdf9] border-[#d1fae5]">
-                            <Info className="h-4 w-4 text-[#059669]" />
-                            <AlertDescription className="text-xs text-[#047857] space-y-1 ml-2">
+                          <Alert className="bg-primary/5 border-primary/20">
+                            <Info className="h-4 w-4 text-primary" />
+                            <AlertDescription className="text-xs text-foreground/70 space-y-1 ml-2">
                               <p>• Je kan deze campagne als laatste stap in je multi step campaign zetten</p>
                               <p>• Er geldt een limiet van maximaal 250 uitnodigingen per maand per bedrijfspagina</p>
                               <p>• Alleen 1e-graads connecties kunnen worden uitgenodigd voor een bedrijfspagina. Mensen die geen connectie zijn worden overgeslagen</p>
