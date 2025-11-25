@@ -463,24 +463,8 @@ export const LeadListView = () => {
             {/* Header */}
             <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-white w-full">
                 <div className="flex items-center gap-4 flex-1">
-                    {/* Status Filter Buttons */}
+                    {/* Filter & Sort Buttons */}
                     <div className="flex items-center gap-2">
-                        <Button
-                            variant={filterStatus === 'all' ? 'outline' : 'ghost'}
-                            size="sm"
-                            className={`rounded-full px-4 h-8 ${filterStatus === 'all' ? 'border-primary text-primary hover:text-primary hover:bg-primary/5' : ''}`}
-                            onClick={() => setFilterStatus('all')}
-                        >
-                            All ({statusCounts.all})
-                        </Button>
-                        <Button
-                            variant={filterStatus === 'accepted' ? 'outline' : 'ghost'}
-                            size="sm"
-                            className={`rounded-full px-4 h-8 ${filterStatus === 'accepted' ? 'border-primary text-primary hover:text-primary hover:bg-primary/5' : ''}`}
-                            onClick={() => setFilterStatus('accepted')}
-                        >
-                            Accepted ({statusCounts.accepted})
-                        </Button>
                         <Button variant="ghost" size="icon" className="h-8 w-8">
                             <Filter className="h-4 w-4" />
                         </Button>
