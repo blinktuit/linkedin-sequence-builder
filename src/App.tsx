@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Campaigns from "./pages/Campaigns";
 import DesignVariants from "./pages/DesignVariants";
+import TestSingleStepConfig from "./pages/TestSingleStepConfig";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ const App = () => (
           <Route path="/" element={<Campaigns />} />
           <Route path="/campaign/:id" element={<Index />} />
           <Route path="/design-variants" element={<DesignVariants />} />
+          <Route path="/test-single-step-config" element={<TestSingleStepConfig />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
