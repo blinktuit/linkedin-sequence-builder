@@ -276,12 +276,26 @@ export const ConfigPanel = ({
                         {activeVersion === 'A' ? 'Control variant' : 'Test variant'}
                       </div>
                     </div>
-                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <div
-                        className="h-2 w-2 rounded-full"
-                        style={{ backgroundColor: currentColor.from }}
-                      />
-                      A/B Test
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <div
+                          className="h-2 w-2 rounded-full"
+                          style={{ backgroundColor: currentColor.from }}
+                        />
+                        A/B Test
+                      </div>
+                      {variants.length > 2 && (
+                        <button
+                          onClick={() => {
+                            const event = new CustomEvent('removeVariant', { detail: activeVersion });
+                            window.dispatchEvent(event);
+                          }}
+                          className="h-7 w-7 rounded-md flex items-center justify-center text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+                          title="Remove this variant"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>

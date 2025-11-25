@@ -107,9 +107,73 @@ const Index = () => {
       }
     };
 
+    // Listen for version switch events from ConfigPanel
+    const handleSwitchVersion = (event: CustomEvent) => {
+      const newVersion = event.detail as string;
+      setCampaign({
+        ...campaign,
+        activeVersion: newVersion as 'A' | 'B'
+      });
+    };
+
+    // Listen for add variant events from ConfigPanel
+    const handleAddVariant = () => {
+      if (!campaign.activeStepId) return;
+      const activeStep = campaign.steps.find(s => s.id === campaign.activeStepId);
+      if (!activeStep || activeStep.type !== 'ab-test') return;
+
+      const currentVersions = activeStep.versions || ['A', 'B'];
+      const allVersions = ['A', 'B', 'C', 'D', 'E'];
+      const nextVersion = allVersions.find(v => !currentVersions.includes(v));
+
+      if (nextVersion) {
+        setCampaign({
+          ...campaign,
+          steps: campaign.steps.map(s =>
+            s.id === campaign.activeStepId
+              ? { ...s, versions: [...currentVersions, nextVersion] }
+              : s
+          ),
+          activeVersion: nextVersion as 'A' | 'B'
+        });
+      }
+    };
+
+    // Listen for remove variant events from ConfigPanel
+    const handleRemoveVariant = (event: CustomEvent) => {
+      if (!campaign.activeStepId) return;
+      const variantToRemove = event.detail as string;
+      const activeStep = campaign.steps.find(s => s.id === campaign.activeStepId);
+      if (!activeStep || activeStep.type !== 'ab-test') return;
+
+      const currentVersions = activeStep.versions || ['A', 'B'];
+      if (currentVersions.length <= 2) return; // Must have at least 2 variants
+
+      const newVersions = currentVersions.filter(v => v !== variantToRemove);
+      const newActiveVersion = campaign.activeVersion === variantToRemove
+        ? newVersions[0]
+        : campaign.activeVersion;
+
+      setCampaign({
+        ...campaign,
+        steps: campaign.steps.map(s =>
+          s.id === campaign.activeStepId
+            ? { ...s, versions: newVersions }
+            : s
+        ),
+        activeVersion: newActiveVersion as 'A' | 'B'
+      });
+    };
+
     window.addEventListener('updateStepConfig', handleConfigUpdate as EventListener);
+    window.addEventListener('switchVersion', handleSwitchVersion as EventListener);
+    window.addEventListener('addVariant', handleAddVariant as EventListener);
+    window.addEventListener('removeVariant', handleRemoveVariant as EventListener);
     return () => {
       window.removeEventListener('updateStepConfig', handleConfigUpdate as EventListener);
+      window.removeEventListener('switchVersion', handleSwitchVersion as EventListener);
+      window.removeEventListener('addVariant', handleAddVariant as EventListener);
+      window.removeEventListener('removeVariant', handleRemoveVariant as EventListener);
     };
   }, [campaign]);
   const handleAddStep = (type: string) => {
