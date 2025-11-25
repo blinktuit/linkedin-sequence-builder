@@ -514,21 +514,19 @@ export const CreateCampaignModal = ({
         {stepLabels.map((s, index) => (
           <div key={s.number} className="flex items-center gap-3">
             <div
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors ${
-                s.number === step
-                  ? 'bg-primary/10 text-primary'
-                  : s.number < step
-                    ? 'text-primary'
-                    : 'text-muted-foreground'
-              }`}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors ${s.number === step
+                ? 'bg-primary/10 text-primary'
+                : s.number < step
+                  ? 'text-primary'
+                  : 'text-muted-foreground'
+                }`}
             >
-              <span className={`flex items-center justify-center w-5 h-5 rounded-full text-xs font-medium ${
-                s.number < step
+              <span className={`flex items-center justify-center w-5 h-5 rounded-full text-xs font-medium ${s.number < step
+                ? 'bg-primary text-primary-foreground'
+                : s.number === step
                   ? 'bg-primary text-primary-foreground'
-                  : s.number === step
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted text-muted-foreground'
-              }`}>
+                  : 'bg-muted text-muted-foreground'
+                }`}>
                 {s.number < step ? <Check className="h-3 w-3" /> : s.number}
               </span>
               <span className="text-sm font-medium">{s.label}</span>
@@ -596,27 +594,27 @@ export const CreateCampaignModal = ({
                         <p className="text-muted-foreground mt-1">Quick actions for specific goals</p>
                       </div>
                       <div className="space-y-4">
-                      {leadSources.filter(s => ['event-inviter', 'company-page'].includes(s.id)).map((source) => (
-                        <button
-                          key={source.id}
-                          onClick={() => {
-                            setIsMultiStep(false);
-                            setSelectedSource(source.id);
-                          }}
-                          className="group w-full flex items-center justify-between p-6 rounded-xl border hover:border-primary/50 hover:bg-accent/50 transition-all cursor-pointer bg-card text-left"
-                        >
-                          <div className="flex items-center gap-5">
-                            <div className="p-3 rounded-full bg-muted group-hover:bg-primary/10 group-hover:text-primary transition-colors">
-                              {source.icon}
+                        {leadSources.filter(s => ['event-inviter', 'company-page'].includes(s.id)).map((source) => (
+                          <button
+                            key={source.id}
+                            onClick={() => {
+                              setIsMultiStep(false);
+                              setSelectedSource(source.id);
+                            }}
+                            className="group w-full flex items-center justify-between p-6 rounded-xl border hover:border-primary/50 hover:bg-accent/50 transition-all cursor-pointer bg-card text-left"
+                          >
+                            <div className="flex items-center gap-5">
+                              <div className="p-3 rounded-full bg-muted group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+                                {source.icon}
+                              </div>
+                              <div>
+                                <h4 className="text-lg font-semibold mb-1">{source.title}</h4>
+                                <p className="text-sm text-muted-foreground">{source.description}</p>
+                              </div>
                             </div>
-                            <div>
-                              <h4 className="text-lg font-semibold mb-1">{source.title}</h4>
-                              <p className="text-sm text-muted-foreground">{source.description}</p>
-                            </div>
-                          </div>
-                          <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-                        </button>
-                      ))}
+                            <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                          </button>
+                        ))}
                       </div>
                     </div>
                   ) : (
@@ -669,19 +667,19 @@ export const CreateCampaignModal = ({
                           <div className="space-y-2 text-sm text-muted-foreground py-4">
                             <div className="flex items-start gap-2">
                               <div className="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 shrink-0" />
-                              <span>Je kan deze campagne als laatste stap in je multi step campaign zetten</span>
+                              <span>Zet deze campagne als laatste stap in je multi step campaign</span>
                             </div>
                             <div className="flex items-start gap-2">
                               <div className="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 shrink-0" />
-                              <span>Er geldt een limiet van maximaal 1000 uitnodigingen per week per gebruiker, dus niet per evenement</span>
+                              <span>Maximaal 1000 uitnodigingen per week per gebruiker, dus niet per evenement</span>
                             </div>
                             <div className="flex items-start gap-2">
                               <div className="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 shrink-0" />
-                              <span>Alleen 1e-graads connecties kunnen worden uitgenodigd, 2e en 3e+ graads worden overgeslagen</span>
+                              <span>1e-graads connecties kunnen worden uitgenodigd, 2e en 3e+ graads worden overgeslagen</span>
                             </div>
                             <div className="flex items-start gap-2">
                               <div className="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 shrink-0" />
-                              <span>Als je limiet bereikt is wacht de campagne tot je weer een volgende week krijgt</span>
+                              <span>Als je limiet bereikt is wacht de campagne tot volgende week</span>
                             </div>
                           </div>
 
