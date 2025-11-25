@@ -194,6 +194,19 @@ export const ConfigPanel = ({
   return <div className="w-[480px] border-l border-border bg-card overflow-y-auto">
       <div className="p-6 space-y-6">
         <div>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="text-primary">
+              {step.type === 'linkedin-invitation' && <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>}
+            </div>
+            <div className="flex-1">
+              <div className="font-medium">{step.title}</div>
+              <div className="text-xs text-muted-foreground">{step.subtitle}</div>
+            </div>
+          </div>
+
           {step.type === 'ab-test' && (() => {
             // Define variant colors
             const variantColors: Record<string, { from: string; to: string }> = {
@@ -314,19 +327,6 @@ export const ConfigPanel = ({
               </div>
             );
           })()}
-
-          <div className="flex items-center gap-3 mb-4">
-            <div className="text-primary">
-              {step.type === 'linkedin-invitation' && <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
-                  <circle cx="4" cy="4" r="2" />
-                </svg>}
-            </div>
-            <div className="flex-1">
-              <div className="font-medium">{step.title}</div>
-              <div className="text-xs text-muted-foreground">{step.subtitle}</div>
-            </div>
-          </div>
 
           {step.error && <div className="mb-4 p-3 bg-destructive/10 border border-destructive rounded-lg flex items-center gap-2 text-sm text-destructive">
               <AlertCircle className="h-4 w-4" />
@@ -677,7 +677,7 @@ export const ConfigPanel = ({
                   </Button>
                 </div>
                 <div className="relative bg-white">
-                  <Textarea id="message-textarea" placeholder="What message do you want to send?" className="min-h-[180px] resize-none border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 px-4 py-3 bg-transparent" value={step.config?.message || ""} onChange={e => onConfigChange({
+                  <Textarea id="message-textarea" placeholder="What message do you want to send?" className="min-h-[180px] resize-none border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 px-4 py-3 bg-white" value={step.config?.message || ""} onChange={e => onConfigChange({
                 ...step.config,
                 message: e.target.value
               })} />
