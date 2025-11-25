@@ -18,9 +18,11 @@ interface StepCardProps {
   activeVersion?: 'A' | 'B';
 }
 const StepIcon = ({
-  type
+  type,
+  isActive = false
 }: {
   type: string;
+  isActive?: boolean;
 }) => {
   const iconClass = "h-4 w-4";
 
@@ -111,7 +113,14 @@ export const StepCard = ({
 
   const conditionWaitText = getConditionWaitText();
 
-  return <div onClick={step.type === 'start' ? undefined : onClick} className={cn("relative bg-card border rounded-lg p-3 transition-all", step.type === 'start' ? "cursor-default" : "cursor-pointer hover:shadow-md hover:scale-[1.01]", isActive && step.type !== 'start' ? "border-primary shadow-md ring-2 ring-primary/20" : "border-border", hasError && "border-destructive ring-2 ring-destructive/20")}>
+  return <div onClick={step.type === 'start' ? undefined : onClick} className={cn(
+    "relative bg-card border rounded-xl p-4 transition-all group",
+    step.type === 'start' ? "cursor-default" : "cursor-pointer hover:shadow-md hover:border-border",
+    isActive && step.type !== 'start'
+      ? "border-primary shadow-lg shadow-primary/10 ring-1 ring-primary/20"
+      : "border-border/60",
+    hasError && "border-destructive ring-2 ring-destructive/20"
+  )}>
       {step.type === 'start' ? <div className="text-center text-xs text-muted-foreground py-2">Start campaign 🚀</div> : <>
           <div className="flex items-center justify-between mb-2">
             <Popover open={delayOpen} onOpenChange={setDelayOpen}>
@@ -274,9 +283,8 @@ export const StepCard = ({
               </PopoverContent>
             </Popover>
 
-            <div className="flex items-center gap-1">
-
-              <Button variant="ghost" size="icon" className="h-6 w-6 hover:bg-destructive/10 hover:text-destructive" onClick={e => {
+            <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <Button variant="ghost" size="icon" className="h-7 w-7 rounded-md hover:bg-destructive/10 hover:text-destructive" onClick={e => {
             e.stopPropagation();
             onDelete?.();
           }}>
@@ -285,14 +293,19 @@ export const StepCard = ({
             </div>
           </div>
 
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 flex-1 min-w-0">
-              <div className="text-primary flex-shrink-0">
-                <StepIcon type={step.type} />
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <div className={cn(
+                "h-9 w-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors",
+                isActive
+                  ? "bg-gradient-to-br from-primary to-primary/70 text-primary-foreground shadow-sm shadow-primary/25"
+                  : "bg-muted/50 text-primary group-hover:bg-primary/10"
+              )}>
+                <StepIcon type={step.type} isActive={isActive} />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-semibold text-sm leading-tight">{step.title}</div>
-                {step.type === 'send-to-campaign' && step.config?.targetCampaign && (
+                <div className="font-medium text-sm leading-tight">{step.title}</div>
+                {step.type === 'send-to-campaign' && step.config?.targetCampaign ? (
                   <div className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1">
                     {step.config.targetCampaign === 'ai-lookalike' && (
                       <>
@@ -313,17 +326,19 @@ export const StepCard = ({
                       </>
                     )}
                   </div>
+                ) : step.subtitle && (
+                  <div className="text-xs text-muted-foreground mt-0.5">{step.subtitle}</div>
                 )}
               </div>
             </div>
 
-            <div className="flex items-center gap-1 flex-shrink-0">
-              {hasError && <AlertCircle className="h-3.5 w-3.5 text-destructive" />}
-              {hasWarning && <AlertTriangle className="h-3.5 w-3.5 text-warning" />}
+            <div className="flex items-center gap-1 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+              {hasError && <AlertCircle className="h-3.5 w-3.5 text-destructive opacity-100" />}
+              {hasWarning && <AlertTriangle className="h-3.5 w-3.5 text-warning opacity-100" />}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild onClick={e => e.stopPropagation()}>
-                  <Button variant="ghost" size="icon" className="h-6 w-6 hover:bg-muted/50">
-                    <MoreVertical className="h-3.5 w-3.5" />
+                  <Button variant="ghost" size="icon" className="h-7 w-7 rounded-md hover:bg-muted">
+                    <MoreVertical className="h-4 w-4 text-muted-foreground" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
@@ -348,37 +363,37 @@ export const StepCard = ({
 
           {hasError && <div className="mt-1.5 text-[11px] text-destructive">{step.error}</div>}
 
-          {step.type === 'ab-test' && <div className="mt-2 space-y-1">
+          {step.type === 'ab-test' && <div className="mt-3 space-y-1.5">
               <button onClick={e => {
           e.stopPropagation();
           onVersionClick?.('A');
-        }} className={cn("w-full flex items-center justify-between gap-1.5 p-2 border rounded bg-background transition-colors text-left", activeVersion === 'A' ? "border-primary bg-primary/5 hover:bg-primary/10" : "border-border hover:bg-muted/50")}>
-                <div className="flex items-center gap-1.5 flex-1 min-w-0">
-                  <div className={cn("h-5 w-5 rounded border flex items-center justify-center bg-card flex-shrink-0", activeVersion === 'A' ? "border-primary" : "border-border")}>
-                    <span className={cn("text-[10px] font-medium", activeVersion === 'A' && "text-primary")}>A</span>
+        }} className={cn("w-full flex items-center justify-between gap-2 p-2.5 border rounded-lg bg-background transition-all text-left", activeVersion === 'A' ? "border-primary bg-primary/5 shadow-sm" : "border-border/60 hover:border-border hover:bg-muted/30")}>
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <div className={cn("h-6 w-6 rounded-md flex items-center justify-center flex-shrink-0 text-xs font-semibold", activeVersion === 'A' ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground")}>
+                    A
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className={cn("text-[11px] font-medium", activeVersion === 'A' && "text-primary")}>Version A</div>
+                    <div className={cn("text-xs font-medium", activeVersion === 'A' && "text-primary")}>Version A</div>
                     {step.versionA?.error && <div className="text-[10px] text-destructive truncate">{step.versionA.error}</div>}
                   </div>
                 </div>
-                <MoreVertical className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
+                <MoreVertical className="h-4 w-4 text-muted-foreground flex-shrink-0" />
               </button>
-              
+
               <button onClick={e => {
           e.stopPropagation();
           onVersionClick?.('B');
-        }} className={cn("w-full flex items-center justify-between gap-1.5 p-2 border rounded bg-background transition-colors text-left", activeVersion === 'B' ? "border-primary bg-primary/5 hover:bg-primary/10" : "border-border hover:bg-muted/50")}>
-                <div className="flex items-center gap-1.5 flex-1 min-w-0">
-                  <div className={cn("h-5 w-5 rounded border flex items-center justify-center bg-card flex-shrink-0", activeVersion === 'B' ? "border-primary" : "border-border")}>
-                    <span className={cn("text-[10px] font-medium", activeVersion === 'B' && "text-primary")}>B</span>
+        }} className={cn("w-full flex items-center justify-between gap-2 p-2.5 border rounded-lg bg-background transition-all text-left", activeVersion === 'B' ? "border-primary bg-primary/5 shadow-sm" : "border-border/60 hover:border-border hover:bg-muted/30")}>
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <div className={cn("h-6 w-6 rounded-md flex items-center justify-center flex-shrink-0 text-xs font-semibold", activeVersion === 'B' ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground")}>
+                    B
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className={cn("text-[11px] font-medium", activeVersion === 'B' && "text-primary")}>Version B</div>
+                    <div className={cn("text-xs font-medium", activeVersion === 'B' && "text-primary")}>Version B</div>
                     {step.versionB?.error && <div className="text-[10px] text-destructive truncate">{step.versionB.error}</div>}
                   </div>
                 </div>
-                <MoreVertical className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
+                <MoreVertical className="h-4 w-4 text-muted-foreground flex-shrink-0" />
               </button>
             </div>}
         </>}
