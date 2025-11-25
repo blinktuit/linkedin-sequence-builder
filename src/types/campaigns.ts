@@ -18,10 +18,14 @@ export type CampaignIcon =
   | 'link'
   | 'sparkles';
 
+export type CampaignType = 'multi-step' | 'event-inviter' | 'company-page';
+
 export interface Campaign {
   id: string;
   name: string;
   icon: CampaignIcon;
+  type: CampaignType;
+  autoRefresh?: boolean;
   status: 'draft' | 'in progress' | 'paused' | 'completed' | 'archived';
   connectionRequests: { sent: number; total: number };
   leads: number;

@@ -28,7 +28,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Search, Send, MoreVertical, BarChart3, Copy, Archive, Trash2, Share2, Edit, X, ArrowUpDown, MessageSquare, UserCheck, ChevronDown } from "lucide-react";
+import { Search, Send, MoreVertical, BarChart3, Copy, Archive, Trash2, Share2, Edit, X, ArrowUpDown, MessageSquare, UserCheck, ChevronDown, RefreshCw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { Campaign } from "@/types/campaigns";
 import { CreateCampaignModal } from "@/components/campaign/CreateCampaignModal";
@@ -40,6 +40,8 @@ const mockCampaigns: Campaign[] = [
     id: '1',
     name: "Saleshacking's campaign",
     icon: 'handshake',
+    type: 'multi-step',
+    autoRefresh: true,
     status: 'in progress',
     connectionRequests: { sent: 0, total: 1 },
     leads: 45,
@@ -53,6 +55,7 @@ const mockCampaigns: Campaign[] = [
     id: '2',
     name: "Tech Founders Outreach",
     icon: 'rocket',
+    type: 'event-inviter',
     status: 'paused',
     connectionRequests: { sent: 0, total: 2 },
     leads: 32,
@@ -66,6 +69,8 @@ const mockCampaigns: Campaign[] = [
     id: '3',
     name: "Marketing Directors NYC",
     icon: 'mail',
+    type: 'company-page',
+    autoRefresh: true,
     status: 'draft',
     connectionRequests: { sent: 0, total: 0 },
     leads: 15,
@@ -79,6 +84,7 @@ const mockCampaigns: Campaign[] = [
     id: '4',
     name: "AI - Lookalike - Saleshacking's Campaign",
     icon: 'bot',
+    type: 'multi-step',
     status: 'completed',
     connectionRequests: { sent: 0, total: 50 },
     leads: 127,
@@ -100,6 +106,19 @@ const getRelativeTime = (date: Date): string => {
   if (diffInHours < 24) return `${diffInHours} hr. ago`;
   if (diffInDays === 1) return '1 day ago';
   return `${diffInDays} days ago`;
+};
+
+const getTypeLabel = (type: string) => {
+  switch (type) {
+    case 'multi-step':
+      return 'Multi-step';
+    case 'event-inviter':
+      return 'Event Inviter';
+    case 'company-page':
+      return 'Company Follow';
+    default:
+      return type;
+  }
 };
 
 const getStatusBadge = (status: string) => {
@@ -231,6 +250,8 @@ export default function Campaigns() {
       ...campaign,
       id: Date.now().toString(),
       name: `${campaign.name} (Copy)`,
+      type: campaign.type,
+      autoRefresh: campaign.autoRefresh,
       createdAt: new Date(),
     };
     setCampaigns([newCampaign, ...campaigns]);
@@ -484,7 +505,21 @@ export default function Campaigns() {
                       <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center">
                         <CampaignIconDisplay icon={campaign.icon} className="text-primary" size={18} />
                       </div>
-                      <span className="font-medium text-base">{campaign.name}</span>
+                      <div className="flex flex-col">
+                        <span className="font-medium text-base">{campaign.name}</span>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <span>{getTypeLabel(campaign.type)}</span>
+                          {campaign.autoRefresh && (
+                            <>
+                              <span>·</span>
+                              <span className="flex items-center gap-1 text-primary">
+                                <RefreshCw className="h-3 w-3" />
+                                Auto-refresh
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </div>
                     </button>
                   </td>
                   <td className="px-6 py-4">
