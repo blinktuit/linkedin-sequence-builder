@@ -668,7 +668,7 @@ export const CreateCampaignModal = ({
                           <div className="space-y-2 text-sm text-foreground">
                             <p>• Je kan deze campagne als laatste stap in je multi step campaign zetten</p>
                             <p>• Er geldt een limiet van maximaal 1000 uitnodigingen per week per gebruiker, dus niet per evenement</p>
-                            <p>• Alleen 1e-graads connecties kunnen worden uitgenodigd voor een event, dus mensen waarmee je direct verbonden bent op LinkedIn. Mensen die geen connectie zijn worden overgeslagen</p>
+                            <p>• Alleen 1e-graads connecties kunnen worden uitgenodigd, 2e en 3e+ graads worden overgeslagen</p>
                             <p>• Als je limiet bereikt is wacht de campagne tot je weer een volgende week krijgt</p>
                           </div>
 
@@ -709,7 +709,7 @@ export const CreateCampaignModal = ({
                           <div className="space-y-2 text-sm text-foreground">
                             <p>• Je kan deze campagne als laatste stap in je multi step campaign zetten</p>
                             <p>• Er geldt een limiet van maximaal 250 uitnodigingen per maand per bedrijfspagina</p>
-                            <p>• Alleen 1e-graads connecties kunnen worden uitgenodigd voor een bedrijfspagina. Mensen die geen connectie zijn worden overgeslagen</p>
+                            <p>• Alleen 1e-graads connecties kunnen worden uitgenodigd, 2e en 3e+ graads worden overgeslagen</p>
                             <p>• Als je limiet bereikt is wacht de campagne tot de volgende maand voordat deze verder gaat</p>
                           </div>
 
