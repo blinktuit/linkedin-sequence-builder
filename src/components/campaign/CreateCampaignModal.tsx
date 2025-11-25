@@ -632,8 +632,8 @@ export const CreateCampaignModal = ({
                       </button>
 
                       {/* Selected campaign type header */}
-                      <div className="flex items-center gap-4 p-4 bg-[#f0fdf9] rounded-xl border border-[#d1fae5]">
-                        <div className="p-3 rounded-full bg-[#d1fae5] text-[#059669]">
+                      <div className="flex items-center gap-4 p-4 bg-primary/5 rounded-xl border border-primary/20">
+                        <div className="p-3 rounded-full bg-primary/10 text-primary">
                           {leadSources.find(s => s.id === selectedSource)?.icon}
                         </div>
                         <div>

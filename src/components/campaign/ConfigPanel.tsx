@@ -195,28 +195,36 @@ export const ConfigPanel = ({
       <div className="p-6 space-y-6">
         <div>
           {step.type === 'ab-test' && (
-            <div className="mb-4 p-3 rounded-xl bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20">
+            <div className={cn(
+              "mb-4 p-3 rounded-xl border",
+              activeVersion === 'A'
+                ? "bg-gradient-to-r from-[#48ade8]/5 to-[#48ade8]/10 border-[#48ade8]/20"
+                : "bg-gradient-to-r from-[#ea5154]/5 to-[#ea5154]/10 border-[#ea5154]/20"
+            )}>
               <div className="flex items-center gap-3">
                 <div className={cn(
                   "h-10 w-10 rounded-lg flex items-center justify-center text-sm font-bold shadow-sm",
                   activeVersion === 'A'
-                    ? "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground"
-                    : "bg-gradient-to-br from-violet-500 to-purple-600 text-white"
+                    ? "bg-gradient-to-br from-[#48ade8] to-[#3a9ad4] text-white"
+                    : "bg-gradient-to-br from-[#ea5154] to-[#d4453f] text-white"
                 )}>
                   {activeVersion}
                 </div>
                 <div className="flex-1">
-                  <div className="text-sm font-semibold">
+                  <div className={cn(
+                    "text-sm font-semibold",
+                    activeVersion === 'A' ? "text-[#48ade8]" : "text-[#ea5154]"
+                  )}>
                     Version {activeVersion}
                   </div>
                   <div className="text-xs text-muted-foreground">
                     {activeVersion === 'A' ? 'Control variant' : 'Test variant'}
                   </div>
                 </div>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <div className={cn(
                     "h-2 w-2 rounded-full",
-                    activeVersion === 'A' ? "bg-primary" : "bg-violet-500"
+                    activeVersion === 'A' ? "bg-[#48ade8]" : "bg-[#ea5154]"
                   )} />
                   A/B Test
                 </div>

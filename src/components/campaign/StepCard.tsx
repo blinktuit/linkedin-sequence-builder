@@ -367,13 +367,24 @@ export const StepCard = ({
               <button onClick={e => {
           e.stopPropagation();
           onVersionClick?.('A');
-        }} className={cn("w-full flex items-center justify-between gap-2 p-2.5 border rounded-lg bg-background transition-all text-left", activeVersion === 'A' ? "border-primary bg-primary/5 shadow-sm" : "border-border/60 hover:border-border hover:bg-muted/30")}>
+        }} className={cn(
+          "w-full flex items-center justify-between gap-2 p-2.5 rounded-lg bg-background transition-all text-left",
+          activeVersion === 'A'
+            ? "border-2 border-[#48ade8] bg-[#48ade8]/5 shadow-sm shadow-[#48ade8]/10"
+            : "border border-border/60 hover:border-border hover:bg-muted/30"
+        )}>
                 <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <div className={cn("h-6 w-6 rounded-md flex items-center justify-center flex-shrink-0 text-xs font-semibold", activeVersion === 'A' ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground")}>
+                  <div className={cn(
+                    "h-7 w-7 rounded-md flex items-center justify-center flex-shrink-0 text-xs font-bold",
+                    activeVersion === 'A'
+                      ? "bg-gradient-to-br from-[#48ade8] to-[#3a9ad4] text-white shadow-sm"
+                      : "bg-muted text-muted-foreground"
+                  )}>
                     A
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className={cn("text-xs font-medium", activeVersion === 'A' && "text-primary")}>Version A</div>
+                    <div className={cn("text-xs font-medium", activeVersion === 'A' && "text-[#48ade8]")}>Version A</div>
+                    <div className="text-[10px] text-muted-foreground">Control</div>
                     {step.versionA?.error && <div className="text-[10px] text-destructive truncate">{step.versionA.error}</div>}
                   </div>
                 </div>
@@ -383,13 +394,24 @@ export const StepCard = ({
               <button onClick={e => {
           e.stopPropagation();
           onVersionClick?.('B');
-        }} className={cn("w-full flex items-center justify-between gap-2 p-2.5 border rounded-lg bg-background transition-all text-left", activeVersion === 'B' ? "border-primary bg-primary/5 shadow-sm" : "border-border/60 hover:border-border hover:bg-muted/30")}>
+        }} className={cn(
+          "w-full flex items-center justify-between gap-2 p-2.5 rounded-lg bg-background transition-all text-left",
+          activeVersion === 'B'
+            ? "border-2 border-[#ea5154] bg-[#ea5154]/5 shadow-sm shadow-[#ea5154]/10"
+            : "border border-border/60 hover:border-border hover:bg-muted/30"
+        )}>
                 <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <div className={cn("h-6 w-6 rounded-md flex items-center justify-center flex-shrink-0 text-xs font-semibold", activeVersion === 'B' ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground")}>
+                  <div className={cn(
+                    "h-7 w-7 rounded-md flex items-center justify-center flex-shrink-0 text-xs font-bold",
+                    activeVersion === 'B'
+                      ? "bg-gradient-to-br from-[#ea5154] to-[#d4453f] text-white shadow-sm"
+                      : "bg-muted text-muted-foreground"
+                  )}>
                     B
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className={cn("text-xs font-medium", activeVersion === 'B' && "text-primary")}>Version B</div>
+                    <div className={cn("text-xs font-medium", activeVersion === 'B' && "text-[#ea5154]")}>Version B</div>
+                    <div className="text-[10px] text-muted-foreground">Test variant</div>
                     {step.versionB?.error && <div className="text-[10px] text-destructive truncate">{step.versionB.error}</div>}
                   </div>
                 </div>
