@@ -665,15 +665,27 @@ export const CreateCampaignModal = ({
                             )}
                           </div>
 
-                          <ul className="space-y-2 text-sm text-muted-foreground list-disc list-inside">
-                            <li>Je kan deze campagne als laatste stap in je multi step campaign zetten</li>
-                            <li>Er geldt een limiet van maximaal 1000 uitnodigingen per week per gebruiker, dus niet per evenement</li>
-                            <li>Alleen 1e-graads connecties kunnen worden uitgenodigd, 2e en 3e+ graads worden overgeslagen</li>
-                            <li>Als je limiet bereikt is wacht de campagne tot je weer een volgende week krijgt</li>
-                          </ul>
+                          <div className="space-y-2 text-sm text-muted-foreground">
+                            <div className="flex items-start gap-2">
+                              <div className="w-4 h-4 rounded-full border-2 border-primary/40 mt-0.5 shrink-0" />
+                              <span>Je kan deze campagne als laatste stap in je multi step campaign zetten</span>
+                            </div>
+                            <div className="flex items-start gap-2">
+                              <div className="w-4 h-4 rounded-full border-2 border-primary/40 mt-0.5 shrink-0" />
+                              <span>Er geldt een limiet van maximaal 1000 uitnodigingen per week per gebruiker, dus niet per evenement</span>
+                            </div>
+                            <div className="flex items-start gap-2">
+                              <div className="w-4 h-4 rounded-full border-2 border-primary/40 mt-0.5 shrink-0" />
+                              <span>Alleen 1e-graads connecties kunnen worden uitgenodigd, 2e en 3e+ graads worden overgeslagen</span>
+                            </div>
+                            <div className="flex items-start gap-2">
+                              <div className="w-4 h-4 rounded-full border-2 border-primary/40 mt-0.5 shrink-0" />
+                              <span>Als je limiet bereikt is wacht de campagne tot je weer een volgende week krijgt</span>
+                            </div>
+                          </div>
 
                           <Button
-                            className="w-full"
+                            className="w-auto"
                             disabled={!eventUrl || !validateUrl(eventUrl, 'event')}
                             onClick={() => handleComplete()}
                           >
@@ -706,15 +718,27 @@ export const CreateCampaignModal = ({
                             )}
                           </div>
 
-                          <ul className="space-y-2 text-sm text-muted-foreground list-disc list-inside">
-                            <li>Je kan deze campagne als laatste stap in je multi step campaign zetten</li>
-                            <li>Er geldt een limiet van maximaal 250 uitnodigingen per maand per bedrijfspagina</li>
-                            <li>Alleen 1e-graads connecties kunnen worden uitgenodigd, 2e en 3e+ graads worden overgeslagen</li>
-                            <li>Als je limiet bereikt is wacht de campagne tot de volgende maand voordat deze verder gaat</li>
-                          </ul>
+                          <div className="space-y-2 text-sm text-muted-foreground">
+                            <div className="flex items-start gap-2">
+                              <div className="w-4 h-4 rounded-full border-2 border-primary/40 mt-0.5 shrink-0" />
+                              <span>Je kan deze campagne als laatste stap in je multi step campaign zetten</span>
+                            </div>
+                            <div className="flex items-start gap-2">
+                              <div className="w-4 h-4 rounded-full border-2 border-primary/40 mt-0.5 shrink-0" />
+                              <span>Er geldt een limiet van maximaal 250 uitnodigingen per maand per bedrijfspagina</span>
+                            </div>
+                            <div className="flex items-start gap-2">
+                              <div className="w-4 h-4 rounded-full border-2 border-primary/40 mt-0.5 shrink-0" />
+                              <span>Alleen 1e-graads connecties kunnen worden uitgenodigd, 2e en 3e+ graads worden overgeslagen</span>
+                            </div>
+                            <div className="flex items-start gap-2">
+                              <div className="w-4 h-4 rounded-full border-2 border-primary/40 mt-0.5 shrink-0" />
+                              <span>Als je limiet bereikt is wacht de campagne tot de volgende maand voordat deze verder gaat</span>
+                            </div>
+                          </div>
 
                           <Button
-                            className="w-full"
+                            className="w-auto"
                             disabled={!companyUrl || !validateUrl(companyUrl, 'company')}
                             onClick={() => handleComplete()}
                           >
