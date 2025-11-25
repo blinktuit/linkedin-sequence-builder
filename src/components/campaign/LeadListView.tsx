@@ -603,12 +603,10 @@ export const LeadListView = () => {
                                         />
                                     </TableCell>
                                     <TableCell className="font-medium">
-                                        <div className="flex items-center gap-2">
+                                        <a href={lead.linkedinUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-[#0077b5] transition-colors">
                                             {lead.name}
-                                            <a href={lead.linkedinUrl} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-[#0077b5]">
-                                                <Linkedin className="h-3 w-3" />
-                                            </a>
-                                        </div>
+                                            <Linkedin className="h-3 w-3 text-muted-foreground" />
+                                        </a>
                                     </TableCell>
                                     <TableCell className="max-w-[200px] group/cell relative" title={lead.jobTitle}>
                                         <div className="flex items-center gap-2">

@@ -324,6 +324,18 @@ export const ConfigPanel = ({
                     </div>
                   </div>
                 </div>
+
+                {/* Include message toggle for A/B test */}
+                <div className="flex items-center justify-between py-2">
+                  <Label className="text-sm font-medium text-foreground">Include message</Label>
+                  <Switch
+                    checked={step.config?.includeMessage !== false}
+                    onCheckedChange={(checked) => onConfigChange({
+                      ...step.config,
+                      includeMessage: checked
+                    })}
+                  />
+                </div>
               </div>
             );
           })()}
@@ -695,7 +707,7 @@ export const ConfigPanel = ({
 
               <div className={cn(
                 "space-y-4 transition-opacity",
-                step.type === 'linkedin-invitation' && step.config?.includeMessage === false && "opacity-40 pointer-events-none"
+                (step.type === 'linkedin-invitation' || step.type === 'ab-test') && step.config?.includeMessage === false && "opacity-40 pointer-events-none"
               )}>
               <div className="rounded-xl border border-border overflow-hidden shadow-sm">
                 <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/50 bg-gradient-to-r from-slate-50 to-white">
