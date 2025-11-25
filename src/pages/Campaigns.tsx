@@ -37,7 +37,7 @@ import { CreateCampaignModal } from "@/components/campaign/CreateCampaignModal";
 const mockCampaigns: Campaign[] = [
   {
     id: '1',
-    name: "Saleshacking's campaign (5)",
+    name: "Saleshacking's campaign",
     emoji: '🙏',
     status: 'in progress',
     connectionRequests: { sent: 0, total: 1 },
@@ -50,7 +50,7 @@ const mockCampaigns: Campaign[] = [
   },
   {
     id: '2',
-    name: "Saleshacking's campaign (4)",
+    name: "Tech Founders Outreach",
     emoji: '🚀',
     status: 'paused',
     connectionRequests: { sent: 0, total: 2 },
@@ -63,7 +63,7 @@ const mockCampaigns: Campaign[] = [
   },
   {
     id: '3',
-    name: "Saleshacking's campaign (2)",
+    name: "Marketing Directors NYC",
     emoji: '📧',
     status: 'draft',
     connectionRequests: { sent: 0, total: 0 },
