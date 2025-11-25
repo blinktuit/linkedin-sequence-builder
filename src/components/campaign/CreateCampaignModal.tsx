@@ -505,11 +505,51 @@ export const CreateCampaignModal = ({
 
 
 
+  const stepLabels = [
+    { number: 1, label: "Campaign type" },
+    { number: 2, label: "Template" }
+  ];
+
+  const StepIndicator = () => (
+    <div className="px-6 py-4 border-b bg-background">
+      <div className="flex items-center gap-3">
+        {stepLabels.map((s, index) => (
+          <div key={s.number} className="flex items-center gap-3">
+            <div
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors ${
+                s.number === step
+                  ? 'bg-primary/10 text-primary'
+                  : s.number < step
+                    ? 'text-primary'
+                    : 'text-muted-foreground'
+              }`}
+            >
+              <span className={`flex items-center justify-center w-5 h-5 rounded-full text-xs font-medium ${
+                s.number < step
+                  ? 'bg-primary text-primary-foreground'
+                  : s.number === step
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-muted-foreground'
+              }`}>
+                {s.number < step ? <Check className="h-3 w-3" /> : s.number}
+              </span>
+              <span className="text-sm font-medium">{s.label}</span>
+            </div>
+            {index < stepLabels.length - 1 && (
+              <div className={`h-px w-8 ${s.number < step ? 'bg-primary' : 'bg-muted'}`} />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[90vw] h-[85vh] flex flex-col p-0">
         {step === 1 && (
           <>
+            <StepIndicator />
             <div className="flex-1 overflow-hidden flex relative">
               {/* OR Divider */}
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center justify-center h-full pointer-events-none">
@@ -706,6 +746,7 @@ export const CreateCampaignModal = ({
         {
           step === 2 && (
             <>
+              <StepIndicator />
               <div className="flex-1 overflow-hidden flex relative">
                 {/* OR Divider */}
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center justify-center h-full pointer-events-none">
