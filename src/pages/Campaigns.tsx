@@ -266,7 +266,10 @@ export default function Campaigns() {
     console.log('Creating campaign with data:', data);
     // For now, just navigate to the campaign builder with a new ID
     const newCampaignId = Date.now().toString();
-    navigate(`/campaign/${newCampaignId}`);
+    // Pass template steps via navigation state
+    navigate(`/campaign/${newCampaignId}`, {
+      state: { templateSteps: data.templateSteps || [] }
+    });
   };
 
   return (

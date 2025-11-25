@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { TargetListFilterModal } from "./TargetListFilterModal";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { generateTemplateSteps } from "./TemplateImportModal";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -150,9 +151,11 @@ export const CreateCampaignModal = ({
   };
 
   const handleComplete = (templateId?: string) => {
+    const templateSteps = templateId ? generateTemplateSteps(templateId) : [];
     const data = {
       source: selectedSource,
       templateId,
+      templateSteps,
       csvFile,
       pastedUrls,
       searchUrl,
@@ -482,10 +485,6 @@ export const CreateCampaignModal = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[90vw] h-[85vh] flex flex-col p-0">
-        <DialogHeader className="px-6 pt-6 pb-4 border-b">
-          <DialogTitle>Create Campaign</DialogTitle>
-        </DialogHeader>
-
         {step === 1 && (
           <>
             <div className="flex-1 overflow-hidden flex relative">

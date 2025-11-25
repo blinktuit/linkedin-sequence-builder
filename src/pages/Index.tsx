@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { CampaignHeader } from "@/components/campaign/CampaignHeader";
 import { StepCard } from "@/components/campaign/StepCard";
 import { ConfigPanel } from "@/components/campaign/ConfigPanel";
@@ -12,9 +12,14 @@ import { Plus, Search, ZoomIn, ZoomOut, FileText } from "lucide-react";
 import type { Campaign, CampaignStep } from "@/types/campaign";
 const Index = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState<'sequence' | 'leadlist' | 'launch'>('sequence');
   const [isStepLibraryOpen, setIsStepLibraryOpen] = useState(false);
   const [isTemplateImportOpen, setIsTemplateImportOpen] = useState(false);
+
+  // Get template steps from navigation state (if coming from campaign wizard)
+  const templateStepsFromNav = (location.state as any)?.templateSteps || [];
+
   const [campaign, setCampaign] = useState<Campaign>({
     id: '1',
     name: "Saleshacking's campaign",
@@ -22,7 +27,7 @@ const Index = () => {
       id: 'start',
       type: 'start',
       title: 'Sequence start'
-    }],
+    }, ...templateStepsFromNav],
     activeStepId: undefined,
     activeVersion: 'A',
     isActive: true,
