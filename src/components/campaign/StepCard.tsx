@@ -121,7 +121,17 @@ export const StepCard = ({
       : "border-border/60",
     hasError && "border-destructive ring-2 ring-destructive/20"
   )}>
-      {step.type === 'start' ? <div className="text-center text-xs text-muted-foreground py-2">Start campaign 🚀</div> : <>
+      {step.type === 'start' ? (
+        <div className="flex items-center justify-center gap-2.5 py-2">
+          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-sm shadow-primary/25">
+            <svg className="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 2L11 13" />
+              <path d="M22 2L15 22L11 13L2 9L22 2Z" />
+            </svg>
+          </div>
+          <div className="text-sm font-medium text-foreground">Start campaign</div>
+        </div>
+      ) : <>
           <div className="flex items-center justify-between mb-2">
             <Popover open={delayOpen} onOpenChange={setDelayOpen}>
               <PopoverTrigger asChild>
