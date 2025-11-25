@@ -556,10 +556,10 @@ const Index = () => {
 
                             {/* Connector after branch step */}
                             <div className="flex flex-col items-center py-0.5">
-                              <div className="h-2 w-0.5 bg-[#36b39a]/30" />
+                              <div className="h-2 w-0.5 bg-primary/30" />
                               <div className="my-0.5">
-                                <Button onClick={() => handleOpenStepLibrary(yesStep.id, 'yes')} variant="ghost" size="icon" className="h-7 w-7 rounded-full border-2 border-dashed border-[#36b39a]/50 hover:border-[#36b39a] hover:bg-[#36b39a]/5 transition-colors">
-                                  <Plus className="h-3.5 w-3.5 text-[#36b39a]" />
+                                <Button onClick={() => handleOpenStepLibrary(yesStep.id, 'yes')} variant="ghost" size="icon" className="h-7 w-7 rounded-full border-2 border-dashed border-primary/50 hover:border-primary hover:bg-primary/5 transition-colors">
+                                  <Plus className="h-3.5 w-3.5 text-primary" />
                                 </Button>
                               </div>
 

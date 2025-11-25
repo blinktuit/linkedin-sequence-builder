@@ -340,7 +340,7 @@ export const CreateCampaignModal = ({
                 onChange={(e) => setSearchUrl(e.target.value)}
               />
               {searchUrl && validateUrl(searchUrl, 'search') && (
-                <p className="text-xs text-[#36b39a] flex items-center gap-1">
+                <p className="text-xs text-primary flex items-center gap-1">
                   <Check className="h-3 w-3" />
                   Valid search URL
                 </p>
@@ -393,7 +393,7 @@ export const CreateCampaignModal = ({
                 onChange={(e) => setEventUrl(e.target.value)}
               />
               {eventUrl && validateUrl(eventUrl, 'event') && (
-                <p className="text-xs text-[#36b39a] flex items-center gap-1">
+                <p className="text-xs text-primary flex items-center gap-1">
                   <Check className="h-3 w-3" />
                   Valid event URL
                 </p>
@@ -419,7 +419,7 @@ export const CreateCampaignModal = ({
                 onChange={(e) => setCompanyUrl(e.target.value)}
               />
               {companyUrl && validateUrl(companyUrl, 'company') && (
-                <p className="text-xs text-[#36b39a] flex items-center gap-1">
+                <p className="text-xs text-primary flex items-center gap-1">
                   <Check className="h-3 w-3" />
                   Valid company URL
                 </p>
@@ -445,7 +445,7 @@ export const CreateCampaignModal = ({
                 onChange={(e) => setSearchUrl(e.target.value)}
               />
               {searchUrl && validateUrl(searchUrl, 'search') && (
-                <p className="text-xs text-[#36b39a] flex items-center gap-1">
+                <p className="text-xs text-primary flex items-center gap-1">
                   <Check className="h-3 w-3" />
                   Valid search URL
                 </p>
@@ -475,7 +475,7 @@ export const CreateCampaignModal = ({
                 onChange={(e) => setPostUrl(e.target.value)}
               />
               {postUrl && validateUrl(postUrl, 'post') && (
-                <p className="text-xs text-[#36b39a] flex items-center gap-1">
+                <p className="text-xs text-primary flex items-center gap-1">
                   <Check className="h-3 w-3" />
                   Valid post URL
                 </p>
@@ -665,7 +665,7 @@ export const CreateCampaignModal = ({
                               className="bg-white"
                             />
                             {eventUrl && validateUrl(eventUrl, 'event') && (
-                              <p className="text-xs text-[#36b39a] flex items-center gap-1">
+                              <p className="text-xs text-primary flex items-center gap-1">
                                 <Check className="h-3 w-3" />
                                 Valid event URL
                               </p>
@@ -718,7 +718,7 @@ export const CreateCampaignModal = ({
                               className="bg-white"
                             />
                             {companyUrl && validateUrl(companyUrl, 'company') && (
-                              <p className="text-xs text-[#36b39a] flex items-center gap-1">
+                              <p className="text-xs text-primary flex items-center gap-1">
                                 <Check className="h-3 w-3" />
                                 Valid company URL
                               </p>

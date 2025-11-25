@@ -121,15 +121,15 @@ const getTypeLabel = (type: string) => {
 const getStatusBadge = (status: string) => {
   switch (status) {
     case 'in progress':
-      return <Badge className="bg-green-100 text-green-700 hover:bg-green-100">In Progress</Badge>;
+      return <Badge className="bg-primary/20 text-primary hover:bg-primary/20">In Progress</Badge>;
     case 'paused':
       return <Badge className="bg-yellow-100 text-yellow-700 hover:bg-yellow-100">Paused</Badge>;
     case 'completed':
-      return <Badge className="bg-[#36b39a]/20 text-[#36b39a] hover:bg-[#36b39a]/20">Completed</Badge>;
+      return <Badge className="bg-primary/20 text-primary hover:bg-primary/20">Completed</Badge>;
     case 'archived':
-      return <Badge className="bg-gray-100 text-gray-700 hover:bg-gray-100">Archived</Badge>;
+      return <Badge className="bg-muted text-muted-foreground hover:bg-muted">Archived</Badge>;
     case 'draft':
-      return <Badge className="bg-gray-100 text-gray-700 hover:bg-gray-100">Draft</Badge>;
+      return <Badge className="bg-muted text-muted-foreground hover:bg-muted">Draft</Badge>;
     default:
       return <Badge>{status}</Badge>;
   }
@@ -319,8 +319,8 @@ export default function Campaigns() {
 
         {/* Bulk Actions Bar */}
         {selectedCampaigns.size > 0 && (
-          <div className="mb-4 p-4 bg-[#36b39a]/10 border border-[#36b39a]/30 rounded-lg flex items-center justify-between">
-            <span className="text-sm font-medium text-[#36b39a]">
+          <div className="mb-4 p-4 bg-primary/10 border border-primary/30 rounded-lg flex items-center justify-between">
+            <span className="text-sm font-medium text-primary">
               {selectedCampaigns.size} campaign{selectedCampaigns.size > 1 ? 's' : ''} selected
             </span>
             <div className="flex items-center gap-2">
@@ -370,25 +370,25 @@ export default function Campaigns() {
 
         {/* LinkedIn Account Warning */}
         {showAIBanner && (
-          <div className="mb-6 p-4 bg-[#36b39a]/10 border border-[#36b39a]/30 rounded-lg flex items-start gap-3">
-            <div className="h-6 w-6 rounded-full bg-[#36b39a] flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span className="text-white text-sm font-bold">!</span>
+          <div className="mb-6 p-4 bg-primary/10 border border-primary/30 rounded-lg flex items-start gap-3">
+            <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span className="text-primary-foreground text-sm font-bold">!</span>
             </div>
             <div className="flex-1">
-              <p className="text-sm font-medium text-[#36b39a]">
+              <p className="text-sm font-medium text-primary">
                 Your LinkedIn account is not properly connected.
               </p>
-              <p className="text-sm text-[#36b39a]/80">
+              <p className="text-sm text-primary/80">
                 Please reconnect your account to continue using your campaigns.
               </p>
             </div>
-            <Button variant="ghost" size="sm" className="text-[#36b39a] hover:text-[#36b39a]/80 hover:bg-[#36b39a]/10">
+            <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80 hover:bg-primary/10">
               Click here to fix
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              className="h-6 w-6 text-[#36b39a] hover:text-[#36b39a]/80 hover:bg-[#36b39a]/10"
+              className="h-6 w-6 text-primary hover:text-primary/80 hover:bg-primary/10"
               onClick={() => setShowAIBanner(false)}
             >
               <X className="h-4 w-4" />

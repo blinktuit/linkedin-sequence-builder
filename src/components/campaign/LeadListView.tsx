@@ -397,19 +397,19 @@ export const LeadListView = () => {
     };
 
     const getScoreColor = (score: number) => {
-        if (score >= 5) return 'text-green-500 border-green-500';
-        if (score >= 4) return 'text-green-400 border-green-400';
+        if (score >= 5) return 'text-primary border-primary';
+        if (score >= 4) return 'text-primary/80 border-primary/80';
         if (score === 3) return 'text-yellow-500 border-yellow-500';
-        return 'text-orange-500 border-orange-500';
+        return 'text-destructive border-destructive';
     };
 
     const getStatusBadge = (status: Lead['status']) => {
         const statusConfig = {
-            pending: { label: 'Pending', className: 'bg-gray-100 text-gray-700 border-gray-300' },
+            pending: { label: 'Pending', className: 'bg-muted text-muted-foreground border-border' },
             contacted: { label: 'Contacted', className: 'bg-blue-100 text-blue-700 border-blue-300' },
-            accepted: { label: 'Accepted', className: 'bg-green-100 text-green-700 border-green-300' },
+            accepted: { label: 'Accepted', className: 'bg-primary/20 text-primary border-primary/30' },
             replied: { label: 'Replied', className: 'bg-purple-100 text-purple-700 border-purple-300' },
-            excluded: { label: 'Excluded', className: 'bg-red-100 text-red-700 border-red-300' },
+            excluded: { label: 'Excluded', className: 'bg-destructive/20 text-destructive border-destructive/30' },
         };
 
         const config = statusConfig[status];
@@ -724,9 +724,9 @@ export const LeadListView = () => {
                         </span>
                     )}
                 </div>
-                <div className="flex items-center gap-2 text-[#36b39a] text-sm font-medium">
+                <div className="flex items-center gap-2 text-primary text-sm font-medium">
                     All changes are saved
-                    <div className="h-2 w-2 rounded-full bg-[#36b39a]" />
+                    <div className="h-2 w-2 rounded-full bg-primary" />
                 </div>
             </div>
 

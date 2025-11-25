@@ -140,7 +140,7 @@ export const StepCard = ({
               setDelayOpen(true);
             }} className={cn(
               "text-[10px] font-medium uppercase tracking-wide transition-all text-left group/wait flex items-center gap-1.5 hover:bg-muted/50 -ml-1.5 px-1.5 py-0.5 rounded-full",
-              delayOpen && "bg-muted/50"
+              (delayOpen || isActive) && "bg-muted/50"
             )}>
                   {conditionWaitText ? (
                     <>
@@ -159,7 +159,7 @@ export const StepCard = ({
                   )}
                   <Edit2 className={cn(
                     "h-2.5 w-2.5 text-muted-foreground transition-opacity",
-                    delayOpen ? "opacity-100" : "opacity-0 group-hover/wait:opacity-100"
+                    (delayOpen || isActive) ? "opacity-100" : "opacity-0 group-hover/wait:opacity-100"
                   )} />
                 </button>
               </PopoverTrigger>
@@ -180,7 +180,7 @@ export const StepCard = ({
                             });
                             window.dispatchEvent(event);
                           }}
-                          className="h-4 w-4 accent-[#36b39a]"
+                          className="h-4 w-4 accent-primary"
                         />
                         <span className="text-sm">Wait until Accepted invite</span>
                       </label>
@@ -196,7 +196,7 @@ export const StepCard = ({
                             });
                             window.dispatchEvent(event);
                           }}
-                          className="h-4 w-4 accent-[#36b39a]"
+                          className="h-4 w-4 accent-primary"
                         />
                         <span className="text-sm">If Accepted within</span>
                       </label>

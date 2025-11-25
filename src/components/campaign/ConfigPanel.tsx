@@ -548,9 +548,9 @@ export const ConfigPanel = ({
                 </Select>
               </div>
             </> : step.type === 'ai-generate' ? <>
-              <Alert className="bg-[#36b39a]/10 border-[#36b39a]/30">
-                <InfoIcon className="h-4 w-4 text-[#36b39a]" />
-                <AlertDescription className="text-sm text-[#36b39a]">If the lead variable is already filled the step will be skipped.</AlertDescription>
+              <Alert className="bg-primary/10 border-primary/30">
+                <InfoIcon className="h-4 w-4 text-primary" />
+                <AlertDescription className="text-sm text-primary">If the lead variable is already filled the step will be skipped.</AlertDescription>
               </Alert>
 
               <div className="rounded-xl border border-border overflow-hidden shadow-sm">
