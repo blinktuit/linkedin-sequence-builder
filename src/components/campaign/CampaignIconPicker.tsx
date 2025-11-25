@@ -17,9 +17,13 @@ import {
   Globe,
   Link,
   Sparkles,
+  Workflow,
+  Calendar,
+  Building2,
   type LucideIcon
 } from "lucide-react";
-import type { CampaignIcon } from "@/types/campaigns";
+import type { CampaignIcon, CampaignType } from "@/types/campaigns";
+import { CAMPAIGN_TYPE_ICONS } from "@/types/campaigns";
 
 export const CAMPAIGN_ICONS: Record<CampaignIcon, LucideIcon> = {
   'mail': Mail,
@@ -40,6 +44,9 @@ export const CAMPAIGN_ICONS: Record<CampaignIcon, LucideIcon> = {
   'globe': Globe,
   'link': Link,
   'sparkles': Sparkles,
+  'workflow': Workflow,
+  'calendar': Calendar,
+  'building': Building2,
 };
 
 export const ICON_LIST: CampaignIcon[] = [
@@ -55,5 +62,18 @@ interface CampaignIconDisplayProps {
 
 export const CampaignIconDisplay = ({ icon, className = "", size = 16 }: CampaignIconDisplayProps) => {
   const IconComponent = CAMPAIGN_ICONS[icon] || Mail;
+  return <IconComponent className={className} size={size} />;
+};
+
+// New component that shows icon based on campaign type (no user choice)
+interface CampaignTypeIconProps {
+  type: CampaignType;
+  className?: string;
+  size?: number;
+}
+
+export const CampaignTypeIcon = ({ type, className = "", size = 16 }: CampaignTypeIconProps) => {
+  const icon = CAMPAIGN_TYPE_ICONS[type];
+  const IconComponent = CAMPAIGN_ICONS[icon] || Workflow;
   return <IconComponent className={className} size={size} />;
 };

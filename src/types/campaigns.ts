@@ -16,14 +16,23 @@ export type CampaignIcon =
   | 'megaphone'
   | 'globe'
   | 'link'
-  | 'sparkles';
+  | 'sparkles'
+  | 'workflow'
+  | 'calendar'
+  | 'building';
 
 export type CampaignType = 'multi-step' | 'event-inviter' | 'company-page';
+
+// Fixed icon mapping per campaign type
+export const CAMPAIGN_TYPE_ICONS: Record<CampaignType, CampaignIcon> = {
+  'multi-step': 'workflow',
+  'event-inviter': 'calendar',
+  'company-page': 'building',
+};
 
 export interface Campaign {
   id: string;
   name: string;
-  icon: CampaignIcon;
   type: CampaignType;
   autoRefresh?: boolean;
   status: 'draft' | 'in progress' | 'paused' | 'completed' | 'archived';

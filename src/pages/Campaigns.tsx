@@ -32,14 +32,13 @@ import { Search, Send, MoreVertical, BarChart3, Copy, Archive, Trash2, Share2, E
 import { Badge } from "@/components/ui/badge";
 import type { Campaign } from "@/types/campaigns";
 import { CreateCampaignModal } from "@/components/campaign/CreateCampaignModal";
-import { CampaignIconDisplay } from "@/components/campaign/CampaignIconPicker";
+import { CampaignTypeIcon } from "@/components/campaign/CampaignIconPicker";
 
 // Mock data - replace with API call
 const mockCampaigns: Campaign[] = [
   {
     id: '1',
     name: "Saleshacking's campaign",
-    icon: 'handshake',
     type: 'multi-step',
     autoRefresh: true,
     status: 'in progress',
@@ -54,7 +53,6 @@ const mockCampaigns: Campaign[] = [
   {
     id: '2',
     name: "Tech Founders Outreach",
-    icon: 'rocket',
     type: 'event-inviter',
     status: 'paused',
     connectionRequests: { sent: 0, total: 2 },
@@ -68,7 +66,6 @@ const mockCampaigns: Campaign[] = [
   {
     id: '3',
     name: "Marketing Directors NYC",
-    icon: 'mail',
     type: 'company-page',
     autoRefresh: true,
     status: 'draft',
@@ -83,7 +80,6 @@ const mockCampaigns: Campaign[] = [
   {
     id: '4',
     name: "AI - Lookalike - Saleshacking's Campaign",
-    icon: 'bot',
     type: 'multi-step',
     status: 'completed',
     connectionRequests: { sent: 0, total: 50 },
@@ -503,7 +499,7 @@ export default function Campaigns() {
                       className="flex items-center gap-3 text-left group-hover:text-primary transition-colors"
                     >
                       <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <CampaignIconDisplay icon={campaign.icon} className="text-primary" size={18} />
+                        <CampaignTypeIcon type={campaign.type} className="text-primary" size={18} />
                       </div>
                       <div className="flex flex-col">
                         <span className="font-medium text-base">{campaign.name}</span>
