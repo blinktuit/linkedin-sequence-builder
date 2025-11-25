@@ -588,9 +588,14 @@ export const CreateCampaignModal = ({
 
               {/* Right Column: Single Step Campaigns */}
               <div className="w-1/2 flex flex-col bg-background">
-                <div className="flex-1 overflow-y-auto p-6">
+                <div className="flex-1 overflow-y-auto px-10 py-8">
                   {!selectedSource ? (
-                    <div className="space-y-4">
+                    <div className="space-y-6">
+                      <div>
+                        <h3 className="text-2xl font-semibold">Single step campaigns</h3>
+                        <p className="text-muted-foreground mt-1">Quick actions for specific goals</p>
+                      </div>
+                      <div className="space-y-4">
                       {leadSources.filter(s => ['event-inviter', 'company-page'].includes(s.id)).map((source) => (
                         <button
                           key={source.id}
@@ -612,6 +617,7 @@ export const CreateCampaignModal = ({
                           <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
                         </button>
                       ))}
+                      </div>
                     </div>
                   ) : (
                     <div className="space-y-6">
