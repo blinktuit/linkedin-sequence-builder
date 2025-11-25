@@ -4,13 +4,14 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import {
   MoreVertical,
-  X,
+  ArrowLeft,
   Share2,
   FileText,
   Copy,
   Archive,
   Trash2,
-  ChevronRight
+  ChevronRight,
+  User
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -87,9 +88,16 @@ export const CampaignHeader = ({
   return (
     <div className="h-16 bg-card border-b border-border flex items-center justify-between px-4">
       <div className="flex items-center gap-3">
-        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onBackToCampaigns}>
-          <X className="h-4 w-4" />
-        </Button>
+        <button
+          onClick={onBackToCampaigns}
+          className="flex items-center gap-2 h-10 pl-3 pr-4 rounded-full border border-border bg-white hover:bg-slate-50 transition-colors shadow-sm"
+        >
+          <ArrowLeft className="h-4 w-4 text-muted-foreground" />
+          <div className="h-7 w-7 rounded-full bg-slate-100 flex items-center justify-center">
+            <User className="h-4 w-4 text-slate-400" />
+          </div>
+          <span className="text-sm font-medium text-foreground">George van Bohemen</span>
+        </button>
 
         <div className="flex items-center gap-2">
           <Popover open={iconPickerOpen} onOpenChange={setIconPickerOpen}>
