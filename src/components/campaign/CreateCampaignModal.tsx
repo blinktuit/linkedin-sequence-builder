@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Upload,
   Search,
@@ -21,7 +22,8 @@ import {
   X,
   Check,
   Clock,
-  FileText
+  FileText,
+  Info
 } from "lucide-react";
 
 type LeadSource =
@@ -602,6 +604,17 @@ export const CreateCampaignModal = ({
                               </p>
                             )}
                           </div>
+
+                          <Alert className="bg-blue-50 border-blue-200">
+                            <Info className="h-4 w-4 text-blue-600" />
+                            <AlertDescription className="text-xs text-blue-900 space-y-1 ml-2">
+                              <p>• Je kan deze campagne als laatste stap in je multi step campaign zetten</p>
+                              <p>• Er geldt een limiet van maximaal 1000 uitnodigingen per week per gebruiker, dus niet per evenement</p>
+                              <p>• Alleen 1e-graads connecties kunnen worden uitgenodigd voor een event, dus mensen waarmee je direct verbonden bent op LinkedIn. Mensen die geen connectie zijn worden overgeslagen</p>
+                              <p>• Als je limiet bereikt is wacht de campagne tot je weer een volgende week krijgt</p>
+                            </AlertDescription>
+                          </Alert>
+
                           <Button
                             className="w-full"
                             disabled={!eventUrl || !validateUrl(eventUrl, 'event')}
@@ -634,6 +647,17 @@ export const CreateCampaignModal = ({
                               </p>
                             )}
                           </div>
+
+                          <Alert className="bg-blue-50 border-blue-200">
+                            <Info className="h-4 w-4 text-blue-600" />
+                            <AlertDescription className="text-xs text-blue-900 space-y-1 ml-2">
+                              <p>• Je kan deze campagne als laatste stap in je multi step campaign zetten</p>
+                              <p>• Er geldt een limiet van maximaal 250 uitnodigingen per maand per bedrijfspagina</p>
+                              <p>• Alleen 1e-graads connecties kunnen worden uitgenodigd voor een bedrijfspagina. Mensen die geen connectie zijn worden overgeslagen</p>
+                              <p>• Als je limiet bereikt is wacht de campagne tot de volgende maand voordat deze verder gaat</p>
+                            </AlertDescription>
+                          </Alert>
+
                           <Button
                             className="w-full"
                             disabled={!companyUrl || !validateUrl(companyUrl, 'company')}
