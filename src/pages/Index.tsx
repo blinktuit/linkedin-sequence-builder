@@ -6,6 +6,7 @@ import { ConfigPanel } from "@/components/campaign/ConfigPanel";
 import { StepLibrary } from "@/components/campaign/StepLibrary";
 import { ConditionalBranch } from "@/components/campaign/ConditionalBranch";
 import { LeadListView } from "@/components/campaign/LeadListView";
+import { LaunchView } from "@/components/campaign/LaunchView";
 import { TemplateImportModal } from "@/components/campaign/TemplateImportModal";
 import { Button } from "@/components/ui/button";
 import { Plus, Search, ZoomIn, ZoomOut, FileText } from "lucide-react";
@@ -323,6 +324,15 @@ const Index = () => {
     <div className="flex-1 flex overflow-hidden">
       {activeTab === 'leadlist' ? (
         <LeadListView />
+      ) : activeTab === 'launch' ? (
+        <LaunchView
+          steps={campaign.steps}
+          campaignName={campaign.name}
+          onLaunch={() => {
+            // TODO: Implement launch functionality
+            console.log('Launching campaign:', campaign.name);
+          }}
+        />
       ) : (
         <div className="flex-1 relative flex overflow-hidden">
           {/* Toolbar */}
@@ -357,11 +367,8 @@ const Index = () => {
           </div>
 
           <div
-            className="flex-1 relative overflow-auto select-none"
+            className="flex-1 relative overflow-auto select-none hexagon-bg"
             style={{
-              background: '#ffffff',
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0 L45 13 L45 39 L30 52 L15 39 L15 13 Z' fill='none' stroke='%23d1fae5' stroke-width='1' opacity='0.3'/%3E%3C/svg%3E"), linear-gradient(135deg, rgba(16, 185, 129, 0.03) 0%, rgba(52, 211, 153, 0.05) 100%)`,
-              backgroundSize: '90px 78px, 100% 100%',
               cursor: isPanning ? 'grabbing' : 'grab'
             }}
             onMouseDown={handleMouseDown}

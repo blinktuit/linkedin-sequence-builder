@@ -226,10 +226,10 @@ export const TargetListFilterModal = ({
     };
 
     const getScoreColor = (score: number) => {
-        if (score >= 5) return 'text-green-500 border-green-500';
-        if (score >= 4) return 'text-green-400 border-green-400';
+        if (score >= 5) return 'text-primary border-primary';
+        if (score >= 4) return 'text-primary/80 border-primary/80';
         if (score === 3) return 'text-yellow-500 border-yellow-500';
-        return 'text-orange-500 border-orange-500';
+        return 'text-destructive border-destructive';
     };
 
     return (
@@ -377,9 +377,9 @@ export const TargetListFilterModal = ({
                     <div className="text-sm font-medium">
                         Included: <span className="text-foreground">{includedCount}</span> <span className="text-muted-foreground">/ {totalCount}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-[#36b39a] text-sm font-medium">
+                    <div className="flex items-center gap-2 text-primary text-sm font-medium">
                         All changes are saved
-                        <div className="h-2 w-2 rounded-full bg-[#36b39a]" />
+                        <div className="h-2 w-2 rounded-full bg-primary" />
                     </div>
                 </div>
             </DialogContent>

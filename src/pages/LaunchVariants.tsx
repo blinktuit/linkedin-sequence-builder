@@ -69,214 +69,218 @@ const mockCampaignData = {
     scheduledStart: null,
 };
 
-// Variant 1: Modern Visual Design (Subtle)
+// Variant 1: Modern Visual Design
 const Variant1 = () => {
     const maxIndustryCount = Math.max(...mockCampaignData.topIndustries.map(i => i.count));
     const maxLocationCount = Math.max(...mockCampaignData.topLocations.map(l => l.count));
 
     return (
-        <div className="h-full overflow-auto">
-            <div className="p-8 max-w-5xl mx-auto space-y-6">
-                {/* Hero Header - More subtle */}
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 p-8 text-white">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-                    <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary/5 rounded-full translate-y-1/2 -translate-x-1/2" />
-                    <div className="relative z-10">
-                        <div className="flex items-center gap-2 mb-2">
-                            <div className="h-6 w-6 rounded-md bg-primary/20 flex items-center justify-center">
-                                <Sparkles className="h-3.5 w-3.5 text-primary" />
+        <div className="h-full flex flex-col">
+            <div className="flex-1 p-6 max-w-6xl mx-auto w-full">
+                {/* Top Section: Header + Stats */}
+                <div className="flex gap-6 mb-6">
+                    {/* Hero Header */}
+                    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#36b39a] via-[#4ac4ad] to-[#5ed4be] p-6 text-white flex-1">
+                        <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+                        <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
+                        <div className="relative z-10">
+                            <div className="flex items-center gap-2 mb-1">
+                                <Sparkles className="h-4 w-4" />
+                                <span className="text-xs font-medium text-white/80">Campaign Ready</span>
                             </div>
-                            <span className="text-sm font-medium text-gray-400">Ready to launch</span>
+                            <h1 className="text-2xl font-bold mb-1">{mockCampaignData.name}</h1>
+                            <p className="text-white/80 text-sm">Review your campaign summary before going live</p>
                         </div>
-                        <h1 className="text-2xl font-bold mb-1">{mockCampaignData.name}</h1>
-                        <p className="text-gray-400 text-sm">Review your campaign summary before going live</p>
+                    </div>
+
+                    {/* Stats Grid */}
+                    <div className="grid grid-cols-2 gap-3 w-[320px]">
+                        <div className="group relative overflow-hidden rounded-xl bg-[#36b39a]/5 p-4 border border-[#36b39a]/20">
+                            <Users className="h-5 w-5 text-[#36b39a] mb-1" />
+                            <p className="text-2xl font-bold text-gray-900">{mockCampaignData.validLeads.toLocaleString()}</p>
+                            <p className="text-xs text-gray-500">Active leads</p>
+                        </div>
+                        <div className="group relative overflow-hidden rounded-xl bg-blue-50/50 p-4 border border-blue-100">
+                            <MessageSquare className="h-5 w-5 text-blue-500 mb-1" />
+                            <p className="text-2xl font-bold text-gray-900">{mockCampaignData.steps.length}</p>
+                            <p className="text-xs text-gray-500">Sequence steps</p>
+                        </div>
+                        <div className="group relative overflow-hidden rounded-xl bg-gray-50 p-4 border border-gray-200/50">
+                            <Clock className="h-5 w-5 text-gray-500 mb-1" />
+                            <p className="text-2xl font-bold text-gray-900">{mockCampaignData.estimatedDuration}</p>
+                            <p className="text-xs text-gray-500">Est. duration</p>
+                        </div>
+                        <div className="group relative overflow-hidden rounded-xl bg-[#f49854]/5 p-4 border border-[#f49854]/20">
+                            <Zap className="h-5 w-5 text-[#f49854] mb-1" />
+                            <p className="text-2xl font-bold text-gray-900">{mockCampaignData.dailyLimit}</p>
+                            <p className="text-xs text-gray-500">Daily actions</p>
+                        </div>
                     </div>
                 </div>
 
-                {/* Stats Grid - Cleaner */}
-                <div className="grid grid-cols-4 gap-4">
-                    <div className="rounded-xl bg-white border p-5 hover:shadow-md transition-shadow">
-                        <div className="flex items-center gap-3 mb-3">
-                            <div className="h-9 w-9 rounded-lg bg-emerald-50 flex items-center justify-center">
-                                <Users className="h-4.5 w-4.5 text-emerald-600" />
+                {/* Middle Section: 3 Columns */}
+                <div className="grid grid-cols-3 gap-5 mb-6">
+                    {/* Column 1 - Sequence Overview */}
+                    <div className="rounded-xl border bg-white p-5 shadow-sm">
+                        <div className="flex items-center gap-2 mb-4">
+                            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-emerald-400 flex items-center justify-center">
+                                <Target className="h-4 w-4 text-white" />
                             </div>
-                        </div>
-                        <p className="text-2xl font-bold text-gray-900">{mockCampaignData.validLeads.toLocaleString()}</p>
-                        <p className="text-sm text-gray-500">Active leads</p>
-                    </div>
-                    <div className="rounded-xl bg-white border p-5 hover:shadow-md transition-shadow">
-                        <div className="flex items-center gap-3 mb-3">
-                            <div className="h-9 w-9 rounded-lg bg-blue-50 flex items-center justify-center">
-                                <MessageSquare className="h-4.5 w-4.5 text-blue-600" />
-                            </div>
-                        </div>
-                        <p className="text-2xl font-bold text-gray-900">{mockCampaignData.steps.length}</p>
-                        <p className="text-sm text-gray-500">Sequence steps</p>
-                    </div>
-                    <div className="rounded-xl bg-white border p-5 hover:shadow-md transition-shadow">
-                        <div className="flex items-center gap-3 mb-3">
-                            <div className="h-9 w-9 rounded-lg bg-violet-50 flex items-center justify-center">
-                                <Clock className="h-4.5 w-4.5 text-violet-600" />
-                            </div>
-                        </div>
-                        <p className="text-2xl font-bold text-gray-900">{mockCampaignData.estimatedDuration}</p>
-                        <p className="text-sm text-gray-500">Est. duration</p>
-                    </div>
-                    <div className="rounded-xl bg-white border p-5 hover:shadow-md transition-shadow">
-                        <div className="flex items-center gap-3 mb-3">
-                            <div className="h-9 w-9 rounded-lg bg-amber-50 flex items-center justify-center">
-                                <Zap className="h-4.5 w-4.5 text-amber-600" />
-                            </div>
-                        </div>
-                        <p className="text-2xl font-bold text-gray-900">{mockCampaignData.dailyLimit}</p>
-                        <p className="text-sm text-gray-500">Daily actions</p>
-                    </div>
-                </div>
-
-                {/* Two Column Layout */}
-                <div className="grid grid-cols-2 gap-6">
-                    {/* Left Column - Sequence Overview */}
-                    <div className="rounded-xl border bg-white p-6">
-                        <div className="flex items-center gap-3 mb-5">
-                            <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center">
-                                <Target className="h-4.5 w-4.5 text-primary" />
-                            </div>
-                            <div>
-                                <h3 className="font-semibold text-gray-900">Sequence Flow</h3>
-                                <p className="text-xs text-gray-500">{mockCampaignData.steps.length} steps configured</p>
-                            </div>
+                            <h3 className="font-semibold text-sm">Sequence Flow</h3>
                         </div>
                         <div className="space-y-2">
                             {mockCampaignData.steps.map((step, index) => (
-                                <div key={index} className="flex items-center gap-3 group">
-                                    <div className="relative">
-                                        <div className="h-8 w-8 rounded-lg bg-gray-100 group-hover:bg-primary/10 flex items-center justify-center text-sm font-medium text-gray-500 group-hover:text-primary transition-colors">
-                                            {index + 1}
-                                        </div>
-                                        {index < mockCampaignData.steps.length - 1 && (
-                                            <div className="absolute top-8 left-1/2 w-0.5 h-2 bg-gray-200 -translate-x-1/2" />
-                                        )}
+                                <div key={index} className="flex items-center gap-2">
+                                    <div className="h-6 w-6 rounded-md bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-500">
+                                        {index + 1}
                                     </div>
-                                    <div className="flex-1 flex items-center justify-between py-2 px-3 rounded-lg bg-gray-50 group-hover:bg-primary/5 transition-colors">
-                                        <span className="text-sm text-gray-700">{step.name}</span>
-                                        {step.count && (
-                                            <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                                                {step.count.toLocaleString()}
-                                            </span>
-                                        )}
-                                    </div>
+                                    <span className="text-sm text-gray-700 flex-1">{step.name}</span>
+                                    {step.count && (
+                                        <span className="text-xs font-medium text-primary">{step.count.toLocaleString()}</span>
+                                    )}
                                 </div>
                             ))}
                         </div>
                     </div>
 
-                    {/* Right Column - Audience Insights */}
-                    <div className="rounded-xl border bg-white p-6">
-                        <div className="flex items-center gap-3 mb-5">
-                            <div className="h-9 w-9 rounded-lg bg-blue-50 flex items-center justify-center">
-                                <BarChart3 className="h-4.5 w-4.5 text-blue-600" />
+                    {/* Column 2 - Audience Insights */}
+                    <div className="rounded-xl border bg-white p-5 shadow-sm">
+                        <div className="flex items-center gap-2 mb-4">
+                            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center">
+                                <BarChart3 className="h-4 w-4 text-white" />
                             </div>
-                            <div>
-                                <h3 className="font-semibold text-gray-900">Audience Insights</h3>
-                                <p className="text-xs text-gray-500">Top segments in your list</p>
-                            </div>
+                            <h3 className="font-semibold text-sm">Audience Insights</h3>
                         </div>
-
-                        <div className="space-y-5">
+                        <div className="space-y-3">
                             <div>
-                                <div className="flex items-center gap-2 mb-3">
-                                    <Building2 className="h-3.5 w-3.5 text-gray-400" />
-                                    <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Industries</span>
+                                <div className="flex items-center gap-1.5 mb-2">
+                                    <Building2 className="h-3 w-3 text-gray-400" />
+                                    <span className="text-xs font-medium text-gray-500 uppercase">Industries</span>
                                 </div>
-                                <div className="space-y-2.5">
-                                    {mockCampaignData.topIndustries.map((item, i) => (
-                                        <div key={i}>
-                                            <div className="flex justify-between text-sm mb-1">
-                                                <span className="text-gray-700">{item.name}</span>
-                                                <span className="text-gray-400 font-medium">{item.count}</span>
-                                            </div>
-                                            <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                                <div
-                                                    className="h-full bg-blue-500 rounded-full"
-                                                    style={{ width: `${(item.count / maxIndustryCount) * 100}%` }}
-                                                />
-                                            </div>
+                                {mockCampaignData.topIndustries.map((item, i) => (
+                                    <div key={i} className="mb-1.5">
+                                        <div className="flex justify-between text-xs mb-0.5">
+                                            <span>{item.name}</span>
+                                            <span className="text-gray-400">{item.count}</span>
                                         </div>
-                                    ))}
-                                </div>
+                                        <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                            <div className="h-full bg-blue-500 rounded-full" style={{ width: `${(item.count / maxIndustryCount) * 100}%` }} />
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-
                             <Separator />
-
                             <div>
-                                <div className="flex items-center gap-2 mb-3">
-                                    <MapPin className="h-3.5 w-3.5 text-gray-400" />
-                                    <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Locations</span>
+                                <div className="flex items-center gap-1.5 mb-2">
+                                    <MapPin className="h-3 w-3 text-gray-400" />
+                                    <span className="text-xs font-medium text-gray-500 uppercase">Locations</span>
                                 </div>
-                                <div className="space-y-2.5">
-                                    {mockCampaignData.topLocations.map((item, i) => (
-                                        <div key={i}>
-                                            <div className="flex justify-between text-sm mb-1">
-                                                <span className="text-gray-700">{item.name}</span>
-                                                <span className="text-gray-400 font-medium">{item.count}</span>
-                                            </div>
-                                            <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                                <div
-                                                    className="h-full bg-primary rounded-full"
-                                                    style={{ width: `${(item.count / maxLocationCount) * 100}%` }}
-                                                />
-                                            </div>
+                                {mockCampaignData.topLocations.map((item, i) => (
+                                    <div key={i} className="mb-1.5">
+                                        <div className="flex justify-between text-xs mb-0.5">
+                                            <span>{item.name}</span>
+                                            <span className="text-gray-400">{item.count}</span>
                                         </div>
-                                    ))}
+                                        <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                            <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${(item.count / maxLocationCount) * 100}%` }} />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Column 3 - What you can still change */}
+                    <div className="rounded-xl border bg-white p-5 shadow-sm">
+                        <div className="flex items-center gap-2 mb-4">
+                            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+                                <Settings className="h-4 w-4 text-white" />
+                            </div>
+                            <h3 className="font-semibold text-sm">What you can change</h3>
+                        </div>
+                        <div className="space-y-2.5">
+                            <div className="flex items-center gap-2">
+                                <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                <span className="text-sm text-gray-700">Edit message content</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                <span className="text-sm text-gray-700">Adjust wait delays</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                <span className="text-sm text-gray-700">Add/remove leads</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                <span className="text-sm text-gray-700">Pause campaign anytime</span>
+                            </div>
+                            <Separator className="my-2" />
+                            <div className="flex items-center gap-2">
+                                <AlertTriangle className="h-4 w-4 text-amber-500 flex-shrink-0" />
+                                <span className="text-sm text-gray-500">Cannot add/remove steps</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <AlertTriangle className="h-4 w-4 text-amber-500 flex-shrink-0" />
+                                <span className="text-sm text-gray-500">Cannot reorder steps</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Bottom Section: AI Predictions + Warning */}
+                <div className="flex gap-5">
+                    {/* AI Predictions */}
+                    <div className="flex-1 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-[1px]">
+                        <div className="rounded-xl bg-white p-4 h-full">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center">
+                                        <Sparkles className="h-4 w-4 text-white" />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-semibold text-sm">AI Predictions</h3>
+                                        <p className="text-xs text-gray-500">Based on similar campaigns</p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-6">
+                                    <div className="text-center">
+                                        <p className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">~35%</p>
+                                        <p className="text-xs text-gray-500">Accept rate</p>
+                                    </div>
+                                    <div className="text-center">
+                                        <p className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">~12%</p>
+                                        <p className="text-xs text-gray-500">Reply rate</p>
+                                    </div>
+                                    <div className="text-center">
+                                        <p className="text-xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">~142</p>
+                                        <p className="text-xs text-gray-500">Est. replies</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                {/* AI Predictions Banner - Subtle */}
-                <div className="rounded-xl border bg-white p-5">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                            <div className="h-9 w-9 rounded-lg bg-violet-50 flex items-center justify-center">
-                                <Sparkles className="h-4.5 w-4.5 text-violet-600" />
+                    {/* Warning */}
+                    {mockCampaignData.excludedLeads > 0 && (
+                        <div className="flex items-center gap-3 px-4 rounded-xl bg-amber-50 border border-amber-200 w-[320px]">
+                            <div className="h-8 w-8 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0">
+                                <AlertTriangle className="h-4 w-4 text-amber-600" />
                             </div>
-                            <div>
-                                <h3 className="font-semibold text-gray-900">AI Predictions</h3>
-                                <p className="text-xs text-gray-500">Based on similar campaigns</p>
-                            </div>
+                            <p className="text-sm text-amber-800">
+                                <span className="font-semibold">{mockCampaignData.excludedLeads} excluded</span><br />
+                                <span className="text-xs">{mockCampaignData.duplicates} duplicates removed</span>
+                            </p>
                         </div>
-                        <div className="flex gap-10">
-                            <div className="text-center">
-                                <p className="text-2xl font-bold text-gray-900">~35%</p>
-                                <p className="text-xs text-gray-500">Accept rate</p>
-                            </div>
-                            <div className="text-center">
-                                <p className="text-2xl font-bold text-gray-900">~12%</p>
-                                <p className="text-xs text-gray-500">Reply rate</p>
-                            </div>
-                            <div className="text-center">
-                                <p className="text-2xl font-bold text-primary">~142</p>
-                                <p className="text-xs text-gray-500">Est. replies</p>
-                            </div>
-                        </div>
-                    </div>
+                    )}
                 </div>
+            </div>
 
-                {/* Warnings */}
-                {mockCampaignData.excludedLeads > 0 && (
-                    <div className="flex items-center gap-3 p-4 rounded-xl bg-amber-50/50 border border-amber-100">
-                        <AlertTriangle className="h-4 w-4 text-amber-500 flex-shrink-0" />
-                        <p className="text-sm text-amber-700">
-                            <span className="font-medium">{mockCampaignData.excludedLeads} leads excluded</span> • {mockCampaignData.duplicates} duplicates removed
-                        </p>
-                    </div>
-                )}
-
-                {/* Launch Button */}
-                <div className="flex justify-center pt-2 pb-4">
-                    <Button size="lg" className="gap-2 px-8 h-12 rounded-lg">
-                        <Rocket className="h-4 w-4" />
+            {/* Fixed Launch Button at Bottom */}
+            <div className="border-t bg-white px-6 py-4">
+                <div className="max-w-6xl mx-auto flex justify-end">
+                    <Button size="lg" className="gap-3 px-12 h-14 text-lg rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 shadow-lg shadow-emerald-200 hover:shadow-emerald-300 transition-all">
+                        <Rocket className="h-6 w-6" />
                         Launch Campaign
                     </Button>
                 </div>

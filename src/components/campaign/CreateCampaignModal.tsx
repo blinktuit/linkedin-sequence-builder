@@ -590,11 +590,6 @@ export const CreateCampaignModal = ({
                   <p className="text-muted-foreground max-w-xs text-lg relative z-10">
                     Complex sequences with multiple steps and conditions
                   </p>
-                  <div className="mt-6 relative z-10">
-                    <Badge variant="default" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm px-4 py-1 text-sm">
-                      Most Popular
-                    </Badge>
-                  </div>
                 </button>
               </div>
 
@@ -804,11 +799,6 @@ export const CreateCampaignModal = ({
                     <p className="text-muted-foreground max-w-xs text-lg relative z-10">
                       Build your campaign step by step with full control
                     </p>
-                    <div className="mt-6 relative z-10">
-                      <Badge variant="default" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm px-4 py-1 text-sm">
-                        Most Flexible
-                      </Badge>
-                    </div>
                   </button>
                 </div>
 

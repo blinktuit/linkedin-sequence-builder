@@ -548,7 +548,7 @@ export const LeadListView = () => {
                         <div className="text-center max-w-md relative z-10">
                             <div className="mb-6">
                                 <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center border-2 border-green-100/50 shadow-lg shadow-green-100/50">
-                                    <Upload className="h-10 w-10 text-green-600" />
+                                    <Upload className="h-10 w-10 text-primary" />
                                 </div>
                                 <h3 className="text-xl font-semibold text-gray-900 mb-2">No leads yet</h3>
                                 <p className="text-gray-500 mb-8">
@@ -1229,7 +1229,7 @@ export const LeadListView = () => {
                                                                             <span className="text-gray-400">reactions</span>
                                                                         </div>
                                                                         <div className="flex items-center gap-1.5 text-gray-600">
-                                                                            <Repeat2 className="h-3.5 w-3.5 text-green-500" />
+                                                                            <Repeat2 className="h-3.5 w-3.5 text-primary" />
                                                                             <span className="font-medium">{post.reposts.toLocaleString()}</span>
                                                                             <span className="text-gray-400">reposts</span>
                                                                         </div>

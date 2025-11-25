@@ -9,11 +9,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Palette, RotateCcw } from "lucide-react";
 
 interface ColorConfig {
@@ -138,22 +133,17 @@ function ColorPicker({ label, value, onChange }: ColorPickerProps) {
     <div className="flex items-center justify-between gap-4">
       <Label className="text-sm font-medium min-w-[100px]">{label}</Label>
       <div className="flex items-center gap-2">
-        <Popover>
-          <PopoverTrigger asChild>
-            <button
-              className="w-8 h-8 rounded-md border border-border shadow-sm cursor-pointer"
-              style={{ backgroundColor: value }}
-            />
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-3" align="end">
-            <input
-              type="color"
-              value={value}
-              onChange={(e) => onChange(e.target.value)}
-              className="w-32 h-32 cursor-pointer border-0"
-            />
-          </PopoverContent>
-        </Popover>
+        <label
+          className="w-8 h-8 rounded-md border border-border shadow-sm cursor-pointer overflow-hidden relative"
+          style={{ backgroundColor: value }}
+        >
+          <input
+            type="color"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          />
+        </label>
         <Input
           type="text"
           value={value}
@@ -231,6 +221,11 @@ export function ThemeCustomizer() {
     root.style.setProperty("--input", getHSLString(borderHSL.h, borderHSL.s, borderHSL.l));
     root.style.setProperty("--step-border", getHSLString(borderHSL.h, borderHSL.s, borderHSL.l));
     root.style.setProperty("--sidebar-border", getHSLString(borderHSL.h, borderHSL.s, borderHSL.l));
+
+    // Hexagon background pattern - encode the primary color in the SVG
+    const hexagonColor = colorConfig.primary.replace("#", "%23");
+    const hexagonSvg = `url("data:image/svg+xml,%3Csvg width='60' height='52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0 L45 13 L45 39 L30 52 L15 39 L15 13 Z' fill='none' stroke='${hexagonColor}' stroke-width='1' opacity='0.2'/%3E%3C/svg%3E")`;
+    root.style.setProperty("--hexagon-svg", hexagonSvg);
   };
 
   const handleColorChange = (key: keyof ColorConfig, value: string) => {
