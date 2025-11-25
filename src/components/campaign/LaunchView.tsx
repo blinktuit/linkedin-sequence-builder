@@ -11,7 +11,8 @@ import {
     Building2,
     MapPin,
     Sparkles,
-    ArrowRight
+    ArrowRight,
+    X
 } from "lucide-react";
 import type { CampaignStep } from "@/types/campaign";
 
@@ -174,19 +175,25 @@ export const LaunchView = ({ steps, campaignName, onLaunch }: LaunchViewProps) =
             </div>
 
             {/* Fixed Footer */}
-            <div className="border-t bg-white px-6 py-4">
+            <div className="border-t bg-white px-6 py-5">
                 <div className="max-w-5xl mx-auto flex items-center justify-between">
                     {/* After launch info */}
-                    <div className="flex items-center gap-6 text-sm">
-                        <div className="flex items-center gap-2">
-                            <AlertTriangle className="h-4 w-4 text-amber-500" />
-                            <span className="font-medium text-gray-700">After launch:</span>
+                    <div className="flex items-center gap-8">
+                        <span className="font-semibold text-gray-900">After launch:</span>
+                        <div className="flex items-center gap-6">
+                            <div className="flex items-center gap-2">
+                                <X className="h-4 w-4 text-[#f49854]" />
+                                <span className="text-gray-600">Change, add or remove steps</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <CheckCircle2 className="h-4 w-4 text-primary" />
+                                <span className="text-gray-600">Change content{!isSingleStep && ' and delays'}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <CheckCircle2 className="h-4 w-4 text-primary" />
+                                <span className="text-gray-600">Add or remove leads</span>
+                            </div>
                         </div>
-                        <span className="text-gray-500">You cannot change, add or remove steps</span>
-                        <span className="text-gray-400">|</span>
-                        <span className="text-gray-500">You can change content{!isSingleStep && ' and delays'}</span>
-                        <span className="text-gray-400">|</span>
-                        <span className="text-gray-500">You can add or remove leads</span>
                     </div>
                     <Button
                         size="lg"
