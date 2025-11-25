@@ -209,10 +209,11 @@ export const ConfigPanel = ({
             return (
               <div className="mb-4 space-y-3">
                 {/* Variant selector tabs */}
-                <div className="flex items-center gap-1.5 p-1 bg-muted/50 rounded-lg">
+                <div className="flex items-center gap-1 p-1 bg-muted/50 rounded-lg">
                   {variants.map((variant: string) => {
                     const color = variantColors[variant] || variantColors['A'];
                     const isActive = activeVersion === variant;
+                    const isCompact = variants.length > 3;
                     return (
                       <button
                         key={variant}
@@ -221,36 +222,47 @@ export const ConfigPanel = ({
                           window.dispatchEvent(event);
                         }}
                         className={cn(
-                          "flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all",
+                          "flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-all",
+                          isCompact ? "flex-1 px-2 py-2" : "flex-1 px-3 py-2",
                           isActive
                             ? "bg-white shadow-sm"
                             : "hover:bg-white/50"
                         )}
                       >
                         <div
-                          className="h-5 w-5 rounded flex items-center justify-center text-[10px] font-bold text-white"
+                          className={cn(
+                            "rounded flex items-center justify-center font-bold text-white",
+                            isCompact ? "h-6 w-6 text-[10px]" : "h-5 w-5 text-[10px]"
+                          )}
                           style={{ background: `linear-gradient(135deg, ${color.from}, ${color.to})` }}
                         >
                           {variant}
                         </div>
-                        <span className={cn(
-                          "text-xs",
-                          isActive ? "text-foreground" : "text-muted-foreground"
-                        )}>
-                          {variant === 'A' ? 'Control' : `Variant ${variant}`}
-                        </span>
+                        {!isCompact && (
+                          <span className={cn(
+                            "text-xs",
+                            isActive ? "text-foreground" : "text-muted-foreground"
+                          )}>
+                            {variant === 'A' ? 'Control' : `Variant ${variant}`}
+                          </span>
+                        )}
                       </button>
                     );
                   })}
-                  <button
-                    onClick={() => {
-                      const event = new CustomEvent('addVariant');
-                      window.dispatchEvent(event);
-                    }}
-                    className="h-9 w-9 rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-white/50 transition-colors"
-                  >
-                    <Plus className="h-4 w-4" />
-                  </button>
+                  {variants.length < 5 && (
+                    <button
+                      onClick={() => {
+                        const event = new CustomEvent('addVariant');
+                        window.dispatchEvent(event);
+                      }}
+                      className={cn(
+                        "rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-white/50 transition-colors",
+                        variants.length > 3 ? "h-8 w-8" : "h-9 w-9"
+                      )}
+                    >
+                      <Plus className="h-4 w-4" />
+                    </button>
+                  )}
                 </div>
 
                 {/* Active variant info */}
