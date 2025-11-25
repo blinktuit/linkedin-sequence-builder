@@ -53,7 +53,7 @@ export const LaunchView = ({ steps, campaignName, onLaunch }: LaunchViewProps) =
     return (
         <div className="h-full w-full flex flex-col bg-white">
             <div className="flex-1 overflow-auto px-6 py-6">
-                <div className="space-y-6">
+                <div className="max-w-5xl mx-auto space-y-6">
                     {/* Header */}
                     <div className="flex items-center justify-between">
                         <div>
