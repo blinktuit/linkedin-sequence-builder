@@ -668,37 +668,39 @@ export const ConfigPanel = ({
                 </CollapsibleContent>
               </Collapsible>
             </> : <>
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <Label className="text-sm">Message</Label>
-                  <Button variant="ghost" size="sm" className="h-auto p-0 gap-1.5 text-primary hover:text-primary hover:bg-transparent font-normal">
-                    <Sparkles className="h-4 w-4" />
+              <div className="rounded-xl border border-border bg-card overflow-hidden">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/30">
+                  <Label className="text-sm font-medium">Message</Label>
+                  <Button variant="ghost" size="sm" className="h-7 px-2.5 gap-1.5 text-primary hover:text-primary hover:bg-primary/10 rounded-lg font-medium text-xs">
+                    <Sparkles className="h-3.5 w-3.5" />
                     AI
                   </Button>
                 </div>
                 <div className="relative">
-                  <Textarea id="message-textarea" placeholder="What message do you want to send?" className="min-h-[200px] resize-none pr-10" value={step.config?.message || ""} onChange={e => onConfigChange({
+                  <Textarea id="message-textarea" placeholder="What message do you want to send?" className="min-h-[180px] resize-none border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 px-4 py-3" value={step.config?.message || ""} onChange={e => onConfigChange({
                 ...step.config,
                 message: e.target.value
               })} />
-                  <div className="absolute bottom-3 left-3 flex gap-2">
-                    <input type="file" id="image-upload" accept="image/*" multiple className="hidden" onChange={handleImageUpload} />
-                    <label htmlFor="image-upload">
-                      <Button type="button" variant="ghost" size="icon" className="h-8 w-8 hover:bg-muted" asChild>
-                        <span className="cursor-pointer">
-                          <Image className="h-4 w-4 text-muted-foreground" />
-                        </span>
-                      </Button>
-                    </label>
-                  </div>
-                  <div className="absolute bottom-3 right-3 text-xs text-muted-foreground">
-                    {step.config?.message?.length || 0}/8000
+                  <div className="flex items-center justify-between px-4 py-2.5 border-t border-border bg-muted/20">
+                    <div className="flex items-center gap-1">
+                      <input type="file" id="image-upload" accept="image/*" multiple className="hidden" onChange={handleImageUpload} />
+                      <label htmlFor="image-upload">
+                        <Button type="button" variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-muted" asChild>
+                          <span className="cursor-pointer">
+                            <Image className="h-4 w-4 text-muted-foreground" />
+                          </span>
+                        </Button>
+                      </label>
+                    </div>
+                    <span className="text-xs text-muted-foreground tabular-nums">
+                      {step.config?.message?.length || 0}/8000
+                    </span>
                   </div>
                 </div>
 
-                {uploadedImages.length > 0 && <div className="mt-3 flex flex-wrap gap-2">
+                {uploadedImages.length > 0 && <div className="px-4 pb-3 flex flex-wrap gap-2">
                     {uploadedImages.map(image => <div key={image.id} className="relative group">
-                        <img src={image.url} alt="Uploaded" className="h-16 w-16 object-cover rounded-md border border-border" />
+                        <img src={image.url} alt="Uploaded" className="h-16 w-16 object-cover rounded-lg border border-border" />
                         <button onClick={() => removeImage(image.id)} className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                           <X className="h-3 w-3" />
                         </button>
@@ -706,11 +708,11 @@ export const ConfigPanel = ({
                   </div>}
               </div>
 
-              <div className="flex gap-2 items-center flex-wrap">
+              <div className="flex gap-1.5 items-center flex-wrap">
                 <Button
-                  variant="ghost"
+                  variant="outline"
                   size="sm"
-                  className="h-auto px-0 hover:bg-transparent"
+                  className="h-8 px-3 rounded-lg text-xs font-medium hover:bg-primary/5 hover:text-primary hover:border-primary/30"
                   onClick={() => {
                     const textarea = document.getElementById('message-textarea') as HTMLTextAreaElement;
                     if (textarea) {
@@ -734,9 +736,9 @@ export const ConfigPanel = ({
                   + First name
                 </Button>
                 <Button
-                  variant="ghost"
+                  variant="outline"
                   size="sm"
-                  className="h-auto px-0 hover:bg-transparent"
+                  className="h-8 px-3 rounded-lg text-xs font-medium hover:bg-primary/5 hover:text-primary hover:border-primary/30"
                   onClick={() => {
                     const textarea = document.getElementById('message-textarea') as HTMLTextAreaElement;
                     if (textarea) {
@@ -761,7 +763,7 @@ export const ConfigPanel = ({
                 </Button>
                 <Popover open={personalizationOpen} onOpenChange={setPersonalizationOpen}>
                   <PopoverTrigger asChild>
-                    <Button variant="outline" size="sm" className="gap-1">
+                    <Button variant="outline" size="sm" className="h-8 px-3 rounded-lg text-xs font-medium gap-1">
                       More...
                       <ChevronDown className="h-3 w-3" />
                     </Button>
@@ -845,7 +847,7 @@ export const ConfigPanel = ({
 
                 <Popover open={templatesOpen} onOpenChange={setTemplatesOpen}>
                   <PopoverTrigger asChild>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" className="h-8 px-3 rounded-lg text-xs font-medium">
                       Templates
                     </Button>
                   </PopoverTrigger>
