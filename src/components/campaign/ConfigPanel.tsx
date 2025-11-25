@@ -194,43 +194,100 @@ export const ConfigPanel = ({
   return <div className="w-[480px] border-l border-border bg-card overflow-y-auto">
       <div className="p-6 space-y-6">
         <div>
-          {step.type === 'ab-test' && (
-            <div className={cn(
-              "mb-4 p-3 rounded-xl border",
-              activeVersion === 'A'
-                ? "bg-gradient-to-r from-[#48ade8]/5 to-[#48ade8]/10 border-[#48ade8]/20"
-                : "bg-gradient-to-r from-[#ea5154]/5 to-[#ea5154]/10 border-[#ea5154]/20"
-            )}>
-              <div className="flex items-center gap-3">
-                <div className={cn(
-                  "h-10 w-10 rounded-lg flex items-center justify-center text-sm font-bold shadow-sm",
-                  activeVersion === 'A'
-                    ? "bg-gradient-to-br from-[#48ade8] to-[#3a9ad4] text-white"
-                    : "bg-gradient-to-br from-[#ea5154] to-[#d4453f] text-white"
-                )}>
-                  {activeVersion}
+          {step.type === 'ab-test' && (() => {
+            // Define variant colors
+            const variantColors: Record<string, { from: string; to: string }> = {
+              'A': { from: '#48ade8', to: '#3a9ad4' },
+              'B': { from: '#ea5154', to: '#d4453f' },
+              'C': { from: '#36b39a', to: '#2a9a84' },
+              'D': { from: '#f59e0b', to: '#d97706' },
+              'E': { from: '#8b5cf6', to: '#7c3aed' },
+            };
+            const variants = step.versions || ['A', 'B'];
+            const currentColor = variantColors[activeVersion] || variantColors['A'];
+
+            return (
+              <div className="mb-4 space-y-3">
+                {/* Variant selector tabs */}
+                <div className="flex items-center gap-1.5 p-1 bg-muted/50 rounded-lg">
+                  {variants.map((variant: string) => {
+                    const color = variantColors[variant] || variantColors['A'];
+                    const isActive = activeVersion === variant;
+                    return (
+                      <button
+                        key={variant}
+                        onClick={() => {
+                          const event = new CustomEvent('switchVersion', { detail: variant });
+                          window.dispatchEvent(event);
+                        }}
+                        className={cn(
+                          "flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all",
+                          isActive
+                            ? "bg-white shadow-sm"
+                            : "hover:bg-white/50"
+                        )}
+                      >
+                        <div
+                          className="h-5 w-5 rounded flex items-center justify-center text-[10px] font-bold text-white"
+                          style={{ background: `linear-gradient(135deg, ${color.from}, ${color.to})` }}
+                        >
+                          {variant}
+                        </div>
+                        <span className={cn(
+                          "text-xs",
+                          isActive ? "text-foreground" : "text-muted-foreground"
+                        )}>
+                          {variant === 'A' ? 'Control' : `Variant ${variant}`}
+                        </span>
+                      </button>
+                    );
+                  })}
+                  <button
+                    onClick={() => {
+                      const event = new CustomEvent('addVariant');
+                      window.dispatchEvent(event);
+                    }}
+                    className="h-9 w-9 rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-white/50 transition-colors"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </button>
                 </div>
-                <div className="flex-1">
-                  <div className={cn(
-                    "text-sm font-semibold",
-                    activeVersion === 'A' ? "text-[#48ade8]" : "text-[#ea5154]"
-                  )}>
-                    Version {activeVersion}
+
+                {/* Active variant info */}
+                <div
+                  className="p-3 rounded-xl border"
+                  style={{
+                    background: `linear-gradient(to right, ${currentColor.from}08, ${currentColor.from}15)`,
+                    borderColor: `${currentColor.from}30`
+                  }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="h-10 w-10 rounded-lg flex items-center justify-center text-sm font-bold shadow-sm text-white"
+                      style={{ background: `linear-gradient(135deg, ${currentColor.from}, ${currentColor.to})` }}
+                    >
+                      {activeVersion}
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-sm font-semibold" style={{ color: currentColor.from }}>
+                        Version {activeVersion}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {activeVersion === 'A' ? 'Control variant' : 'Test variant'}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <div
+                        className="h-2 w-2 rounded-full"
+                        style={{ backgroundColor: currentColor.from }}
+                      />
+                      A/B Test
+                    </div>
                   </div>
-                  <div className="text-xs text-muted-foreground">
-                    {activeVersion === 'A' ? 'Control variant' : 'Test variant'}
-                  </div>
-                </div>
-                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <div className={cn(
-                    "h-2 w-2 rounded-full",
-                    activeVersion === 'A' ? "bg-[#48ade8]" : "bg-[#ea5154]"
-                  )} />
-                  A/B Test
                 </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
 
           <div className="flex items-center gap-3 mb-4">
             <div className="text-primary">

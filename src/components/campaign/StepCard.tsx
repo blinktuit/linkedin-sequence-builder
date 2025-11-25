@@ -363,61 +363,73 @@ export const StepCard = ({
 
           {hasError && <div className="mt-1.5 text-[11px] text-destructive">{step.error}</div>}
 
-          {step.type === 'ab-test' && <div className="mt-3 space-y-1.5">
-              <button onClick={e => {
-          e.stopPropagation();
-          onVersionClick?.('A');
-        }} className={cn(
-          "w-full flex items-center justify-between gap-2 p-2.5 rounded-lg bg-background transition-all text-left",
-          activeVersion === 'A'
-            ? "border-2 border-[#48ade8] bg-[#48ade8]/5 shadow-sm shadow-[#48ade8]/10"
-            : "border border-border/60 hover:border-border hover:bg-muted/30"
-        )}>
-                <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <div className={cn(
-                    "h-7 w-7 rounded-md flex items-center justify-center flex-shrink-0 text-xs font-bold",
-                    activeVersion === 'A'
-                      ? "bg-gradient-to-br from-[#48ade8] to-[#3a9ad4] text-white shadow-sm"
-                      : "bg-muted text-muted-foreground"
-                  )}>
-                    A
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className={cn("text-xs font-medium", activeVersion === 'A' && "text-[#48ade8]")}>Version A</div>
-                    <div className="text-[10px] text-muted-foreground">Control</div>
-                    {step.versionA?.error && <div className="text-[10px] text-destructive truncate">{step.versionA.error}</div>}
-                  </div>
-                </div>
-                <MoreVertical className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-              </button>
+          {step.type === 'ab-test' && (() => {
+            const variantColors: Record<string, { from: string; to: string }> = {
+              'A': { from: '#48ade8', to: '#3a9ad4' },
+              'B': { from: '#ea5154', to: '#d4453f' },
+              'C': { from: '#36b39a', to: '#2a9a84' },
+              'D': { from: '#f59e0b', to: '#d97706' },
+              'E': { from: '#8b5cf6', to: '#7c3aed' },
+            };
+            const variants = step.versions || ['A', 'B'];
 
-              <button onClick={e => {
-          e.stopPropagation();
-          onVersionClick?.('B');
-        }} className={cn(
-          "w-full flex items-center justify-between gap-2 p-2.5 rounded-lg bg-background transition-all text-left",
-          activeVersion === 'B'
-            ? "border-2 border-[#ea5154] bg-[#ea5154]/5 shadow-sm shadow-[#ea5154]/10"
-            : "border border-border/60 hover:border-border hover:bg-muted/30"
-        )}>
-                <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <div className={cn(
-                    "h-7 w-7 rounded-md flex items-center justify-center flex-shrink-0 text-xs font-bold",
-                    activeVersion === 'B'
-                      ? "bg-gradient-to-br from-[#ea5154] to-[#d4453f] text-white shadow-sm"
-                      : "bg-muted text-muted-foreground"
-                  )}>
-                    B
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className={cn("text-xs font-medium", activeVersion === 'B' && "text-[#ea5154]")}>Version B</div>
-                    <div className="text-[10px] text-muted-foreground">Test variant</div>
-                    {step.versionB?.error && <div className="text-[10px] text-destructive truncate">{step.versionB.error}</div>}
-                  </div>
-                </div>
-                <MoreVertical className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-              </button>
-            </div>}
+            return (
+              <div className="mt-3 space-y-1.5">
+                {variants.map((variant: string) => {
+                  const color = variantColors[variant] || variantColors['A'];
+                  const isActive = activeVersion === variant;
+                  const versionData = (step as any)[`version${variant}`];
+
+                  return (
+                    <button
+                      key={variant}
+                      onClick={e => {
+                        e.stopPropagation();
+                        onVersionClick?.(variant as 'A' | 'B');
+                      }}
+                      className="w-full flex items-center justify-between gap-2 p-2.5 rounded-lg bg-background transition-all text-left border-2"
+                      style={{
+                        borderColor: isActive ? color.from : 'transparent',
+                        backgroundColor: isActive ? `${color.from}08` : undefined,
+                        boxShadow: isActive ? `0 1px 3px ${color.from}15` : undefined
+                      }}
+                    >
+                      <div className="flex items-center gap-2 flex-1 min-w-0">
+                        <div
+                          className="h-7 w-7 rounded-md flex items-center justify-center flex-shrink-0 text-xs font-bold shadow-sm"
+                          style={{
+                            background: isActive
+                              ? `linear-gradient(135deg, ${color.from}, ${color.to})`
+                              : undefined,
+                            color: isActive ? 'white' : undefined
+                          }}
+                        >
+                          <span className={cn(!isActive && "text-muted-foreground bg-muted rounded-md h-7 w-7 flex items-center justify-center")}>
+                            {variant}
+                          </span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div
+                            className="text-xs font-medium"
+                            style={{ color: isActive ? color.from : undefined }}
+                          >
+                            Version {variant}
+                          </div>
+                          <div className="text-[10px] text-muted-foreground">
+                            {variant === 'A' ? 'Control' : 'Test variant'}
+                          </div>
+                          {versionData?.error && (
+                            <div className="text-[10px] text-destructive truncate">{versionData.error}</div>
+                          )}
+                        </div>
+                      </div>
+                      <MoreVertical className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    </button>
+                  );
+                })}
+              </div>
+            );
+          })()}
         </>}
 
     </div>;

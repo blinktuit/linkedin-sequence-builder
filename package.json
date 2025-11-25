@@ -8,7 +8,9 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -77,6 +79,15 @@
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
-    "vite": "^5.4.19"
+    "vite": "^5.4.19",
+    "storybook": "8.4.7",
+    "@storybook/react": "8.4.7",
+    "@storybook/react-vite": "8.4.7",
+    "@storybook/blocks": "8.4.7",
+    "@storybook/addon-onboarding": "8.4.7",
+    "@storybook/addon-essentials": "8.4.7",
+    "@chromatic-com/storybook": "^3.2.7",
+    "@storybook/test": "8.4.7",
+    "@storybook/addon-interactions": "8.4.7"
   }
 }

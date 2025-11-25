@@ -25,11 +25,24 @@ export interface CampaignStep {
   warning?: string;
   nextSteps?: string[];
   position?: { x: number; y: number };
+  versions?: string[];  // e.g. ['A', 'B', 'C'] for multi-variant testing
   versionA?: {
     config?: any;
     error?: string;
   };
   versionB?: {
+    config?: any;
+    error?: string;
+  };
+  versionC?: {
+    config?: any;
+    error?: string;
+  };
+  versionD?: {
+    config?: any;
+    error?: string;
+  };
+  versionE?: {
     config?: any;
     error?: string;
   };
