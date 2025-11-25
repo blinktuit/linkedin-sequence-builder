@@ -21,13 +21,13 @@ import {
   X,
   Check,
   Clock,
-  FileText,
   Rocket,
   Mail,
   PartyPopper,
   Handshake,
   Video,
-  LucideIcon
+  LucideIcon,
+  Workflow
 } from "lucide-react";
 
 type TemplateIconType = 'rocket' | 'mail' | 'party-popper' | 'handshake' | 'video';
@@ -503,42 +503,56 @@ export const CreateCampaignModal = ({
 
 
 
-  const stepLabels = [
+  // Different step labels for multi-step vs single-step campaigns
+  const multiStepLabels = [
     { number: 1, label: "Campaign type" },
-    { number: 2, label: "Template" }
+    { number: 2, label: "Sequence" }
   ];
 
-  const StepIndicator = () => (
-    <div className="px-6 py-4 border-b bg-background">
-      <div className="flex items-center gap-3">
-        {stepLabels.map((s, index) => (
-          <div key={s.number} className="flex items-center gap-3">
-            <div
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors ${s.number === step
-                ? 'bg-primary/10 text-primary'
-                : s.number < step
-                  ? 'text-primary'
-                  : 'text-muted-foreground'
-                }`}
-            >
-              <span className={`flex items-center justify-center w-5 h-5 rounded-full text-xs font-medium ${s.number < step
-                ? 'bg-primary text-primary-foreground'
-                : s.number === step
+  const singleStepLabels = [
+    { number: 1, label: "Campaign type" }
+  ];
+
+  // Use single step labels when a single-step campaign type is selected
+  const isSingleStepCampaign = selectedSource && ['event-inviter', 'company-page'].includes(selectedSource);
+  const stepLabels = isSingleStepCampaign ? singleStepLabels : multiStepLabels;
+
+  const StepIndicator = () => {
+    // Hide step indicator for single-step campaigns (they complete in one step)
+    if (isSingleStepCampaign) return null;
+
+    return (
+      <div className="px-6 py-4 border-b bg-background">
+        <div className="flex items-center gap-3">
+          {stepLabels.map((s, index) => (
+            <div key={s.number} className="flex items-center gap-3">
+              <div
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors ${s.number === step
+                  ? 'bg-primary/10 text-primary'
+                  : s.number < step
+                    ? 'text-primary'
+                    : 'text-muted-foreground'
+                  }`}
+              >
+                <span className={`flex items-center justify-center w-5 h-5 rounded-full text-xs font-medium ${s.number < step
                   ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted text-muted-foreground'
-                }`}>
-                {s.number < step ? <Check className="h-3 w-3" /> : s.number}
-              </span>
-              <span className="text-sm font-medium">{s.label}</span>
+                  : s.number === step
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-muted-foreground'
+                  }`}>
+                  {s.number < step ? <Check className="h-3 w-3" /> : s.number}
+                </span>
+                <span className="text-sm font-medium">{s.label}</span>
+              </div>
+              {index < stepLabels.length - 1 && (
+                <div className={`h-px w-8 ${s.number < step ? 'bg-primary' : 'bg-muted'}`} />
+              )}
             </div>
-            {index < stepLabels.length - 1 && (
-              <div className={`h-px w-8 ${s.number < step ? 'bg-primary' : 'bg-muted'}`} />
-            )}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -570,7 +584,7 @@ export const CreateCampaignModal = ({
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
                   <div className="mb-6 p-8 rounded-full bg-primary/5 ring-1 ring-primary/20 shadow-sm group-hover:scale-110 group-hover:shadow-md group-hover:bg-primary/10 transition-all duration-300 relative z-10">
-                    <FileText className="h-16 w-16 text-primary" />
+                    <Workflow className="h-16 w-16 text-primary" />
                   </div>
                   <h3 className="text-3xl font-bold mb-3 text-foreground relative z-10">Multi step campaign</h3>
                   <p className="text-muted-foreground max-w-xs text-lg relative z-10">
@@ -855,7 +869,7 @@ export const CreateCampaignModal = ({
                                 </div>
                                 <div className="flex items-center gap-3 text-xs text-muted-foreground">
                                   <span className="flex items-center gap-1">
-                                    <FileText className="h-3 w-3" />
+                                    <Workflow className="h-3 w-3" />
                                     {template.steps} steps
                                   </span>
                                   <span className="flex items-center gap-1">
