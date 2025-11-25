@@ -588,11 +588,6 @@ export const CreateCampaignModal = ({
 
               {/* Right Column: Single Step Campaigns */}
               <div className="w-1/2 flex flex-col bg-background">
-                <div className="p-6 border-b">
-                  <h3 className="text-2xl font-semibold">Single step campaigns</h3>
-                  <p className="text-muted-foreground mt-1">Quick actions for specific goals</p>
-                </div>
-
                 <div className="flex-1 overflow-y-auto p-6">
                   {!selectedSource ? (
                     <div className="space-y-4">
@@ -623,7 +618,7 @@ export const CreateCampaignModal = ({
                       {/* Back button */}
                       <button
                         onClick={() => setSelectedSource(null)}
-                        className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                        className="flex items-center gap-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors"
                       >
                         <ChevronRight className="h-4 w-4 rotate-180" />
                         Back to campaign types
@@ -667,19 +662,19 @@ export const CreateCampaignModal = ({
 
                           <div className="space-y-2 text-sm text-muted-foreground py-4">
                             <div className="flex items-start gap-2">
-                              <div className="w-4 h-4 rounded-full border-2 border-primary/40 mt-0.5 shrink-0" />
+                              <div className="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 shrink-0" />
                               <span>Je kan deze campagne als laatste stap in je multi step campaign zetten</span>
                             </div>
                             <div className="flex items-start gap-2">
-                              <div className="w-4 h-4 rounded-full border-2 border-primary/40 mt-0.5 shrink-0" />
+                              <div className="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 shrink-0" />
                               <span>Er geldt een limiet van maximaal 1000 uitnodigingen per week per gebruiker, dus niet per evenement</span>
                             </div>
                             <div className="flex items-start gap-2">
-                              <div className="w-4 h-4 rounded-full border-2 border-primary/40 mt-0.5 shrink-0" />
+                              <div className="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 shrink-0" />
                               <span>Alleen 1e-graads connecties kunnen worden uitgenodigd, 2e en 3e+ graads worden overgeslagen</span>
                             </div>
                             <div className="flex items-start gap-2">
-                              <div className="w-4 h-4 rounded-full border-2 border-primary/40 mt-0.5 shrink-0" />
+                              <div className="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 shrink-0" />
                               <span>Als je limiet bereikt is wacht de campagne tot je weer een volgende week krijgt</span>
                             </div>
                           </div>
@@ -720,19 +715,19 @@ export const CreateCampaignModal = ({
 
                           <div className="space-y-2 text-sm text-muted-foreground py-4">
                             <div className="flex items-start gap-2">
-                              <div className="w-4 h-4 rounded-full border-2 border-primary/40 mt-0.5 shrink-0" />
+                              <div className="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 shrink-0" />
                               <span>Je kan deze campagne als laatste stap in je multi step campaign zetten</span>
                             </div>
                             <div className="flex items-start gap-2">
-                              <div className="w-4 h-4 rounded-full border-2 border-primary/40 mt-0.5 shrink-0" />
+                              <div className="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 shrink-0" />
                               <span>Er geldt een limiet van maximaal 250 uitnodigingen per maand per bedrijfspagina</span>
                             </div>
                             <div className="flex items-start gap-2">
-                              <div className="w-4 h-4 rounded-full border-2 border-primary/40 mt-0.5 shrink-0" />
+                              <div className="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 shrink-0" />
                               <span>Alleen 1e-graads connecties kunnen worden uitgenodigd, 2e en 3e+ graads worden overgeslagen</span>
                             </div>
                             <div className="flex items-start gap-2">
-                              <div className="w-4 h-4 rounded-full border-2 border-primary/40 mt-0.5 shrink-0" />
+                              <div className="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 shrink-0" />
                               <span>Als je limiet bereikt is wacht de campagne tot de volgende maand voordat deze verder gaat</span>
                             </div>
                           </div>
