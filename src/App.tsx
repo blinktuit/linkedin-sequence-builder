@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Campaigns from "./pages/Campaigns";
 import DesignVariants from "./pages/DesignVariants";
 import TestSingleStepConfig from "./pages/TestSingleStepConfig";
+import TestSingleStepConfig2 from "./pages/TestSingleStepConfig2";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/campaign/:id" element={<Index />} />
           <Route path="/design-variants" element={<DesignVariants />} />
           <Route path="/test-single-step-config" element={<TestSingleStepConfig />} />
+          <Route path="/test-single-step-config-2" element={<TestSingleStepConfig2 />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

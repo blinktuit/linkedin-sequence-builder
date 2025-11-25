@@ -474,22 +474,6 @@ export const LeadListView = () => {
                             All ({statusCounts.all})
                         </Button>
                         <Button
-                            variant={filterStatus === 'pending' ? 'outline' : 'ghost'}
-                            size="sm"
-                            className={`rounded-full px-4 h-8 ${filterStatus === 'pending' ? 'border-primary text-primary hover:text-primary hover:bg-primary/5' : ''}`}
-                            onClick={() => setFilterStatus('pending')}
-                        >
-                            Pending ({statusCounts.pending})
-                        </Button>
-                        <Button
-                            variant={filterStatus === 'contacted' ? 'outline' : 'ghost'}
-                            size="sm"
-                            className={`rounded-full px-4 h-8 ${filterStatus === 'contacted' ? 'border-primary text-primary hover:text-primary hover:bg-primary/5' : ''}`}
-                            onClick={() => setFilterStatus('contacted')}
-                        >
-                            Contacted ({statusCounts.contacted})
-                        </Button>
-                        <Button
                             variant={filterStatus === 'accepted' ? 'outline' : 'ghost'}
                             size="sm"
                             className={`rounded-full px-4 h-8 ${filterStatus === 'accepted' ? 'border-primary text-primary hover:text-primary hover:bg-primary/5' : ''}`}
