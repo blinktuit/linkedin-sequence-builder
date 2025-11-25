@@ -3,14 +3,15 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Clock, FileText } from "lucide-react";
+import type { CampaignStep } from "@/types/campaign";
 
 interface TemplateImportModalProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    onSelectTemplate: (template: Template) => void;
+    onSelectTemplate: (template: Template, steps: CampaignStep[]) => void;
 }
 
-interface Template {
+export interface Template {
     id: string;
     name: string;
     emoji: string;
@@ -19,6 +20,39 @@ interface Template {
     type: 'custom' | 'premade';
 }
 
+// Template step definitions - these are the actual steps that get imported
+const TEMPLATE_STEPS: Record<string, Omit<CampaignStep, 'id'>[]> = {
+    '1': [ // Cold Outreach Sequence
+        { type: 'linkedin-invitation', title: 'Send connection request', subtitle: 'Personalized invite' },
+        { type: 'wait', title: 'Wait 2 days', subtitle: 'Delay before next step', config: { days: 2 } },
+        { type: 'linkedin-chat', title: 'Introduction message', subtitle: 'First touchpoint' },
+        { type: 'wait', title: 'Wait 3 days', subtitle: 'Delay before follow-up', config: { days: 3 } },
+        { type: 'linkedin-chat', title: 'Follow-up message', subtitle: 'Second touchpoint' },
+    ],
+    '2': [ // Follow-up Campaign
+        { type: 'linkedin-chat', title: 'Check-in message', subtitle: 'Reconnect with lead' },
+        { type: 'wait', title: 'Wait 5 days', subtitle: 'Delay before next step', config: { days: 5 } },
+        { type: 'linkedin-chat', title: 'Value proposition', subtitle: 'Share relevant content' },
+    ],
+    '3': [ // Event Attendee Outreach
+        { type: 'linkedin-invitation', title: 'Connect after event', subtitle: 'Reference the event' },
+        { type: 'wait', title: 'Wait 1 day', subtitle: 'Quick follow-up', config: { days: 1 } },
+        { type: 'linkedin-chat', title: 'Event follow-up', subtitle: 'Continue conversation' },
+        { type: 'linkedin-chat', title: 'Schedule meeting', subtitle: 'Book a call' },
+    ],
+    '4': [ // Recruiter Outreach
+        { type: 'linkedin-profile-visit', title: 'Visit profile', subtitle: 'Show interest' },
+        { type: 'wait', title: 'Wait 1 day', subtitle: 'Brief pause', config: { days: 1 } },
+        { type: 'linkedin-invitation', title: 'Send connection', subtitle: 'Personalized request' },
+        { type: 'linkedin-chat', title: 'Job opportunity', subtitle: 'Share the role' },
+    ],
+    '5': [ // Webinar Invite
+        { type: 'linkedin-invitation', title: 'Connect first', subtitle: 'Build relationship' },
+        { type: 'linkedin-chat', title: 'Webinar invitation', subtitle: 'Share event details' },
+        { type: 'linkedin-chat', title: 'Reminder message', subtitle: 'Day before reminder' },
+    ],
+};
+
 const MOCK_TEMPLATES: Template[] = [
     { id: '1', name: 'Cold Outreach Sequence', emoji: '🚀', steps: 5, timeAgo: '2 days ago', type: 'custom' },
     { id: '2', name: 'Follow-up Campaign', emoji: '📧', steps: 3, timeAgo: '1 week ago', type: 'premade' },
@@ -26,6 +60,15 @@ const MOCK_TEMPLATES: Template[] = [
     { id: '4', name: 'Recruiter Outreach', emoji: '🤝', steps: 4, timeAgo: '3 days ago', type: 'custom' },
     { id: '5', name: 'Webinar Invite', emoji: '📹', steps: 3, timeAgo: '1 month ago', type: 'premade' }
 ];
+
+// Helper function to generate steps with unique IDs
+export const generateTemplateSteps = (templateId: string): CampaignStep[] => {
+    const templateSteps = TEMPLATE_STEPS[templateId] || [];
+    return templateSteps.map((step, index) => ({
+        ...step,
+        id: `template-${templateId}-${Date.now()}-${index}`,
+    }));
+};
 
 export const TemplateImportModal = ({ open, onOpenChange, onSelectTemplate }: TemplateImportModalProps) => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -92,7 +135,8 @@ export const TemplateImportModal = ({ open, onOpenChange, onSelectTemplate }: Te
                             <button
                                 key={template.id}
                                 onClick={() => {
-                                    onSelectTemplate(template);
+                                    const steps = generateTemplateSteps(template.id);
+                                    onSelectTemplate(template, steps);
                                     onOpenChange(false);
                                 }}
                                 className="w-full flex items-center justify-between p-4 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all text-left group"

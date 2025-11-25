@@ -534,46 +534,118 @@ export const CreateCampaignModal = ({
                 </div>
 
                 <div className="flex-1 overflow-y-auto p-6">
-                  <div className="space-y-4">
-                    {leadSources.filter(s => ['event-inviter', 'company-page'].includes(s.id)).map((source) => (
+                  {!selectedSource ? (
+                    <div className="space-y-4">
+                      {leadSources.filter(s => ['event-inviter', 'company-page'].includes(s.id)).map((source) => (
+                        <button
+                          key={source.id}
+                          onClick={() => {
+                            setIsMultiStep(false);
+                            setSelectedSource(source.id);
+                          }}
+                          className="group w-full flex items-center justify-between p-6 rounded-xl border hover:border-primary/50 hover:bg-accent/50 transition-all cursor-pointer bg-card text-left"
+                        >
+                          <div className="flex items-center gap-5">
+                            <div className="p-3 rounded-full bg-muted group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+                              {source.icon}
+                            </div>
+                            <div>
+                              <h4 className="text-lg font-semibold mb-1">{source.title}</h4>
+                              <p className="text-sm text-muted-foreground">{source.description}</p>
+                            </div>
+                          </div>
+                          <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="space-y-6">
+                      {/* Back button */}
                       <button
-                        key={source.id}
-                        onClick={() => {
-                          setIsMultiStep(false);
-                          setSelectedSource(source.id);
-                          // For now, we might want to just select it or show a config. 
-                          // Based on previous logic, single step didn't go to step 2 (template selection).
-                          // But the user asked to "remove lead import options", implying we simplify.
-                          // Let's assume selecting these might just complete or show settings.
-                          // However, the previous design showed settings in the 3rd column.
-                          // Since we removed the 3rd column, we need to decide where settings go.
-                          // The user said "remove lead import options... they are further on in the tooling".
-                          // This suggests we might just select the type and proceed.
-                          // But single step campaigns usually need a URL.
-                          // Let's assume for now we select it and maybe proceed to a config step or just complete?
-                          // The user's request "remove lead import options" likely refers to the "Lead Source" column.
-                          // "Settings" column had the URL inputs.
-                          // If we remove settings column, where do we input the URL?
-                          // Maybe we proceed to a new step or show a modal?
-                          // Or maybe the "further on in the tooling" means inside the campaign builder?
-                          // If so, we can just create the campaign with this type and let them configure it inside.
-                          handleComplete();
-                        }}
-                        className="group w-full flex items-center justify-between p-6 rounded-xl border hover:border-primary/50 hover:bg-accent/50 transition-all cursor-pointer bg-card text-left"
+                        onClick={() => setSelectedSource(null)}
+                        className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
                       >
-                        <div className="flex items-center gap-5">
-                          <div className="p-3 rounded-full bg-muted group-hover:bg-primary/10 group-hover:text-primary transition-colors">
-                            {source.icon}
-                          </div>
-                          <div>
-                            <h4 className="text-lg font-semibold mb-1">{source.title}</h4>
-                            <p className="text-sm text-muted-foreground">{source.description}</p>
-                          </div>
-                        </div>
-                        <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                        <ChevronRight className="h-4 w-4 rotate-180" />
+                        Back to campaign types
                       </button>
-                    ))}
-                  </div>
+
+                      {/* Selected campaign type header */}
+                      <div className="flex items-center gap-4 p-4 bg-primary/5 rounded-xl border border-primary/20">
+                        <div className="p-3 rounded-full bg-primary/10 text-primary">
+                          {leadSources.find(s => s.id === selectedSource)?.icon}
+                        </div>
+                        <div>
+                          <h4 className="font-semibold">{leadSources.find(s => s.id === selectedSource)?.title}</h4>
+                          <p className="text-sm text-muted-foreground">{leadSources.find(s => s.id === selectedSource)?.description}</p>
+                        </div>
+                      </div>
+
+                      {/* Configuration options */}
+                      {selectedSource === 'event-inviter' && (
+                        <div className="space-y-4">
+                          <div className="space-y-2">
+                            <Label className="text-sm font-medium">LinkedIn Event URL</Label>
+                            <Input
+                              placeholder="https://linkedin.com/events/event-name-123456789/"
+                              value={eventUrl}
+                              onChange={(e) => setEventUrl(e.target.value)}
+                            />
+                            {eventUrl && validateUrl(eventUrl, 'event') && (
+                              <p className="text-xs text-[#36b39a] flex items-center gap-1">
+                                <Check className="h-3 w-3" />
+                                Valid event URL
+                              </p>
+                            )}
+                            {eventUrl && !validateUrl(eventUrl, 'event') && (
+                              <p className="text-xs text-destructive flex items-center gap-1">
+                                <X className="h-3 w-3" />
+                                Invalid event URL
+                              </p>
+                            )}
+                          </div>
+                          <Button
+                            className="w-full"
+                            disabled={!eventUrl || !validateUrl(eventUrl, 'event')}
+                            onClick={() => handleComplete()}
+                          >
+                            Create Campaign
+                          </Button>
+                        </div>
+                      )}
+
+                      {selectedSource === 'company-page' && (
+                        <div className="space-y-4">
+                          <div className="space-y-2">
+                            <Label className="text-sm font-medium">Company Page URL</Label>
+                            <Input
+                              placeholder="https://linkedin.com/company/company-name/"
+                              value={companyUrl}
+                              onChange={(e) => setCompanyUrl(e.target.value)}
+                            />
+                            {companyUrl && validateUrl(companyUrl, 'company') && (
+                              <p className="text-xs text-[#36b39a] flex items-center gap-1">
+                                <Check className="h-3 w-3" />
+                                Valid company URL
+                              </p>
+                            )}
+                            {companyUrl && !validateUrl(companyUrl, 'company') && (
+                              <p className="text-xs text-destructive flex items-center gap-1">
+                                <X className="h-3 w-3" />
+                                Invalid company URL
+                              </p>
+                            )}
+                          </div>
+                          <Button
+                            className="w-full"
+                            disabled={!companyUrl || !validateUrl(companyUrl, 'company')}
+                            onClick={() => handleComplete()}
+                          >
+                            Create Campaign
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

@@ -611,9 +611,13 @@ const Index = () => {
     <TemplateImportModal
       open={isTemplateImportOpen}
       onOpenChange={setIsTemplateImportOpen}
-      onSelectTemplate={(template) => {
-        console.log('Selected template:', template);
-        // TODO: Import template steps into campaign
+      onSelectTemplate={(_template, steps) => {
+        // Add template steps after the start step
+        setCampaign({
+          ...campaign,
+          steps: [...campaign.steps, ...steps],
+          activeStepId: steps.length > 0 ? steps[0].id : campaign.activeStepId
+        });
       }}
     />
   </div>;
