@@ -541,21 +541,25 @@ export const ConfigPanel = ({
                 <AlertDescription className="text-sm text-[#36b39a]">If the lead variable is already filled the step will be skipped.</AlertDescription>
               </Alert>
 
-              <div>
-                <Label className="text-sm mb-2 block">Select AI variable</Label>
-                <Select value={step.config?.aiVariable || ""} onValueChange={value => onConfigChange({
-              ...step.config,
-              aiVariable: value
-            })}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a variable" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="isASaaSCompany">isASaaSCompany</SelectItem>
-                    <SelectItem value="companySize">companySize</SelectItem>
-                    <SelectItem value="industry">industry</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="rounded-xl border border-border overflow-hidden shadow-sm">
+                <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/50 bg-gradient-to-r from-slate-50 to-white">
+                  <Label className="text-sm font-medium text-foreground">AI variable</Label>
+                </div>
+                <div className="p-4 bg-white">
+                  <Select value={step.config?.aiVariable || ""} onValueChange={value => onConfigChange({
+                    ...step.config,
+                    aiVariable: value
+                  })}>
+                    <SelectTrigger className="bg-white">
+                      <SelectValue placeholder="Select a variable" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="isASaaSCompany">isASaaSCompany</SelectItem>
+                      <SelectItem value="companySize">companySize</SelectItem>
+                      <SelectItem value="industry">industry</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
 
               <div>
@@ -571,26 +575,34 @@ export const ConfigPanel = ({
                   </Badge>}
               </div>
 
-              <div>
-                <div className="flex items-center gap-1 mb-2">
-                  <Label className="text-sm">Prompt</Label>
-                  
+              <div className="rounded-xl border border-border overflow-hidden shadow-sm">
+                <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/50 bg-gradient-to-r from-slate-50 to-white">
+                  <Label className="text-sm font-medium text-foreground">Prompt</Label>
+                  <Button variant="ghost" size="sm" className="h-7 px-2.5 gap-1.5 text-primary hover:text-primary hover:bg-primary/10 rounded-lg font-medium text-xs">
+                    <Sparkles className="h-3.5 w-3.5" />
+                    Ask AI
+                  </Button>
                 </div>
-                <Textarea id="ai-prompt-textarea" placeholder="Enter your AI prompt..." className="min-h-[300px] resize-none font-mono text-xs" value={step.config?.prompt || "You are an expert in identifying Software as a Service (SaaS) companies.\nYour task is to determine if the following company is a SaaS (Software as a Service) business based on its description.\nReturn \"True\" if it is a SaaS company, \"False\" otherwise.\nInvalid inputs that should return an empty string include:\n- Empty text\n- Single characters or punctuation marks\n- Random letters or gibberish\n- Whitespace\n- Any text that doesn't describe a company\nAlways return only \"True\" or \"False\" without any explanation or additional text.\nDo not return anything if it couldn't be determined. Never return explanatory text.\nCompany description: {{companyDescription}}"} onChange={e => onConfigChange({
-              ...step.config,
-              prompt: e.target.value
-            })} />
-              </div>
-
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" className="gap-1" onClick={() => setPersonalizationOpen(true)}>
-                  Add personalization
-                  <ChevronDown className="h-3 w-3" />
-                </Button>
-                <Button variant="outline" size="sm" className="gap-1">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  Ask AI
-                </Button>
+                <div className="relative bg-white">
+                  <Textarea id="ai-prompt-textarea" placeholder="Enter your AI prompt..." className="min-h-[250px] resize-none border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 px-4 py-3 bg-white font-mono text-xs" value={step.config?.prompt || "You are an expert in identifying Software as a Service (SaaS) companies.\nYour task is to determine if the following company is a SaaS (Software as a Service) business based on its description.\nReturn \"True\" if it is a SaaS company, \"False\" otherwise.\nInvalid inputs that should return an empty string include:\n- Empty text\n- Single characters or punctuation marks\n- Random letters or gibberish\n- Whitespace\n- Any text that doesn't describe a company\nAlways return only \"True\" or \"False\" without any explanation or additional text.\nDo not return anything if it couldn't be determined. Never return explanatory text.\nCompany description: {{companyDescription}}"} onChange={e => onConfigChange({
+                    ...step.config,
+                    prompt: e.target.value
+                  })} />
+                  <div className="flex items-center justify-between px-4 py-2.5 border-t border-border/50 bg-gradient-to-r from-slate-50/80 to-white">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-7 px-2.5 rounded-lg text-xs font-medium gap-1"
+                      onClick={() => setPersonalizationOpen(true)}
+                    >
+                      Add personalization
+                      <ChevronDown className="h-3 w-3" />
+                    </Button>
+                    <span className="text-xs text-slate-400 tabular-nums">
+                      {step.config?.prompt?.length || 0} chars
+                    </span>
+                  </div>
+                </div>
               </div>
 
               <Collapsible open={advancedOpen} onOpenChange={setAdvancedOpen}>
@@ -668,7 +680,23 @@ export const ConfigPanel = ({
                 </CollapsibleContent>
               </Collapsible>
             </> : <>
-              <div className="rounded-xl border border-border overflow-hidden shadow-sm">
+              {step.type === 'linkedin-invitation' && (
+                <div className="flex items-center justify-between py-2">
+                  <Label className="text-sm font-medium text-foreground">Include message</Label>
+                  <Switch
+                    checked={step.config?.includeMessage !== false}
+                    onCheckedChange={(checked) => onConfigChange({
+                      ...step.config,
+                      includeMessage: checked
+                    })}
+                  />
+                </div>
+              )}
+
+              <div className={cn(
+                "rounded-xl border border-border overflow-hidden shadow-sm transition-opacity",
+                step.type === 'linkedin-invitation' && step.config?.includeMessage === false && "opacity-40 pointer-events-none"
+              )}>
                 <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/50 bg-gradient-to-r from-slate-50 to-white">
                   <Label className="text-sm font-medium text-foreground">Message</Label>
                   <Button variant="ghost" size="sm" className="h-7 px-2.5 gap-1.5 text-primary hover:text-primary hover:bg-primary/10 rounded-lg font-medium text-xs">
