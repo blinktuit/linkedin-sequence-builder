@@ -42,6 +42,26 @@ export interface CampaignStep {
   isConditional?: boolean;
 }
 
+export type CampaignIconType =
+  | 'mail'
+  | 'rocket'
+  | 'handshake'
+  | 'bot'
+  | 'briefcase'
+  | 'chart'
+  | 'target'
+  | 'lightbulb'
+  | 'star'
+  | 'flame'
+  | 'zap'
+  | 'trophy'
+  | 'users'
+  | 'trending-up'
+  | 'megaphone'
+  | 'globe'
+  | 'link'
+  | 'sparkles';
+
 export interface Campaign {
   id: string;
   name: string;
@@ -49,5 +69,5 @@ export interface Campaign {
   activeStepId?: string;
   activeVersion?: 'A' | 'B';
   isActive?: boolean;
-  emoji?: string;
+  icon?: CampaignIconType;
 }

@@ -23,8 +23,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { CampaignIconDisplay, ICON_LIST } from "./CampaignIconPicker";
+import type { CampaignIcon } from "@/types/campaigns";
 
 interface CampaignHeaderProps {
   campaignName: string;
@@ -35,8 +36,8 @@ interface CampaignHeaderProps {
   onCampaignNameChange?: (name: string) => void;
   campaignActive?: boolean;
   onToggleCampaign?: (active: boolean) => void;
-  campaignEmoji?: string;
-  onEmojiChange?: (emoji: string) => void;
+  campaignIcon?: CampaignIcon;
+  onIconChange?: (icon: CampaignIcon) => void;
 }
 
 export const CampaignHeader = ({
@@ -48,19 +49,13 @@ export const CampaignHeader = ({
   onCampaignNameChange,
   campaignActive = true,
   onToggleCampaign,
-  campaignEmoji = "📧",
-  onEmojiChange
+  campaignIcon = "mail",
+  onIconChange
 }: CampaignHeaderProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(campaignName);
-  const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
+  const [iconPickerOpen, setIconPickerOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const commonEmojis = [
-    "📧", "🚀", "🙏", "🤖", "💼", "📊", "🎯", "💡",
-    "⭐", "🔥", "💪", "🎉", "📈", "✨", "🌟", "💰",
-    "🏆", "📱", "💻", "🎨", "🔔", "📢", "🌐", "🔗"
-  ];
 
   useEffect(() => {
     if (isEditing && inputRef.current) {
@@ -94,28 +89,28 @@ export const CampaignHeader = ({
         </Button>
 
         <div className="flex items-center gap-2">
-          <Popover open={emojiPickerOpen} onOpenChange={setEmojiPickerOpen}>
+          <Popover open={iconPickerOpen} onOpenChange={setIconPickerOpen}>
             <PopoverTrigger asChild>
               <button className="h-8 w-8 bg-primary/10 rounded flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer">
-                <span className="text-primary text-sm font-medium">{campaignEmoji}</span>
+                <CampaignIconDisplay icon={campaignIcon} className="text-primary" size={16} />
               </button>
             </PopoverTrigger>
             <PopoverContent className="w-64 p-3" align="start">
               <div className="space-y-2">
-                <p className="text-sm font-medium">Choose an emoji</p>
-                <div className="grid grid-cols-8 gap-2">
-                  {commonEmojis.map((emoji) => (
+                <p className="text-sm font-medium">Choose an icon</p>
+                <div className="grid grid-cols-6 gap-2">
+                  {ICON_LIST.map((icon) => (
                     <button
-                      key={emoji}
+                      key={icon}
                       onClick={() => {
-                        if (onEmojiChange) {
-                          onEmojiChange(emoji);
+                        if (onIconChange) {
+                          onIconChange(icon);
                         }
-                        setEmojiPickerOpen(false);
+                        setIconPickerOpen(false);
                       }}
-                      className="h-8 w-8 flex items-center justify-center text-lg hover:bg-muted rounded transition-colors"
+                      className={`h-8 w-8 flex items-center justify-center hover:bg-muted rounded transition-colors ${campaignIcon === icon ? 'bg-primary/10 text-primary' : ''}`}
                     >
-                      {emoji}
+                      <CampaignIconDisplay icon={icon} size={16} />
                     </button>
                   ))}
                 </div>

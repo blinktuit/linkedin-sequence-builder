@@ -32,13 +32,14 @@ import { Search, Send, MoreVertical, BarChart3, Copy, Archive, Trash2, Share2, E
 import { Badge } from "@/components/ui/badge";
 import type { Campaign } from "@/types/campaigns";
 import { CreateCampaignModal } from "@/components/campaign/CreateCampaignModal";
+import { CampaignIconDisplay } from "@/components/campaign/CampaignIconPicker";
 
 // Mock data - replace with API call
 const mockCampaigns: Campaign[] = [
   {
     id: '1',
     name: "Saleshacking's campaign",
-    emoji: '🙏',
+    icon: 'handshake',
     status: 'in progress',
     connectionRequests: { sent: 0, total: 1 },
     leads: 45,
@@ -51,7 +52,7 @@ const mockCampaigns: Campaign[] = [
   {
     id: '2',
     name: "Tech Founders Outreach",
-    emoji: '🚀',
+    icon: 'rocket',
     status: 'paused',
     connectionRequests: { sent: 0, total: 2 },
     leads: 32,
@@ -64,7 +65,7 @@ const mockCampaigns: Campaign[] = [
   {
     id: '3',
     name: "Marketing Directors NYC",
-    emoji: '📧',
+    icon: 'mail',
     status: 'draft',
     connectionRequests: { sent: 0, total: 0 },
     leads: 15,
@@ -77,7 +78,7 @@ const mockCampaigns: Campaign[] = [
   {
     id: '4',
     name: "AI - Lookalike - Saleshacking's Campaign",
-    emoji: '🤖',
+    icon: 'bot',
     status: 'completed',
     connectionRequests: { sent: 0, total: 50 },
     leads: 127,
@@ -472,7 +473,9 @@ export default function Campaigns() {
                       onClick={() => navigate(`/campaign/${campaign.id}`)}
                       className="flex items-center gap-3 text-left group-hover:text-primary transition-colors"
                     >
-                      <span className="text-2xl">{campaign.emoji}</span>
+                      <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <CampaignIconDisplay icon={campaign.icon} className="text-primary" size={18} />
+                      </div>
                       <span className="font-medium text-base">{campaign.name}</span>
                     </button>
                   </td>

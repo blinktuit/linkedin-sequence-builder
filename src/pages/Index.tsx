@@ -31,7 +31,7 @@ const Index = () => {
     activeStepId: undefined,
     activeVersion: 'A',
     isActive: true,
-    emoji: "📧"
+    icon: "mail"
   });
   const [insertAfterStepId, setInsertAfterStepId] = useState<string | null>(null);
   const [insertBranch, setInsertBranch] = useState<'yes' | 'no' | null>(null);
@@ -235,11 +235,11 @@ const Index = () => {
           isActive: active
         });
       }}
-      campaignEmoji={campaign.emoji}
-      onEmojiChange={(emoji) => {
+      campaignIcon={campaign.icon}
+      onIconChange={(icon) => {
         setCampaign({
           ...campaign,
-          emoji: emoji
+          icon: icon
         });
       }}
     />
