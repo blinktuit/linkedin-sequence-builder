@@ -475,7 +475,7 @@ export default function Campaigns() {
                   onClick={() => handleSort('createdAt')}
                 >
                   <div className="flex items-center gap-1.5 whitespace-nowrap">
-                    Created at
+                    Created
                     <ChevronDown className={`h-3 w-3 transition-transform ${sortColumn === 'createdAt' && sortOrder === 'asc' ? 'rotate-180' : ''}`} />
                   </div>
                 </th>
