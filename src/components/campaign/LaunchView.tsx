@@ -51,7 +51,7 @@ export const LaunchView = ({ steps, campaignName, onLaunch }: LaunchViewProps) =
     const maxIndustryCount = Math.max(...mockAudienceData.topIndustries.map(i => i.count));
 
     return (
-        <div className="h-full flex flex-col bg-white">
+        <div className="h-full w-full flex flex-col bg-white">
             <div className="flex-1 overflow-auto px-6 py-6">
                 <div className="space-y-6">
                     {/* Header */}
