@@ -2,8 +2,18 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Clock, FileText } from "lucide-react";
+import { Search, Clock, FileText, Rocket, Mail, PartyPopper, Handshake, Video, LucideIcon } from "lucide-react";
 import type { CampaignStep } from "@/types/campaign";
+
+type TemplateIconType = 'rocket' | 'mail' | 'party-popper' | 'handshake' | 'video';
+
+const TEMPLATE_ICONS: Record<TemplateIconType, LucideIcon> = {
+  'rocket': Rocket,
+  'mail': Mail,
+  'party-popper': PartyPopper,
+  'handshake': Handshake,
+  'video': Video,
+};
 
 interface TemplateImportModalProps {
     open: boolean;
@@ -14,7 +24,7 @@ interface TemplateImportModalProps {
 export interface Template {
     id: string;
     name: string;
-    emoji: string;
+    icon: TemplateIconType;
     steps: number;
     timeAgo: string;
     type: 'custom' | 'premade';
@@ -54,11 +64,11 @@ const TEMPLATE_STEPS: Record<string, Omit<CampaignStep, 'id'>[]> = {
 };
 
 const MOCK_TEMPLATES: Template[] = [
-    { id: '1', name: 'Cold Outreach Sequence', emoji: '🚀', steps: 5, timeAgo: '2 days ago', type: 'custom' },
-    { id: '2', name: 'Follow-up Campaign', emoji: '📧', steps: 3, timeAgo: '1 week ago', type: 'premade' },
-    { id: '3', name: 'Event Attendee Outreach', emoji: '🎉', steps: 4, timeAgo: '2 weeks ago', type: 'premade' },
-    { id: '4', name: 'Recruiter Outreach', emoji: '🤝', steps: 4, timeAgo: '3 days ago', type: 'custom' },
-    { id: '5', name: 'Webinar Invite', emoji: '📹', steps: 3, timeAgo: '1 month ago', type: 'premade' }
+    { id: '1', name: 'Cold Outreach Sequence', icon: 'rocket', steps: 5, timeAgo: '2 days ago', type: 'custom' },
+    { id: '2', name: 'Follow-up Campaign', icon: 'mail', steps: 3, timeAgo: '1 week ago', type: 'premade' },
+    { id: '3', name: 'Event Attendee Outreach', icon: 'party-popper', steps: 4, timeAgo: '2 weeks ago', type: 'premade' },
+    { id: '4', name: 'Recruiter Outreach', icon: 'handshake', steps: 4, timeAgo: '3 days ago', type: 'custom' },
+    { id: '5', name: 'Webinar Invite', icon: 'video', steps: 3, timeAgo: '1 month ago', type: 'premade' }
 ];
 
 // Helper function to generate steps with unique IDs
@@ -142,7 +152,12 @@ export const TemplateImportModal = ({ open, onOpenChange, onSelectTemplate }: Te
                                 className="w-full flex items-center justify-between p-4 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all text-left group"
                             >
                                 <div className="flex items-center gap-4">
-                                    <div className="text-3xl">{template.emoji}</div>
+                                    <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                                        {(() => {
+                                            const IconComponent = TEMPLATE_ICONS[template.icon];
+                                            return <IconComponent className="h-6 w-6 text-primary" />;
+                                        })()}
+                                    </div>
                                     <div>
                                         <div className="flex items-center gap-2">
                                             <h3 className="font-semibold text-gray-900 group-hover:text-gray-950">

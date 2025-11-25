@@ -23,8 +23,24 @@ import {
   Check,
   Clock,
   FileText,
-  Info
+  Info,
+  Rocket,
+  Mail,
+  PartyPopper,
+  Handshake,
+  Video,
+  LucideIcon
 } from "lucide-react";
+
+type TemplateIconType = 'rocket' | 'mail' | 'party-popper' | 'handshake' | 'video';
+
+const TEMPLATE_ICONS: Record<TemplateIconType, LucideIcon> = {
+  'rocket': Rocket,
+  'mail': Mail,
+  'party-popper': PartyPopper,
+  'handshake': Handshake,
+  'video': Video,
+};
 
 type LeadSource =
   | 'upload'
@@ -61,12 +77,12 @@ export const CreateCampaignModal = ({
   const [filteringListId, setFilteringListId] = useState<string | null>(null);
 
   // Mock recent templates
-  const recentTemplates = [
-    { id: '1', name: 'Cold Outreach Sequence', emoji: '🚀', lastUsed: '2 days ago', steps: 5, type: 'custom' },
-    { id: '2', name: 'Follow-up Campaign', emoji: '📧', lastUsed: '1 week ago', steps: 3, type: 'premade' },
-    { id: '3', name: 'Event Attendee Outreach', emoji: '🎉', lastUsed: '2 weeks ago', steps: 4, type: 'premade' },
-    { id: '4', name: 'Recruiter Outreach', emoji: '🤝', lastUsed: '3 days ago', steps: 4, type: 'custom' },
-    { id: '5', name: 'Webinar Invite', emoji: '📹', lastUsed: '1 month ago', steps: 3, type: 'premade' },
+  const recentTemplates: { id: string; name: string; icon: TemplateIconType; lastUsed: string; steps: number; type: 'custom' | 'premade' }[] = [
+    { id: '1', name: 'Cold Outreach Sequence', icon: 'rocket', lastUsed: '2 days ago', steps: 5, type: 'custom' },
+    { id: '2', name: 'Follow-up Campaign', icon: 'mail', lastUsed: '1 week ago', steps: 3, type: 'premade' },
+    { id: '3', name: 'Event Attendee Outreach', icon: 'party-popper', lastUsed: '2 weeks ago', steps: 4, type: 'premade' },
+    { id: '4', name: 'Recruiter Outreach', icon: 'handshake', lastUsed: '3 days ago', steps: 4, type: 'custom' },
+    { id: '5', name: 'Webinar Invite', icon: 'video', lastUsed: '1 month ago', steps: 3, type: 'premade' },
   ];
 
   const [templateFilter, setTemplateFilter] = useState<'all' | 'custom' | 'premade'>('all');
@@ -350,7 +366,12 @@ export const CreateCampaignModal = ({
                       console.log('Selected campaign:', template.name);
                     }}
                   >
-                    <span className="mr-2 text-xl">{template.emoji}</span>
+                    <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mr-2">
+                      {(() => {
+                        const IconComponent = TEMPLATE_ICONS[template.icon];
+                        return <IconComponent className="h-5 w-5 text-primary" />;
+                      })()}
+                    </div>
                     <div className="flex-1">
                       <p className="text-sm font-medium">{template.name}</p>
                       <p className="text-xs text-muted-foreground">{template.steps} steps • Used {template.lastUsed}</p>
@@ -761,7 +782,12 @@ export const CreateCampaignModal = ({
                             className="group flex items-center justify-between p-4 rounded-xl border hover:border-primary/50 hover:bg-accent/50 transition-all cursor-pointer bg-card"
                           >
                             <div className="flex items-center gap-4">
-                              <span className="text-2xl">{template.emoji}</span>
+                              <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                                {(() => {
+                                  const IconComponent = TEMPLATE_ICONS[template.icon];
+                                  return <IconComponent className="h-6 w-6 text-primary" />;
+                                })()}
+                              </div>
                               <div>
                                 <div className="flex items-center gap-2 mb-1">
                                   <h4 className="font-medium">{template.name}</h4>
