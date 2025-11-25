@@ -632,8 +632,8 @@ export const CreateCampaignModal = ({
                       </button>
 
                       {/* Selected campaign type header */}
-                      <div className="flex items-center gap-4 p-4 bg-muted/50 rounded-xl border">
-                        <div className="p-3 rounded-full bg-muted text-muted-foreground">
+                      <div className="flex items-center gap-4 p-4 bg-[#f0fdf9] rounded-xl border border-[#d1fae5]">
+                        <div className="p-3 rounded-full bg-[#d1fae5] text-[#059669]">
                           {leadSources.find(s => s.id === selectedSource)?.icon}
                         </div>
                         <div>
@@ -666,9 +666,9 @@ export const CreateCampaignModal = ({
                             )}
                           </div>
 
-                          <Alert className="bg-muted/50 border-border">
-                            <Info className="h-4 w-4 text-muted-foreground" />
-                            <AlertDescription className="text-xs text-muted-foreground space-y-1 ml-2">
+                          <Alert className="bg-[#f0fdf9] border-[#d1fae5]">
+                            <Info className="h-4 w-4 text-[#059669]" />
+                            <AlertDescription className="text-xs text-[#047857] space-y-1 ml-2">
                               <p>• Je kan deze campagne als laatste stap in je multi step campaign zetten</p>
                               <p>• Er geldt een limiet van maximaal 1000 uitnodigingen per week per gebruiker, dus niet per evenement</p>
                               <p>• Alleen 1e-graads connecties kunnen worden uitgenodigd voor een event, dus mensen waarmee je direct verbonden bent op LinkedIn. Mensen die geen connectie zijn worden overgeslagen</p>
@@ -709,9 +709,9 @@ export const CreateCampaignModal = ({
                             )}
                           </div>
 
-                          <Alert className="bg-muted/50 border-border">
-                            <Info className="h-4 w-4 text-muted-foreground" />
-                            <AlertDescription className="text-xs text-muted-foreground space-y-1 ml-2">
+                          <Alert className="bg-[#f0fdf9] border-[#d1fae5]">
+                            <Info className="h-4 w-4 text-[#059669]" />
+                            <AlertDescription className="text-xs text-[#047857] space-y-1 ml-2">
                               <p>• Je kan deze campagne als laatste stap in je multi step campaign zetten</p>
                               <p>• Er geldt een limiet van maximaal 250 uitnodigingen per maand per bedrijfspagina</p>
                               <p>• Alleen 1e-graads connecties kunnen worden uitgenodigd voor een bedrijfspagina. Mensen die geen connectie zijn worden overgeslagen</p>
