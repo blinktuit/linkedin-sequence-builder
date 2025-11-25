@@ -194,7 +194,37 @@ export const ConfigPanel = ({
   return <div className="w-[480px] border-l border-border bg-card overflow-y-auto">
       <div className="p-6 space-y-6">
         <div>
-          <div className="flex items-center gap-2 mb-4">
+          {step.type === 'ab-test' && (
+            <div className="mb-4 p-3 rounded-xl bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20">
+              <div className="flex items-center gap-3">
+                <div className={cn(
+                  "h-10 w-10 rounded-lg flex items-center justify-center text-sm font-bold shadow-sm",
+                  activeVersion === 'A'
+                    ? "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground"
+                    : "bg-gradient-to-br from-violet-500 to-purple-600 text-white"
+                )}>
+                  {activeVersion}
+                </div>
+                <div className="flex-1">
+                  <div className="text-sm font-semibold">
+                    Version {activeVersion}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {activeVersion === 'A' ? 'Control variant' : 'Test variant'}
+                  </div>
+                </div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <div className={cn(
+                    "h-2 w-2 rounded-full",
+                    activeVersion === 'A' ? "bg-primary" : "bg-violet-500"
+                  )} />
+                  A/B Test
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="flex items-center gap-3 mb-4">
             <div className="text-primary">
               {step.type === 'linkedin-invitation' && <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
@@ -202,12 +232,7 @@ export const ConfigPanel = ({
                 </svg>}
             </div>
             <div className="flex-1">
-              <div className="flex items-center gap-2">
-                <div className="font-medium">{step.title}</div>
-                {step.type === 'ab-test' && <Badge variant={activeVersion === 'B' ? 'default' : 'outline'} className={cn("text-[11px] px-2 py-0.5 font-semibold", activeVersion === 'B' && "bg-primary text-primary-foreground")}>
-                    Version {activeVersion}
-                  </Badge>}
-              </div>
+              <div className="font-medium">{step.title}</div>
               <div className="text-xs text-muted-foreground">{step.subtitle}</div>
             </div>
           </div>
