@@ -87,7 +87,8 @@ export const CampaignHeader = ({
   };
   return (
     <div className="h-16 bg-card border-b border-border flex items-center justify-between px-4">
-      <div className="flex items-center gap-3">
+      {/* Left: Back button */}
+      <div className="flex items-center">
         <button
           onClick={onBackToCampaigns}
           className="flex items-center gap-2 h-10 pl-3 pr-4 rounded-full border border-border bg-white hover:bg-slate-50 transition-colors shadow-sm"
@@ -98,7 +99,59 @@ export const CampaignHeader = ({
           </div>
           <span className="text-sm font-medium text-foreground">George van Bohemen</span>
         </button>
+      </div>
 
+      {/* Center: Navigation tabs */}
+      <nav className="flex items-center gap-2 absolute left-1/2 -translate-x-1/2">
+        <button
+          onClick={() => onTabChange('sequence')}
+          className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${activeTab === 'sequence'
+            ? 'bg-primary/10 text-primary'
+            : 'text-muted-foreground hover:text-foreground'
+            }`}
+        >
+          <span className={`flex items-center justify-center w-5 h-5 rounded-full text-xs border ${activeTab === 'sequence'
+            ? 'border-primary bg-primary text-primary-foreground'
+            : 'border-muted-foreground/30'
+            }`}>1</span>
+          Sequence
+        </button>
+
+        <div className="h-px w-4 bg-border" />
+
+        <button
+          onClick={() => onTabChange('leadlist')}
+          className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${activeTab === 'leadlist'
+            ? 'bg-primary/10 text-primary'
+            : 'text-muted-foreground hover:text-foreground'
+            }`}
+        >
+          <span className={`flex items-center justify-center w-5 h-5 rounded-full text-xs border ${activeTab === 'leadlist'
+            ? 'border-primary bg-primary text-primary-foreground'
+            : 'border-muted-foreground/30'
+            }`}>2</span>
+          Lead list
+        </button>
+
+        <div className="h-px w-4 bg-border" />
+
+        <button
+          onClick={() => onTabChange('launch')}
+          className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${activeTab === 'launch'
+            ? 'bg-primary/10 text-primary'
+            : 'text-muted-foreground hover:text-foreground'
+            }`}
+        >
+          <span className={`flex items-center justify-center w-5 h-5 rounded-full text-xs border ${activeTab === 'launch'
+            ? 'border-primary bg-primary text-primary-foreground'
+            : 'border-muted-foreground/30'
+            }`}>3</span>
+          Launch
+        </button>
+      </nav>
+
+      {/* Right: Campaign info + Next step + Menu */}
+      <div className="flex items-center gap-3">
         <div className="flex items-center gap-2">
           <Popover open={iconPickerOpen} onOpenChange={setIconPickerOpen}>
             <PopoverTrigger asChild>
@@ -106,7 +159,7 @@ export const CampaignHeader = ({
                 <CampaignIconDisplay icon={campaignIcon} className="text-primary" size={16} />
               </button>
             </PopoverTrigger>
-            <PopoverContent className="w-64 p-3" align="start">
+            <PopoverContent className="w-64 p-3" align="end">
               <div className="space-y-2">
                 <p className="text-sm font-medium">Choose an icon</p>
                 <div className="grid grid-cols-6 gap-2">
@@ -162,13 +215,18 @@ export const CampaignHeader = ({
           onCheckedChange={onToggleCampaign}
         />
 
+        <Button onClick={onNextStep} className="gap-2">
+          Next step
+          <ChevronRight className="h-4 w-4" />
+        </Button>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="h-8 w-8">
               <MoreVertical className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
+          <DropdownMenuContent align="end">
             <DropdownMenuItem>
               <Share2 className="h-4 w-4 mr-2" />
               Share campaign publicly
@@ -192,61 +250,6 @@ export const CampaignHeader = ({
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      </div>
-
-      <div className="flex items-center gap-3">
-        <nav className="flex items-center gap-2 mr-4">
-          <button
-            onClick={() => onTabChange('sequence')}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${activeTab === 'sequence'
-              ? 'bg-primary/10 text-primary'
-              : 'text-muted-foreground hover:text-foreground'
-              }`}
-          >
-            <span className={`flex items-center justify-center w-5 h-5 rounded-full text-xs border ${activeTab === 'sequence'
-              ? 'border-primary bg-primary text-primary-foreground'
-              : 'border-muted-foreground/30'
-              }`}>1</span>
-            Sequence
-          </button>
-
-          <div className="h-px w-4 bg-border" />
-
-          <button
-            onClick={() => onTabChange('leadlist')}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${activeTab === 'leadlist'
-              ? 'bg-primary/10 text-primary'
-              : 'text-muted-foreground hover:text-foreground'
-              }`}
-          >
-            <span className={`flex items-center justify-center w-5 h-5 rounded-full text-xs border ${activeTab === 'leadlist'
-              ? 'border-primary bg-primary text-primary-foreground'
-              : 'border-muted-foreground/30'
-              }`}>2</span>
-            Lead list
-          </button>
-
-          <div className="h-px w-4 bg-border" />
-
-          <button
-            onClick={() => onTabChange('launch')}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${activeTab === 'launch'
-              ? 'bg-primary/10 text-primary'
-              : 'text-muted-foreground hover:text-foreground'
-              }`}
-          >
-            <span className={`flex items-center justify-center w-5 h-5 rounded-full text-xs border ${activeTab === 'launch'
-              ? 'border-primary bg-primary text-primary-foreground'
-              : 'border-muted-foreground/30'
-              }`}>3</span>
-            Launch
-          </button>
-        </nav>
-
-        <Button onClick={onNextStep} className="gap-2">
-          Next step
-          <ChevronRight className="h-4 w-4" />
-        </Button>
       </div>
     </div>
   );
