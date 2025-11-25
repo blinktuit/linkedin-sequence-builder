@@ -665,7 +665,7 @@ export const CreateCampaignModal = ({
                             )}
                           </div>
 
-                          <div className="space-y-2 text-sm text-muted-foreground">
+                          <div className="space-y-2 text-sm text-muted-foreground py-4">
                             <div className="flex items-start gap-2">
                               <div className="w-4 h-4 rounded-full border-2 border-primary/40 mt-0.5 shrink-0" />
                               <span>Je kan deze campagne als laatste stap in je multi step campaign zetten</span>
@@ -718,7 +718,7 @@ export const CreateCampaignModal = ({
                             )}
                           </div>
 
-                          <div className="space-y-2 text-sm text-muted-foreground">
+                          <div className="space-y-2 text-sm text-muted-foreground py-4">
                             <div className="flex items-start gap-2">
                               <div className="w-4 h-4 rounded-full border-2 border-primary/40 mt-0.5 shrink-0" />
                               <span>Je kan deze campagne als laatste stap in je multi step campaign zetten</span>
