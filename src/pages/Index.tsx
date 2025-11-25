@@ -288,7 +288,14 @@ const Index = () => {
       campaignName={campaign.name}
       activeTab={activeTab}
       onTabChange={setActiveTab}
-      onNextStep={() => { }}
+      onNextStep={() => {
+        if (activeTab === 'sequence') {
+          setActiveTab('leadlist');
+        } else if (activeTab === 'leadlist') {
+          setActiveTab('launch');
+        }
+        // On launch tab, button could launch campaign or do nothing
+      }}
       onBackToCampaigns={() => navigate('/')}
       onCampaignNameChange={(newName) => {
         setCampaign({

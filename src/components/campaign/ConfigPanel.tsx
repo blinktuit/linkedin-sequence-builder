@@ -694,9 +694,10 @@ export const ConfigPanel = ({
               )}
 
               <div className={cn(
-                "rounded-xl border border-border overflow-hidden shadow-sm transition-opacity",
+                "space-y-4 transition-opacity",
                 step.type === 'linkedin-invitation' && step.config?.includeMessage === false && "opacity-40 pointer-events-none"
               )}>
+              <div className="rounded-xl border border-border overflow-hidden shadow-sm">
                 <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/50 bg-gradient-to-r from-slate-50 to-white">
                   <Label className="text-sm font-medium text-foreground">Message</Label>
                   <Button variant="ghost" size="sm" className="h-7 px-2.5 gap-1.5 text-primary hover:text-primary hover:bg-primary/10 rounded-lg font-medium text-xs">
@@ -973,6 +974,7 @@ export const ConfigPanel = ({
                   )}
                 </div>
               )}
+              </div>
             </>}
         </div>
       </div>
