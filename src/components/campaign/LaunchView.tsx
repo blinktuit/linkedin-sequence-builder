@@ -92,8 +92,8 @@ export const LaunchView = ({ steps, campaignName, onLaunch }: LaunchViewProps) =
                         </div>
                     </div>
 
-                    {/* Three Column Layout */}
-                    <div className="grid grid-cols-3 gap-6">
+                    {/* Two Column Layout */}
+                    <div className="grid grid-cols-2 gap-6">
                         {/* Sequence Preview */}
                         <div className="border rounded-lg p-4">
                             <h3 className="text-sm font-medium text-gray-900 mb-3">Sequence</h3>
@@ -132,46 +132,12 @@ export const LaunchView = ({ steps, campaignName, onLaunch }: LaunchViewProps) =
                                 ))}
                             </div>
                         </div>
-
-                        {/* What you can change */}
-                        <div className="border rounded-lg p-4">
-                            <h3 className="text-sm font-medium text-gray-900 mb-3">After launch you can</h3>
-                            <div className="space-y-2">
-                                <div className="flex items-center gap-2 text-sm">
-                                    <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                    <span className="text-gray-700">Edit message content</span>
-                                </div>
-                                {!isSingleStep && (
-                                    <div className="flex items-center gap-2 text-sm">
-                                        <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                        <span className="text-gray-700">Adjust wait delays</span>
-                                    </div>
-                                )}
-                                <div className="flex items-center gap-2 text-sm">
-                                    <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                    <span className="text-gray-700">Add or remove leads</span>
-                                </div>
-                                <div className="flex items-center gap-2 text-sm">
-                                    <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                    <span className="text-gray-700">Pause campaign anytime</span>
-                                </div>
-                                {!isSingleStep && (
-                                    <>
-                                        <Separator className="my-2" />
-                                        <div className="flex items-center gap-2 text-sm">
-                                            <AlertTriangle className="h-4 w-4 text-amber-500 flex-shrink-0" />
-                                            <span className="text-gray-500">Cannot add or remove steps</span>
-                                        </div>
-                                    </>
-                                )}
-                            </div>
-                        </div>
                     </div>
 
                     {/* Bottom Row: AI Prediction + Warning */}
-                    <div className="grid grid-cols-3 gap-6">
+                    <div className="grid grid-cols-2 gap-6">
                         {/* AI Prediction */}
-                        <div className="col-span-2 border rounded-lg p-4 bg-gradient-to-br from-indigo-50/50 to-purple-50/50">
+                        <div className="border rounded-lg p-4 bg-gradient-to-br from-indigo-50/50 to-purple-50/50">
                             <div className="flex items-center gap-2 mb-4">
                                 <Sparkles className="h-4 w-4 text-indigo-500" />
                                 <h3 className="text-sm font-medium text-gray-900">AI Prediction</h3>
@@ -209,7 +175,19 @@ export const LaunchView = ({ steps, campaignName, onLaunch }: LaunchViewProps) =
 
             {/* Fixed Footer */}
             <div className="border-t bg-white px-6 py-4">
-                <div className="flex items-center justify-end">
+                <div className="max-w-5xl mx-auto flex items-center justify-between">
+                    {/* After launch info */}
+                    <div className="flex items-center gap-6 text-sm">
+                        <div className="flex items-center gap-2">
+                            <AlertTriangle className="h-4 w-4 text-amber-500" />
+                            <span className="font-medium text-gray-700">After launch:</span>
+                        </div>
+                        <span className="text-gray-500">You cannot change, add or remove steps</span>
+                        <span className="text-gray-400">|</span>
+                        <span className="text-gray-500">You can change content{!isSingleStep && ' and delays'}</span>
+                        <span className="text-gray-400">|</span>
+                        <span className="text-gray-500">You can add or remove leads</span>
+                    </div>
                     <Button
                         size="lg"
                         onClick={onLaunch}
