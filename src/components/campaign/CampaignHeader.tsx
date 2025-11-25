@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
 import {
   MoreVertical,
   X,
@@ -38,6 +39,7 @@ interface CampaignHeaderProps {
   onToggleCampaign?: (active: boolean) => void;
   campaignIcon?: CampaignIcon;
   onIconChange?: (icon: CampaignIcon) => void;
+  campaignSource?: string;
 }
 
 export const CampaignHeader = ({
@@ -50,7 +52,8 @@ export const CampaignHeader = ({
   campaignActive = true,
   onToggleCampaign,
   campaignIcon = "mail",
-  onIconChange
+  onIconChange,
+  campaignSource
 }: CampaignHeaderProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(campaignName);
@@ -133,6 +136,16 @@ export const CampaignHeader = ({
             >
               {campaignName}
             </span>
+          )}
+          {campaignSource === 'event-inviter' && (
+            <Badge variant="secondary" className="ml-2 text-xs">
+              Event Inviter
+            </Badge>
+          )}
+          {campaignSource === 'company-page' && (
+            <Badge variant="secondary" className="ml-2 text-xs">
+              Company Follow
+            </Badge>
           )}
         </div>
 

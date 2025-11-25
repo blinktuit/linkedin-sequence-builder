@@ -13,13 +13,17 @@ import type { Campaign, CampaignStep } from "@/types/campaign";
 const Index = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeTab, setActiveTab] = useState<'sequence' | 'leadlist' | 'launch'>('sequence');
+
+  // Get initial state from navigation (if coming from campaign wizard)
+  const initialActiveTab = (location.state as any)?.activeTab || 'sequence';
+  const templateStepsFromNav = (location.state as any)?.templateSteps || [];
+  const campaignSource = (location.state as any)?.campaignSource;
+
+  const [activeTab, setActiveTab] = useState<'sequence' | 'leadlist' | 'launch'>(initialActiveTab);
   const [isStepLibraryOpen, setIsStepLibraryOpen] = useState(false);
   const [isTemplateImportOpen, setIsTemplateImportOpen] = useState(false);
 
   // Get template steps from navigation state (if coming from campaign wizard)
-  const templateStepsFromNav = (location.state as any)?.templateSteps || [];
-
   const [campaign, setCampaign] = useState<Campaign>({
     id: '1',
     name: "Saleshacking's campaign",
@@ -242,6 +246,7 @@ const Index = () => {
           icon: icon
         });
       }}
+      campaignSource={campaignSource}
     />
 
     <div className="flex-1 flex overflow-hidden">

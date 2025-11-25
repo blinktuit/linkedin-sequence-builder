@@ -267,9 +267,17 @@ export default function Campaigns() {
     console.log('Creating campaign with data:', data);
     // For now, just navigate to the campaign builder with a new ID
     const newCampaignId = Date.now().toString();
-    // Pass template steps via navigation state
+
+    // Detect if it's a single-step campaign
+    const isSingleStep = data.source === 'event-inviter' || data.source === 'company-page';
+
+    // Pass template steps and initial tab via navigation state
     navigate(`/campaign/${newCampaignId}`, {
-      state: { templateSteps: data.templateSteps || [] }
+      state: {
+        templateSteps: data.templateSteps || [],
+        activeTab: isSingleStep ? 'leadlist' : 'sequence',
+        campaignSource: data.source
+      }
     });
   };
 
