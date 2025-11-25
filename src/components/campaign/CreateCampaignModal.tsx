@@ -649,6 +649,7 @@ export const CreateCampaignModal = ({
                               placeholder="https://linkedin.com/events/event-name-123456789/"
                               value={eventUrl}
                               onChange={(e) => setEventUrl(e.target.value)}
+                              className="bg-white"
                             />
                             {eventUrl && validateUrl(eventUrl, 'event') && (
                               <p className="text-xs text-[#36b39a] flex items-center gap-1">
@@ -689,6 +690,7 @@ export const CreateCampaignModal = ({
                               placeholder="https://linkedin.com/company/company-name/"
                               value={companyUrl}
                               onChange={(e) => setCompanyUrl(e.target.value)}
+                              className="bg-white"
                             />
                             {companyUrl && validateUrl(companyUrl, 'company') && (
                               <p className="text-xs text-[#36b39a] flex items-center gap-1">
