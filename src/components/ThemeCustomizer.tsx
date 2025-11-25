@@ -224,7 +224,7 @@ export function ThemeCustomizer() {
 
     // Hexagon background pattern - encode the primary color in the SVG
     const hexagonColor = colorConfig.primary.replace("#", "%23");
-    const hexagonSvg = `url("data:image/svg+xml,%3Csvg width='60' height='52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0 L45 13 L45 39 L30 52 L15 39 L15 13 Z' fill='none' stroke='${hexagonColor}' stroke-width='1' opacity='0.2'/%3E%3C/svg%3E")`;
+    const hexagonSvg = `url("data:image/svg+xml,%3Csvg width='60' height='52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0 L45 13 L45 39 L30 52 L15 39 L15 13 Z' fill='none' stroke='${hexagonColor}' stroke-width='1' opacity='0.08'/%3E%3C/svg%3E")`;
     root.style.setProperty("--hexagon-svg", hexagonSvg);
   };
 
