@@ -610,22 +610,72 @@ export const LeadListView = () => {
                                             </a>
                                         </div>
                                     </TableCell>
-                                    <TableCell className="max-w-[200px] truncate" title={lead.jobTitle}>
-                                        {lead.jobTitle}
+                                    <TableCell className="max-w-[200px] group/cell relative" title={lead.jobTitle}>
+                                        <div className="flex items-center gap-2">
+                                            <span className="truncate">{lead.jobTitle}</span>
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                className="h-6 px-2 text-xs opacity-0 group-hover/cell:opacity-100 transition-opacity absolute right-2 bg-white border-gray-300 hover:bg-gray-50"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    // TODO: Implement exclude by job title
+                                                }}
+                                            >
+                                                Uitsluiten
+                                            </Button>
+                                        </div>
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell className="group/cell relative">
                                         <div className="flex items-center gap-2">
                                             {lead.company}
                                             <a href={lead.companyUrl} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-foreground">
                                                 <Briefcase className="h-3 w-3" />
                                             </a>
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                className="h-6 px-2 text-xs opacity-0 group-hover/cell:opacity-100 transition-opacity absolute right-2 bg-white border-gray-300 hover:bg-gray-50"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    // TODO: Implement exclude by company
+                                                }}
+                                            >
+                                                Uitsluiten
+                                            </Button>
                                         </div>
                                     </TableCell>
-                                    <TableCell className="max-w-[150px] truncate" title={lead.hqLocation}>
-                                        {lead.hqLocation}
+                                    <TableCell className="max-w-[150px] group/cell relative" title={lead.hqLocation}>
+                                        <div className="flex items-center gap-2">
+                                            <span className="truncate">{lead.hqLocation}</span>
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                className="h-6 px-2 text-xs opacity-0 group-hover/cell:opacity-100 transition-opacity absolute right-2 bg-white border-gray-300 hover:bg-gray-50"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    // TODO: Implement exclude by location
+                                                }}
+                                            >
+                                                Uitsluiten
+                                            </Button>
+                                        </div>
                                     </TableCell>
-                                    <TableCell className="max-w-[150px] truncate" title={lead.industry}>
-                                        {lead.industry}
+                                    <TableCell className="max-w-[150px] group/cell relative" title={lead.industry}>
+                                        <div className="flex items-center gap-2">
+                                            <span className="truncate">{lead.industry}</span>
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                className="h-6 px-2 text-xs opacity-0 group-hover/cell:opacity-100 transition-opacity absolute right-2 bg-white border-gray-300 hover:bg-gray-50"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    // TODO: Implement exclude by industry
+                                                }}
+                                            >
+                                                Uitsluiten
+                                            </Button>
+                                        </div>
                                     </TableCell>
                                     <TableCell className="text-center">
                                         <div className={`inline-flex items-center justify-center w-8 h-8 rounded-full border-2 font-bold text-sm ${getScoreColor(lead.score)}`}>
