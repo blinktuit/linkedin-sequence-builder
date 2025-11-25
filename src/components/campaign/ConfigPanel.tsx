@@ -668,31 +668,31 @@ export const ConfigPanel = ({
                 </CollapsibleContent>
               </Collapsible>
             </> : <>
-              <div className="rounded-xl border border-border bg-card overflow-hidden">
-                <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/30">
-                  <Label className="text-sm font-medium">Message</Label>
+              <div className="rounded-xl border border-border overflow-hidden shadow-sm">
+                <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/50 bg-gradient-to-r from-slate-50 to-white">
+                  <Label className="text-sm font-medium text-foreground">Message</Label>
                   <Button variant="ghost" size="sm" className="h-7 px-2.5 gap-1.5 text-primary hover:text-primary hover:bg-primary/10 rounded-lg font-medium text-xs">
                     <Sparkles className="h-3.5 w-3.5" />
                     AI
                   </Button>
                 </div>
-                <div className="relative">
-                  <Textarea id="message-textarea" placeholder="What message do you want to send?" className="min-h-[180px] resize-none border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 px-4 py-3" value={step.config?.message || ""} onChange={e => onConfigChange({
+                <div className="relative bg-white">
+                  <Textarea id="message-textarea" placeholder="What message do you want to send?" className="min-h-[180px] resize-none border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 px-4 py-3 bg-transparent" value={step.config?.message || ""} onChange={e => onConfigChange({
                 ...step.config,
                 message: e.target.value
               })} />
-                  <div className="flex items-center justify-between px-4 py-2.5 border-t border-border bg-muted/20">
+                  <div className="flex items-center justify-between px-4 py-2.5 border-t border-border/50 bg-gradient-to-r from-slate-50/80 to-white">
                     <div className="flex items-center gap-1">
                       <input type="file" id="image-upload" accept="image/*" multiple className="hidden" onChange={handleImageUpload} />
                       <label htmlFor="image-upload">
-                        <Button type="button" variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-muted" asChild>
+                        <Button type="button" variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-slate-100" asChild>
                           <span className="cursor-pointer">
-                            <Image className="h-4 w-4 text-muted-foreground" />
+                            <Image className="h-4 w-4 text-slate-400" />
                           </span>
                         </Button>
                       </label>
                     </div>
-                    <span className="text-xs text-muted-foreground tabular-nums">
+                    <span className="text-xs text-slate-400 tabular-nums">
                       {step.config?.message?.length || 0}/8000
                     </span>
                   </div>
