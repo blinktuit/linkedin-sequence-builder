@@ -68,160 +68,141 @@ export const LaunchView = ({ steps, campaignName, onLaunch }: LaunchViewProps) =
                         </div>
                     </div>
 
-                    {/* Two Column Layout */}
-                    <div className="grid grid-cols-2 gap-6">
-                        {/* Left Column */}
-                        <div className="space-y-4">
-                            {/* Stats Row */}
-                            <div className="grid grid-cols-4 gap-3">
-                                <div className="bg-gray-50 rounded-lg p-3 text-center">
-                                    <Users className="h-4 w-4 text-primary mx-auto mb-1" />
-                                    <p className="text-lg font-bold text-gray-900">{mockAudienceData.validLeads.toLocaleString()}</p>
-                                    <p className="text-xs text-gray-500">Leads</p>
-                                </div>
-                                <div className="bg-gray-50 rounded-lg p-3 text-center">
-                                    <MessageSquare className="h-4 w-4 text-blue-500 mx-auto mb-1" />
-                                    <p className="text-lg font-bold text-gray-900">{sequenceSteps.length || 1}</p>
-                                    <p className="text-xs text-gray-500">{isSingleStep ? 'Step' : 'Steps'}</p>
-                                </div>
-                                <div className="bg-gray-50 rounded-lg p-3 text-center">
-                                    <Clock className="h-4 w-4 text-gray-500 mx-auto mb-1" />
-                                    <p className="text-lg font-bold text-gray-900">{estimatedDuration}</p>
-                                    <p className="text-xs text-gray-500">Duration</p>
-                                </div>
-                                <div className="bg-gray-50 rounded-lg p-3 text-center">
-                                    <Zap className="h-4 w-4 text-[#f49854] mx-auto mb-1" />
-                                    <p className="text-lg font-bold text-gray-900">{mockAudienceData.dailyLimit}</p>
-                                    <p className="text-xs text-gray-500">Per day</p>
-                                </div>
-                            </div>
+                    {/* Stats Row - Full Width */}
+                    <div className="grid grid-cols-4 gap-4">
+                        <div className="bg-gray-50 rounded-lg p-4 text-center">
+                            <Users className="h-5 w-5 text-primary mx-auto mb-2" />
+                            <p className="text-2xl font-bold text-gray-900">{mockAudienceData.validLeads.toLocaleString()}</p>
+                            <p className="text-sm text-gray-500">Leads</p>
+                        </div>
+                        <div className="bg-gray-50 rounded-lg p-4 text-center">
+                            <MessageSquare className="h-5 w-5 text-blue-500 mx-auto mb-2" />
+                            <p className="text-2xl font-bold text-gray-900">{sequenceSteps.length || 1}</p>
+                            <p className="text-sm text-gray-500">{isSingleStep ? 'Step' : 'Steps'}</p>
+                        </div>
+                        <div className="bg-gray-50 rounded-lg p-4 text-center">
+                            <Clock className="h-5 w-5 text-gray-500 mx-auto mb-2" />
+                            <p className="text-2xl font-bold text-gray-900">{estimatedDuration}</p>
+                            <p className="text-sm text-gray-500">Duration</p>
+                        </div>
+                        <div className="bg-gray-50 rounded-lg p-4 text-center">
+                            <Zap className="h-5 w-5 text-[#f49854] mx-auto mb-2" />
+                            <p className="text-2xl font-bold text-gray-900">{mockAudienceData.dailyLimit}</p>
+                            <p className="text-sm text-gray-500">Per day</p>
+                        </div>
+                    </div>
 
-                            {/* Sequence Preview */}
-                            <div className="border rounded-lg p-4">
-                                <h3 className="text-sm font-medium text-gray-900 mb-3">Sequence</h3>
-                                {sequenceSteps.length > 0 ? (
-                                    <div className="flex items-center gap-2 flex-wrap">
-                                        {sequenceSteps.map((step, index) => (
-                                            <div key={step.id} className="flex items-center gap-2">
-                                                <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 rounded-lg text-sm">
-                                                    <span className="h-5 w-5 rounded bg-primary/10 flex items-center justify-center text-xs font-medium text-primary">
-                                                        {index + 1}
-                                                    </span>
-                                                    <span className="text-gray-700">{step.title}</span>
-                                                </div>
-                                                {index < sequenceSteps.length - 1 && (
-                                                    <ArrowRight className="h-3 w-3 text-gray-300" />
-                                                )}
-                                            </div>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <p className="text-sm text-gray-500">No steps configured</p>
-                                )}
-                            </div>
-
-                            {/* Audience Insights */}
-                            <div className="border rounded-lg p-4">
-                                <h3 className="text-sm font-medium text-gray-900 mb-3">Top industries</h3>
+                    {/* Three Column Layout */}
+                    <div className="grid grid-cols-3 gap-6">
+                        {/* Sequence Preview */}
+                        <div className="border rounded-lg p-4">
+                            <h3 className="text-sm font-medium text-gray-900 mb-3">Sequence</h3>
+                            {sequenceSteps.length > 0 ? (
                                 <div className="space-y-2">
-                                    {mockAudienceData.topIndustries.map((item, i) => (
-                                        <div key={i} className="flex items-center gap-3">
-                                            <Building2 className="h-3.5 w-3.5 text-gray-400" />
-                                            <span className="text-sm text-gray-700 flex-1">{item.name}</span>
-                                            <span className="text-sm text-gray-400">{item.count}</span>
-                                            <div className="w-24 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                                <div
-                                                    className="h-full bg-primary rounded-full"
-                                                    style={{ width: `${(item.count / maxIndustryCount) * 100}%` }}
-                                                />
-                                            </div>
+                                    {sequenceSteps.map((step, index) => (
+                                        <div key={step.id} className="flex items-center gap-2">
+                                            <span className="h-6 w-6 rounded bg-primary/10 flex items-center justify-center text-xs font-medium text-primary flex-shrink-0">
+                                                {index + 1}
+                                            </span>
+                                            <span className="text-sm text-gray-700">{step.title}</span>
                                         </div>
                                     ))}
                                 </div>
-                            </div>
-                        </div>
-
-                        {/* Right Column */}
-                        <div className="space-y-4">
-                            {/* AI Prediction */}
-                            <div className="border rounded-lg p-4 bg-gradient-to-br from-indigo-50/50 to-purple-50/50">
-                                <div className="flex items-center gap-2 mb-4">
-                                    <Sparkles className="h-4 w-4 text-indigo-500" />
-                                    <h3 className="text-sm font-medium text-gray-900">AI Prediction</h3>
-                                </div>
-                                <div className="grid grid-cols-3 gap-4">
-                                    <div className="text-center">
-                                        <p className="text-2xl font-bold text-indigo-600">~35%</p>
-                                        <p className="text-xs text-gray-500">Accept rate</p>
-                                    </div>
-                                    {!isSingleStep ? (
-                                        <>
-                                            <div className="text-center">
-                                                <p className="text-2xl font-bold text-purple-600">~12%</p>
-                                                <p className="text-xs text-gray-500">Reply rate</p>
-                                            </div>
-                                            <div className="text-center">
-                                                <p className="text-2xl font-bold text-pink-600">~142</p>
-                                                <p className="text-xs text-gray-500">Est. replies</p>
-                                            </div>
-                                        </>
-                                    ) : (
-                                        <div className="text-center col-span-2">
-                                            <p className="text-2xl font-bold text-pink-600">~416</p>
-                                            <p className="text-xs text-gray-500">Est. accepts</p>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-
-                            {/* What you can change */}
-                            <div className="border rounded-lg p-4">
-                                <h3 className="text-sm font-medium text-gray-900 mb-3">After launch you can</h3>
-                                <div className="space-y-2">
-                                    <div className="flex items-center gap-2 text-sm">
-                                        <CheckCircle2 className="h-4 w-4 text-green-500" />
-                                        <span className="text-gray-700">Edit message content</span>
-                                    </div>
-                                    {!isSingleStep && (
-                                        <div className="flex items-center gap-2 text-sm">
-                                            <CheckCircle2 className="h-4 w-4 text-green-500" />
-                                            <span className="text-gray-700">Adjust wait delays</span>
-                                        </div>
-                                    )}
-                                    <div className="flex items-center gap-2 text-sm">
-                                        <CheckCircle2 className="h-4 w-4 text-green-500" />
-                                        <span className="text-gray-700">Add or remove leads</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 text-sm">
-                                        <CheckCircle2 className="h-4 w-4 text-green-500" />
-                                        <span className="text-gray-700">Pause campaign anytime</span>
-                                    </div>
-                                    {!isSingleStep && (
-                                        <>
-                                            <Separator className="my-2" />
-                                            <div className="flex items-center gap-2 text-sm">
-                                                <AlertTriangle className="h-4 w-4 text-amber-500" />
-                                                <span className="text-gray-500">Cannot add or remove steps</span>
-                                            </div>
-                                            <div className="flex items-center gap-2 text-sm">
-                                                <AlertTriangle className="h-4 w-4 text-amber-500" />
-                                                <span className="text-gray-500">Cannot reorder steps</span>
-                                            </div>
-                                        </>
-                                    )}
-                                </div>
-                            </div>
-
-                            {/* Excluded Warning */}
-                            {mockAudienceData.excludedLeads > 0 && (
-                                <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-amber-50 border border-amber-100">
-                                    <AlertTriangle className="h-4 w-4 text-amber-500" />
-                                    <p className="text-sm text-amber-800">
-                                        {mockAudienceData.excludedLeads} leads excluded ({mockAudienceData.duplicates} duplicates)
-                                    </p>
-                                </div>
+                            ) : (
+                                <p className="text-sm text-gray-500">No steps configured</p>
                             )}
                         </div>
+
+                        {/* Audience Insights */}
+                        <div className="border rounded-lg p-4">
+                            <h3 className="text-sm font-medium text-gray-900 mb-3">Top industries</h3>
+                            <div className="space-y-2">
+                                {mockAudienceData.topIndustries.map((item, i) => (
+                                    <div key={i} className="flex items-center gap-3">
+                                        <Building2 className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
+                                        <span className="text-sm text-gray-700 flex-1">{item.name}</span>
+                                        <span className="text-sm text-gray-400">{item.count}</span>
+                                        <div className="w-16 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                            <div
+                                                className="h-full bg-primary rounded-full"
+                                                style={{ width: `${(item.count / maxIndustryCount) * 100}%` }}
+                                            />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* What you can change */}
+                        <div className="border rounded-lg p-4">
+                            <h3 className="text-sm font-medium text-gray-900 mb-3">After launch you can</h3>
+                            <div className="space-y-2">
+                                <div className="flex items-center gap-2 text-sm">
+                                    <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                    <span className="text-gray-700">Edit message content</span>
+                                </div>
+                                {!isSingleStep && (
+                                    <div className="flex items-center gap-2 text-sm">
+                                        <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                        <span className="text-gray-700">Adjust wait delays</span>
+                                    </div>
+                                )}
+                                <div className="flex items-center gap-2 text-sm">
+                                    <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                    <span className="text-gray-700">Add or remove leads</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-sm">
+                                    <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                    <span className="text-gray-700">Pause campaign anytime</span>
+                                </div>
+                                {!isSingleStep && (
+                                    <>
+                                        <Separator className="my-2" />
+                                        <div className="flex items-center gap-2 text-sm">
+                                            <AlertTriangle className="h-4 w-4 text-amber-500 flex-shrink-0" />
+                                            <span className="text-gray-500">Cannot add or remove steps</span>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Bottom Row: AI Prediction + Warning */}
+                    <div className="grid grid-cols-3 gap-6">
+                        {/* AI Prediction */}
+                        <div className="col-span-2 border rounded-lg p-4 bg-gradient-to-br from-indigo-50/50 to-purple-50/50">
+                            <div className="flex items-center gap-2 mb-4">
+                                <Sparkles className="h-4 w-4 text-indigo-500" />
+                                <h3 className="text-sm font-medium text-gray-900">AI Prediction</h3>
+                            </div>
+                            <div className="flex items-center justify-around">
+                                <div className="text-center">
+                                    <p className="text-2xl font-bold text-indigo-600">~35%</p>
+                                    <p className="text-xs text-gray-500">Accept rate</p>
+                                </div>
+                                {!isSingleStep && (
+                                    <div className="text-center">
+                                        <p className="text-2xl font-bold text-purple-600">~12%</p>
+                                        <p className="text-xs text-gray-500">Reply rate</p>
+                                    </div>
+                                )}
+                                <div className="text-center">
+                                    <p className="text-2xl font-bold text-pink-600">~{isSingleStep ? '416' : '142'}</p>
+                                    <p className="text-xs text-gray-500">{isSingleStep ? 'Est. accepts' : 'Est. replies'}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Excluded Warning */}
+                        {mockAudienceData.excludedLeads > 0 && (
+                            <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-amber-50 border border-amber-100">
+                                <AlertTriangle className="h-4 w-4 text-amber-500 flex-shrink-0" />
+                                <p className="text-sm text-amber-800">
+                                    {mockAudienceData.excludedLeads} leads excluded ({mockAudienceData.duplicates} duplicates)
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
