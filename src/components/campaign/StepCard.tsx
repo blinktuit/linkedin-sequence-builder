@@ -138,7 +138,10 @@ export const StepCard = ({
                 <button onClick={e => {
               e.stopPropagation();
               setDelayOpen(true);
-            }} className="text-[10px] font-medium uppercase tracking-wide transition-all text-left group/wait flex items-center gap-1.5 hover:bg-muted/50 -ml-1.5 px-1.5 py-0.5 rounded">
+            }} className={cn(
+              "text-[10px] font-medium uppercase tracking-wide transition-all text-left group/wait flex items-center gap-1.5 hover:bg-muted/50 -ml-1.5 px-1.5 py-0.5 rounded-full",
+              delayOpen && "bg-muted/50"
+            )}>
                   {conditionWaitText ? (
                     <>
                       <span className="text-muted-foreground">{conditionWaitText.label} </span>
@@ -154,7 +157,10 @@ export const StepCard = ({
                       </span>
                     </>
                   )}
-                  <Edit2 className="h-2.5 w-2.5 text-muted-foreground opacity-0 group-hover/wait:opacity-100 transition-opacity" />
+                  <Edit2 className={cn(
+                    "h-2.5 w-2.5 text-muted-foreground transition-opacity",
+                    delayOpen ? "opacity-100" : "opacity-0 group-hover/wait:opacity-100"
+                  )} />
                 </button>
               </PopoverTrigger>
               <PopoverContent className="w-72 p-3" align="start" onClick={e => e.stopPropagation()}>

@@ -33,6 +33,7 @@ import { Badge } from "@/components/ui/badge";
 import type { Campaign } from "@/types/campaigns";
 import { CreateCampaignModal } from "@/components/campaign/CreateCampaignModal";
 import { CampaignTypeIcon } from "@/components/campaign/CampaignIconPicker";
+import { ThemeCustomizer } from "@/components/ThemeCustomizer";
 
 // Mock data - replace with API call
 const mockCampaigns: Campaign[] = [
@@ -304,13 +305,16 @@ export default function Campaigns() {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-3xl font-semibold">Campaigns</h1>
-          <Button
-            onClick={() => setCreateModalOpen(true)}
-            className="gap-2"
-          >
-            <Send className="h-4 w-4" />
-            Create campaign
-          </Button>
+          <div className="flex items-center gap-2">
+            <ThemeCustomizer />
+            <Button
+              onClick={() => setCreateModalOpen(true)}
+              className="gap-2"
+            >
+              <Send className="h-4 w-4" />
+              Create campaign
+            </Button>
+          </div>
         </div>
 
         {/* Bulk Actions Bar */}
@@ -470,7 +474,7 @@ export default function Campaigns() {
                   className="px-6 py-4 text-left text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
                   onClick={() => handleSort('createdAt')}
                 >
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 whitespace-nowrap">
                     Created at
                     <ChevronDown className={`h-3 w-3 transition-transform ${sortColumn === 'createdAt' && sortOrder === 'asc' ? 'rotate-180' : ''}`} />
                   </div>
