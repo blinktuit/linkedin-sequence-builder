@@ -434,7 +434,7 @@ export default function Campaigns() {
                   className="px-6 py-4 text-left text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
                   onClick={() => handleSort('invites')}
                 >
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 whitespace-nowrap">
                     Invites sent
                     <ChevronDown className={`h-3 w-3 transition-transform ${sortColumn === 'invites' && sortOrder === 'asc' ? 'rotate-180' : ''}`} />
                   </div>
@@ -443,7 +443,7 @@ export default function Campaigns() {
                   className="px-6 py-4 text-left text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
                   onClick={() => handleSort('leads')}
                 >
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 whitespace-nowrap">
                     Active leads
                     <ChevronDown className={`h-3 w-3 transition-transform ${sortColumn === 'leads' && sortOrder === 'asc' ? 'rotate-180' : ''}`} />
                   </div>
