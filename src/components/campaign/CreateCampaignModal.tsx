@@ -720,19 +720,19 @@ export const CreateCampaignModal = ({
                           <div className="space-y-2 text-sm text-muted-foreground py-4">
                             <div className="flex items-start gap-2">
                               <div className="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 shrink-0" />
-                              <span>Je kan deze campagne als laatste stap in je multi step campaign zetten</span>
+                              <span>Zet deze campagne als laatste stap in je multi step campaign</span>
                             </div>
                             <div className="flex items-start gap-2">
                               <div className="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 shrink-0" />
-                              <span>Er geldt een limiet van maximaal 250 uitnodigingen per maand per bedrijfspagina</span>
+                              <span>Maximaal 250 uitnodigingen per maand per bedrijfspagina</span>
                             </div>
                             <div className="flex items-start gap-2">
                               <div className="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 shrink-0" />
-                              <span>Alleen 1e-graads connecties kunnen worden uitgenodigd, 2e en 3e+ graads worden overgeslagen</span>
+                              <span>1e-graads connecties kunnen worden uitgenodigd, 2e en 3e+ graads worden overgeslagen</span>
                             </div>
                             <div className="flex items-start gap-2">
                               <div className="w-1.5 h-1.5 rounded-full bg-primary/50 mt-2 shrink-0" />
-                              <span>Als je limiet bereikt is wacht de campagne tot de volgende maand voordat deze verder gaat</span>
+                              <span>Als je limiet bereikt is wacht de campagne tot volgende maand</span>
                             </div>
                           </div>
 
